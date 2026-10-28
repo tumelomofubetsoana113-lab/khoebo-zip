@@ -1,26 +1,62 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * Khoebo theme. The palette comes from SPEC.md section 4 and is the only
+ * source of colour in the app: Tailwind's default colours are switched off,
+ * so components can only use these token names.
+ */
+@theme {
+  --color-*: initial;
+
+  --color-flag-blue: #00209f;
+  --color-flag-green: #009543;
+  --color-green-text: #007a37;
+  --color-page: #f4f6fa;
+  --color-surface: #ffffff;
+  --color-ink: #111111;
+  --color-muted: #4b5563;
+  --color-line: #d9dee7;
+
+  --color-status-followup: #b45309;
+  --color-status-followup-bg: #fef3c7;
+  --color-status-review: #00209f;
+  --color-status-review-bg: #e6e9f7;
+  --color-status-checkin: #4b5563;
+  --color-status-checkin-bg: #eef0f3;
+  --color-status-none: #007a37;
+  --color-status-none-bg: #e3f4ea;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    sans-serif;
+
+  --radius-card: 12px;
+  --radius-bubble: 18px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  color-scheme: light;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-page);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-flag-blue);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
