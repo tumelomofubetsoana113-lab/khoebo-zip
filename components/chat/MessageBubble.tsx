@@ -1,0 +1,29 @@
+import type { ReactNode } from "react";
+
+// One chat message. Shared by the real chat and the landing page phone,
+// so the two always match.
+export function MessageBubble({
+  from,
+  time,
+  children,
+}: {
+  from: "trader" | "assistant";
+  time?: string;
+  children: ReactNode;
+}) {
+  const mine = from === "trader";
+  return (
+    <div className={`flex flex-col ${mine ? "items-end" : "items-start"}`}>
+      <div
+        className={`max-w-[85%] rounded-bubble px-3.5 py-2 text-base leading-snug ${
+          mine
+            ? "rounded-br-md bg-flag-blue text-surface"
+            : "rounded-bl-md border border-line bg-surface text-ink"
+        }`}
+      >
+        {children}
+      </div>
+      {time && <span className="mt-1 px-1 text-xs text-muted">{time}</span>}
+    </div>
+  );
+}

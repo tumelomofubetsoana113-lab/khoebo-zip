@@ -36,6 +36,8 @@
 html {
   color-scheme: light;
   -webkit-text-size-adjust: 100%;
+  /* keeps anchor targets clear of the sticky header */
+  scroll-padding-top: 5rem;
 }
 
 body {

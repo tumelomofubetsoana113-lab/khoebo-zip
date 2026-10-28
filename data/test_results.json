@@ -1,0 +1,173 @@
+{
+  "demo_population_seed_7": {
+    "population": 300,
+    "undeclared": 61,
+    "worklist_officer": {
+      "visits": 64,
+      "caught": 39,
+      "precision": 0.609375,
+      "recall": 0.639344262295082,
+      "wasted_on": {
+        "seasonal": 9,
+        "compliant": 4,
+        "inactive": 10,
+        "struggling": 2
+      }
+    },
+    "worklist_followup_only": {
+      "visits": 35,
+      "caught": 32,
+      "precision": 0.9142857142857143,
+      "recall": 0.5245901639344263,
+      "wasted_on": {
+        "compliant": 1,
+        "struggling": 2
+      }
+    },
+    "baseline_a_all_nil": {
+      "visits": 127,
+      "caught": 53,
+      "precision": 0.41732283464566927,
+      "recall": 0.8688524590163934,
+      "wasted_on": {
+        "inactive": 40,
+        "seasonal": 34
+      }
+    },
+    "baseline_b_random": {
+      "visits": 64,
+      "caught": 13.0,
+      "precision": 0.20333333333333334,
+      "recall": 0.21333333333333335
+    },
+    "missed_undeclared_by_action": {
+      "AUTOMATED CHECK-IN": 18,
+      "NO ACTION": 4
+    },
+    "actions_by_situation": {
+      "cash_only_honest": {
+        "NO ACTION": 26
+      },
+      "compliant": {
+        "OFFICER FOLLOW-UP": 1,
+        "HUMAN REVIEW": 3,
+        "NO ACTION": 115
+      },
+      "inactive": {
+        "HUMAN REVIEW": 10,
+        "AUTOMATED CHECK-IN": 29,
+        "NO ACTION": 1
+      },
+      "seasonal": {
+        "HUMAN REVIEW": 9,
+        "AUTOMATED CHECK-IN": 15,
+        "NO ACTION": 10
+      },
+      "struggling": {
+        "OFFICER FOLLOW-UP": 2,
+        "NO ACTION": 18
+      },
+      "undeclared": {
+        "OFFICER FOLLOW-UP": 32,
+        "HUMAN REVIEW": 7,
+        "AUTOMATED CHECK-IN": 18,
+        "NO ACTION": 4
+      }
+    }
+  },
+  "thirty_runs": {
+    "worklist_officer": {
+      "visits": {
+        "mean": 74.66666666666667,
+        "min": 56,
+        "max": 101
+      },
+      "caught": {
+        "mean": 47.9,
+        "min": 35,
+        "max": 71
+      },
+      "precision": {
+        "mean": 0.6404249596737324,
+        "min": 0.5454545454545454,
+        "max": 0.7464788732394366
+      },
+      "recall": {
+        "mean": 0.7190605995121433,
+        "min": 0.603448275862069,
+        "max": 0.8387096774193549
+      }
+    },
+    "worklist_followup_only": {
+      "visits": {
+        "mean": 33.5,
+        "min": 25,
+        "max": 52
+      },
+      "caught": {
+        "mean": 32.266666666666666,
+        "min": 23,
+        "max": 51
+      },
+      "precision": {
+        "mean": 0.9598584233608228,
+        "min": 0.8518518518518519,
+        "max": 1.0
+      },
+      "recall": {
+        "mean": 0.4821818091219419,
+        "min": 0.373134328358209,
+        "max": 0.6
+      }
+    },
+    "baseline_a_all_nil": {
+      "visits": {
+        "mean": 120.83333333333333,
+        "min": 103,
+        "max": 149
+      },
+      "caught": {
+        "mean": 48.96666666666667,
+        "min": 37,
+        "max": 71
+      },
+      "precision": {
+        "mean": 0.4043930009224311,
+        "min": 0.31092436974789917,
+        "max": 0.48031496062992124
+      },
+      "recall": {
+        "mean": 0.7343025540686141,
+        "min": 0.6268656716417911,
+        "max": 0.8688524590163934
+      }
+    },
+    "baseline_b_random": {
+      "visits": {
+        "mean": 74.66666666666667,
+        "min": 56,
+        "max": 101
+      },
+      "caught": {
+        "mean": 16.703333333333333,
+        "min": 10.8,
+        "max": 28.6
+      },
+      "precision": {
+        "mean": 0.22188888888888889,
+        "min": 0.17,
+        "max": 0.2833333333333333
+      },
+      "recall": {
+        "mean": 0.24888888888888888,
+        "min": 0.18666666666666668,
+        "max": 0.33666666666666667
+      }
+    },
+    "undeclared_per_population": {
+      "mean": 66.56666666666666,
+      "min": 51,
+      "max": 85
+    }
+  }
+}
