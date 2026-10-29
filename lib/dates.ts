@@ -54,6 +54,21 @@ export function weekStart(date: string): string {
   return addDays(date, -((weekday + 6) % 7));
 }
 
+// "20 January 2027", so the assistant never has to work out a date itself.
+export function formatDate(date: string): string {
+  return new Intl.DateTimeFormat("en-GB", {
+    timeZone: "UTC",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(toUTC(date));
+}
+
+// "Thursday"
+export function weekdayName(date: string): string {
+  return new Intl.DateTimeFormat("en-GB", { timeZone: "UTC", weekday: "long" }).format(toUTC(date));
+}
+
 export type DateRange = { start: string; end: string }; // both inclusive
 
 export function inRange(date: string, range: DateRange): boolean {

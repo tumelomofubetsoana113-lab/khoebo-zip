@@ -91,7 +91,7 @@ tests/
   state.test.ts
   results.test.ts
   tools.test.ts
-  chat-eval/            sample messages and expected tool calls (section 12)
+  chat-eval/            cases.json (sample messages and expected tool calls, section 12) and run.ts
 ```
 
 ## 4. Design system
@@ -308,7 +308,7 @@ The server is stateless. The browser holds everything.
    - `action`: optional structured action from a button tap, such as `{ type: "confirm_return", period: "2026-Q3" }`. Button taps that change records always use `action`, never free text, so a trader can't confirm a return by accident.
 2. The route validates the body with zod, rejects anything over 100 KB, and checks the message count against `MAX_MESSAGES_PER_SESSION`.
 3. It runs the Claude tool loop (at most 5 tool rounds per request). Tool handlers in `lib/tools.ts` take the state, apply the change using `lib/ledger.ts` and `lib/tax.ts`, and return a result.
-4. It responds with `{ reply, state, ui, remaining }`. The browser saves the new state and renders the reply and UI blocks.
+4. It responds with `{ reply, state, ui, tools, remaining }`. The browser saves the new state and renders the reply and UI blocks. `tools` lists the tools called, with their inputs, for the chat eval (added in step 4).
 
 ### Trader state
 
@@ -363,6 +363,8 @@ All amounts in and out are maloti. Every handler is a pure function of `(state, 
 | `confirm_return` | `period`, `turnover` | Only callable when the request carries a matching `action` from the Confirm button. Saves a `FiledReturn` with a mock reference. |
 | `start_payment` | `period` | Sends a `payment_card` UI block showing a mock mobile money payment. Marks the return paid only after the "Pay (demo)" button sends an action. |
 | `start_registration` | none | Sends a `registration_card` listing what the trader will need and where to go. Use "RSL registration channel (to be confirmed)" rather than inventing a URL or office address. |
+| `show_reminder` | none | Added in step 4. Sends a `reminder_card` for the current filing period, for the demo menu's "Simulate a reminder". |
+| `offer_quick_replies` | `options` (1 to 6, each under 24 characters) | Added in step 4. Sends a `quick_replies` UI block. The model has no other way to show quick replies. |
 
 ### UI blocks
 
@@ -375,6 +377,7 @@ The API can return these alongside the reply text:
 - `payment_card`: amount, mock reference, "Pay (demo)" button, note that no real money moves
 - `registration_card`: a checklist and the hand-off text
 - `reminder_card`: due date, estimated tax, "File now" button
+- `placeholder_note`: the placeholder rate note, sent with `get_tax_estimate` and `confirm_return` so a tax amount in the reply text also shows the note (added in step 4)
 
 ### System prompt (write in `lib/prompt.ts`)
 
@@ -580,3 +583,20 @@ Anything built that the sections above don't cover is recorded here, with the st
 - `config/tax.ts` also accepts `filingPeriod: "monthly"` (periods named like `2026-10`). If the due day doesn't exist in a month, the due date is that month's last day.
 - Tax estimates are rounded to cents. A `TaxEstimate` carries `note`: the placeholder note while `TAX.placeholder` is true, otherwise `null`.
 - The `TraderState` zod schema also caps sizes (5,000 entries, 100 returns, 100-character notes, 60-character profile fields) and requires return references to start with `MOCK-`. `loadState()` returns a fresh state when saved data is missing, broken or unreadable, and never throws.
+
+### Assistant and `/api/chat` (step 4)
+
+- **Request shape.** Each message is `{ role, content, voice? }`. `voice: true` marks a voice note transcript; the model sees it prefixed with "[Voice note transcript]", and entries recorded from it get `source: "voice"`. Entries recorded after a button tap get `source: "button"`. User messages are capped at 500 characters, assistant messages at 4,000. Leading assistant messages are dropped, since the API needs the conversation to start with the trader.
+- **Button actions** (`ChatActionSchema` in `lib/tools.ts`): `confirm_return { period, turnover }`, `change_return { period }`, `pay_return { period }`, `file_now { period }`, `undo_entry { entryId }`, `simulate_reminder`. An action is passed to the model as a "[Button tapped: ...]" user turn naming the tool to call.
+- **`confirm_return`** only files when the request's action is `confirm_return` for the same period. It also checks that the turnover in both the action and the tool input still matches the records; if not, it fails with `records_changed` and the model shows the return card again. A period can't be filed twice.
+- **`start_payment`** marks a return paid only when the request's action is `pay_return` for that period. Otherwise it shows the `payment_card`.
+- **Periods.** Estimates and returns work for any period that has started, including the current one (so the demo can file the quarter in progress). Future periods are refused.
+- **Tool results.** Every money value goes to the model as `{ amount, text }`, with `text` already formatted ("M1,840"), and dates as text ("20 January 2027"), so the model only copies. Handlers take a context with today's date, the time, and id and reference generators, so they stay pure and testable. Mock references look like `MOCK-7KQ2PX`.
+- **Tool inputs** are zod schemas in `lib/tools.ts`, turned into the API's JSON schemas with `z.toJSONSchema`. They are kept loose; the ledger does the detailed checks and returns errors the model can explain. Unknown tools and bad input come back as `is_error` results and never change the state.
+- **Model settings.** `ANTHROPIC_MODEL` (default `claude-haiku-5-5`), effort `medium`, `max_tokens` 4,096, adaptive thinking left at the model's default, no `temperature`. `tool_choice` is `auto`; after 5 tool rounds a final call uses `tool_choice: none` to get a reply. A refusal gets a fixed polite reply from `lib/strings.ts`.
+- **System prompt.** `SYSTEM_PROMPT` in `lib/prompt.ts` is fixed and cached. `contextBlock()` is a second system block with today's date in Lesotho, the current filing period and a short profile: set-up status, profile fields, entry count, the last entry and filed returns.
+- **Session cap.** `messageCount` goes up by one per request, including button taps. At the cap the route replies with the limit message without calling the model.
+- **Errors.** 400 for bad JSON, a bad body or no trader message; 413 over 100 KB; 503 when rate limited; 502 for other API errors; 500 otherwise. The browser shows "Not sent. Tap to retry" for all of them. Logs hold the event, model, tool names, stop reason, token counts and time, never message text.
+- The Anthropic client is created on the first request, so `npm run build` works without the key.
+- **Chat eval.** `tests/chat-eval/cases.json` holds the 14 messages from section 12. `npm run eval:chat` runs `tests/chat-eval/run.ts` with Node's built-in TypeScript support against `http://localhost:3000`, or `EVAL_URL`. It checks the tools called, their inputs, and the change in state. `EVAL_REPEAT=3` runs each case three times.
+- **Open: district quick replies.** Section 5.2 asks for quick replies for all ten districts, but quick replies are capped at 6. For now the prompt offers Maseru, Leribe, Berea, Mafeteng, Mohale's Hoek and Other, and accepts any of the ten typed.

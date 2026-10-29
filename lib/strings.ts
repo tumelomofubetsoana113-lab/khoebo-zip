@@ -32,6 +32,52 @@ export const strings = {
       profit: "Profit",
       entries: (n: number) => `${n} ${n === 1 ? "entry" : "entries"}`,
     },
+    periods: {
+      this_week: "This week",
+      last_week: "Last week",
+      this_month: "This month",
+      filing_period: (period: string) => `Filing period ${period}`,
+    },
+    registration: {
+      checklist: [
+        "Your ID or passport",
+        "Your business name and where you trade",
+        "A phone number RSL can reach you on",
+        "Your trading licence, if you have one",
+      ],
+      handoff: "Register through the RSL registration channel (to be confirmed).",
+    },
+    // Replies the server sends without asking the model.
+    replies: {
+      limitReached:
+        "You've reached the message limit for this demo. Open the Demo menu and choose \"Reset everything\" to start again.",
+      refusal: "Sorry, I can't help with that. I can help you record sales and purchases, or with your tax return.",
+      fallback: "Sorry, something went wrong on my side. Please try again.",
+    },
+  },
+  onboarding: {
+    businessTypes: [
+      "Fruit and veg",
+      "Spaza / general dealer",
+      "Street food",
+      "Hair salon",
+      "Clothing",
+      "Phone repair",
+      "Other",
+    ],
+    districts: [
+      "Berea",
+      "Butha-Buthe",
+      "Leribe",
+      "Mafeteng",
+      "Maseru",
+      "Mohale's Hoek",
+      "Mokhotlong",
+      "Qacha's Nek",
+      "Quthing",
+      "Thaba-Tseka",
+    ],
+    registered: { yes: "Yes", no: "No", not_sure: "Not sure" },
   },
   landing: {
     nav: {

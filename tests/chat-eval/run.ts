@@ -1,0 +1,155 @@
+// Chat eval (SPEC.md section 12). Sends each message in cases.json to the
+// running API with a known trader state and checks which tools were called
+// and what changed. Needs the app running with ANTHROPIC_API_KEY set.
+//
+//   npm run eval:chat                          against http://localhost:3000
+//   EVAL_URL=https://... npm run eval:chat     against another server
+//   EVAL_REPEAT=3 npm run eval:chat            run each case 3 times
+
+import { readFileSync } from "node:fs";
+
+type Entry = { id: string; kind: "sale" | "purchase"; amount: number; date: string; source: string; createdAt: string };
+type State = {
+  version: 1;
+  onboardingDone: boolean;
+  profile: Record<string, unknown>;
+  entries: Entry[];
+  returns: unknown[];
+  messageCount: number;
+};
+type Expect = {
+  toolsInclude?: string[];
+  toolsExclude?: string[];
+  noTools?: boolean;
+  toolInput?: Record<string, Record<string, unknown>>;
+  newEntry?: { kind: string; amount: number; date: "today" | "yesterday" };
+  noNewEntry?: boolean;
+  lastEntryAmount?: number;
+  entryCountUnchanged?: boolean;
+  noNewReturn?: boolean;
+  stateUnchanged?: boolean;
+  replyMatches?: string[];
+  replyExcludes?: string[];
+};
+type Case = { message: string; note?: string; expect: Expect };
+type ChatResponse = { reply: string; state: State; tools: { name: string; input: Record<string, unknown> }[] };
+
+const BASE_URL = process.env.EVAL_URL ?? "http://localhost:3000";
+const REPEAT = Number(process.env.EVAL_REPEAT) || 1;
+const cases: Case[] = JSON.parse(readFileSync(new URL("./cases.json", import.meta.url), "utf8"));
+
+// Dates in Lesotho time, as the app uses.
+function lesothoDate(offsetDays = 0): string {
+  const d = new Date(Date.now() + offsetDays * 86_400_000);
+  return new Intl.DateTimeFormat("en-CA", { timeZone: "Africa/Maseru" }).format(d);
+}
+const TODAY = lesothoDate();
+const YESTERDAY = lesothoDate(-1);
+
+// An onboarded fruit and veg seller. The last entry recorded is a M350 sale today.
+function baseState(): State {
+  const entry = (id: string, kind: Entry["kind"], amount: number, date: string, at: string): Entry => ({
+    id,
+    kind,
+    amount,
+    date,
+    source: "text",
+    createdAt: `${date}T${at}:00.000Z`,
+  });
+  return {
+    version: 1,
+    onboardingDone: true,
+    profile: { businessType: "Fruit and veg", district: "Maseru", registered: "yes", language: "en" },
+    entries: [
+      entry("e1", "sale", 420, YESTERDAY, "08:00"),
+      entry("e2", "purchase", 600, YESTERDAY, "09:00"),
+      entry("e3", "sale", 350, TODAY, "07:00"),
+    ],
+    returns: [],
+    messageCount: 0,
+  };
+}
+
+function check(c: Case, before: State, res: ChatResponse): string[] {
+  const e = c.expect;
+  const problems: string[] = [];
+  const names = res.tools.map((t) => t.name);
+  const added = res.state.entries.filter((x) => !before.entries.some((b) => b.id === x.id));
+
+  for (const t of e.toolsInclude ?? []) if (!names.includes(t)) problems.push(`expected a ${t} call`);
+  for (const t of e.toolsExclude ?? []) if (names.includes(t)) problems.push(`didn't expect a ${t} call`);
+  if (e.noTools && names.length) problems.push(`expected no tool calls, got ${names.join(", ")}`);
+
+  for (const [tool, want] of Object.entries(e.toolInput ?? {})) {
+    const calls = res.tools.filter((t) => t.name === tool);
+    const ok = calls.some((call) => Object.entries(want).every(([k, v]) => call.input[k] === v));
+    if (!ok) problems.push(`expected ${tool} with ${JSON.stringify(want)}, got ${JSON.stringify(calls.map((x) => x.input))}`);
+  }
+
+  if (e.newEntry) {
+    const date = e.newEntry.date === "today" ? TODAY : YESTERDAY;
+    const ok =
+      added.length === 1 &&
+      added[0].kind === e.newEntry.kind &&
+      added[0].amount === e.newEntry.amount &&
+      added[0].date === date;
+    if (!ok) problems.push(`expected one new ${e.newEntry.kind} of ${e.newEntry.amount} on ${date}, got ${JSON.stringify(added)}`);
+  }
+  if (e.noNewEntry && added.length) problems.push(`expected nothing recorded, got ${JSON.stringify(added)}`);
+  if (e.lastEntryAmount !== undefined) {
+    const last = res.state.entries.find((x) => x.id === "e3");
+    if (last?.amount !== e.lastEntryAmount) problems.push(`expected the last entry to be ${e.lastEntryAmount}, got ${last?.amount}`);
+  }
+  if (e.entryCountUnchanged && res.state.entries.length !== before.entries.length) {
+    problems.push(`expected ${before.entries.length} entries, got ${res.state.entries.length}`);
+  }
+  if (e.noNewReturn && res.state.returns.length) problems.push("expected no return filed");
+  if (e.stateUnchanged) {
+    const strip = (s: State) => JSON.stringify({ ...s, messageCount: 0 });
+    if (strip(res.state) !== strip(before)) problems.push("expected the records to be unchanged");
+  }
+
+  for (const pattern of e.replyMatches ?? []) {
+    if (!new RegExp(pattern, "i").test(res.reply)) problems.push(`reply should match /${pattern}/`);
+  }
+  for (const pattern of e.replyExcludes ?? []) {
+    if (new RegExp(pattern, "i").test(res.reply)) problems.push(`reply shouldn't match /${pattern}/`);
+  }
+  return problems;
+}
+
+async function run(c: Case): Promise<{ problems: string[]; res?: ChatResponse }> {
+  const state = baseState();
+  const response = await fetch(`${BASE_URL}/api/chat`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ messages: [{ role: "user", content: c.message }], state }),
+  });
+  if (!response.ok) return { problems: [`HTTP ${response.status}: ${await response.text()}`] };
+  const res = (await response.json()) as ChatResponse;
+  return { problems: check(c, state, res), res };
+}
+
+let failed = 0;
+let total = 0;
+console.log(`Chat eval against ${BASE_URL} (today in Lesotho: ${TODAY})\n`);
+for (const c of cases) {
+  for (let i = 0; i < REPEAT; i++) {
+    total++;
+    const { problems, res } = await run(c);
+    const label = `"${c.message}"${REPEAT > 1 ? ` (run ${i + 1})` : ""}`;
+    if (problems.length) {
+      failed++;
+      console.log(`FAIL  ${label}`);
+      for (const p of problems) console.log(`        - ${p}`);
+    } else {
+      console.log(`pass  ${label}`);
+    }
+    if (res) {
+      console.log(`        tools: ${res.tools.map((t) => `${t.name}(${JSON.stringify(t.input)})`).join(", ") || "none"}`);
+      console.log(`        reply: ${res.reply.replace(/\s+/g, " ")}`);
+    }
+  }
+}
+console.log(`\n${total - failed} of ${total} passed.`);
+process.exit(failed ? 1 : 0);

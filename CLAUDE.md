@@ -31,6 +31,7 @@ npm run test       # Vitest
 npm run lint
 npm run build
 npm run data       # rebuilds data/worklist.json from the Python simulation in scripts/
+npm run eval:chat  # chat eval against the running app (needs ANTHROPIC_API_KEY)
 ```
 
 ## Environment variables
