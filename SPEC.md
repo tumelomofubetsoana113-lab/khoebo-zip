@@ -54,18 +54,22 @@ Use the current stable version of each package at the time of setup.
 app/
   layout.tsx            fonts, metadata, prototype banner
   page.tsx              landing page
+  styleguide/           internal test page for the palette and UI components (added in step 1, delete before submitting)
   trader/page.tsx       chat
   officer/page.tsx      worklist
   officer/[id]/page.tsx trader detail
   api/chat/route.ts     the only place the API key is used
 components/
-  landing/              one file per landing section
-  chat/                 ChatShell, MessageBubble, QuickReplies, cards, Composer, VoiceSheet, DemoMenu
-  officer/              SummaryStrip, Filters, WorklistTable, ActionPill, EvidenceChart, OverridePanel
-  ui/                   Button, Card, Pill, Sheet, ConfirmDialog
+  landing/              one file per landing section, plus PhoneFrame (hero phone) and IconCircle
+  chat/                 ChatShell, MessageBubble, SummaryCard, QuickReplies, cards, Composer, VoiceSheet, DemoMenu
+  officer/              SummaryStrip, Filters, WorklistTable, EvidenceChart, OverridePanel
+  ui/                   Button, Card, Pill (includes ActionPill and PrototypePill), Sheet, ConfirmDialog,
+                        Stripe, SiteHeader (with Wordmark), SiteFooter
 lib/
-  ledger.ts             entries, totals, summaries (pure functions)
+  dates.ts              YYYY-MM-DD date maths in Lesotho time (pure functions)
+  ledger.ts             entries, totals, summaries, money rounding and formatting (pure functions)
   tax.ts                periods, estimates, due dates (pure functions)
+  results.ts            landing page figures worked out from data/test_results.json
   tools.ts              tool definitions and their handlers
   state.ts              TraderState type, zod schema, localStorage load/save
   strings.ts            all UI text, keyed, English only for now
@@ -82,8 +86,10 @@ scripts/
   export_worklist.py    new, writes the two JSON files
   demo_cases.py         new, the three named demo traders
 tests/
-  ledger.test.ts
+  ledger.test.ts        also covers lib/dates.ts
   tax.test.ts
+  state.test.ts
+  results.test.ts
   tools.test.ts
   chat-eval/            sample messages and expected tool calls (section 12)
 ```
@@ -537,3 +543,40 @@ A script, `npm run eval:chat`, sends each message to the running API with a know
 - Submission format and length
 - Whether RSL wants Sesotho in the prototype itself
 - The IP clause and whether New Empire AI keeps the code
+
+## 14. Decisions made during the build
+
+Anything built that the sections above don't cover is recorded here, with the step it came from. Keep this up to date.
+
+### Setup (step 1)
+
+- Next.js 16.4 with Tailwind CSS 4. `create-next-app` turned on Cache Components and Partial Prefetching in `next.config.ts`; they are left on. This Next.js version has its own docs in `node_modules/next/dist/docs/` (see `AGENTS.md`).
+- The palette is set in `app/globals.css` with Tailwind's `@theme`, and Tailwind's default colours are switched off (`--color-*: initial`), so a colour outside section 4 fails to build. White is the `surface` token.
+- Two extra radius tokens: `rounded-card` (12px) and `rounded-bubble` (18px).
+- The tricolour stripe is in `app/layout.tsx`, so it is on every page. `SiteFooter` repeats it along the bottom edge.
+- `SiteHeader` is shared by the landing and officer pages. At narrow widths the prototype pill sits under the wordmark so the header fits at 360px. The wordmark links to `/`.
+- `Sheet` and `ConfirmDialog` use the native `<dialog>` element, for focus trapping and Escape to close.
+- The phone browser bar colour (`themeColor` in `app/layout.tsx`) is the only hex value outside `globals.css`, because Next.js metadata needs a literal value.
+- `/styleguide` is an internal test page for the step 1 checkpoint. It is hidden from search engines, and its text is not in `lib/strings.ts`. Delete it before submitting.
+- Vitest config is `vitest.config.mts`. `npm run test` passes when there are no test files.
+- The repo is the private GitHub repo `tumelomofubetsoana113-lab/khoebo`, branch `main`.
+
+### Landing page (step 2)
+
+- The hero phone (`components/landing/PhoneFrame.tsx`) uses `MessageBubble` and `SummaryCard` from `components/chat/`, which the real chat reuses. Its figures are static copy in `lib/strings.ts`, not tool output.
+- The officer reason card is copied from worklist line TRD-0167 in the seed 7 simulation.
+- A thin `line` divider separates "How it works" and "For officers", since both have white backgrounds.
+- `lib/results.ts` works out the three results figures from `data/test_results.json`, which has the same shape as `evaluate.py`'s output: fewer cases = 1 − worklist officer visits ÷ all-nil visits; field visits = follow-up precision; found = worklist officer caught, against all-nil caught.
+- Until step 8, `data/test_results.json` is a stub with `"stub": true` and placeholder values that match the copy in 5.1. No real simulation output is committed before step 8. While the stub flag is set, the results section shows "Placeholder figures until the simulation results are added." The export script must write the file without the flag.
+
+### Ledger, tax and state (step 3)
+
+- `lib/dates.ts` holds the date maths. Dates are `YYYY-MM-DD` strings, and "today" is today in Lesotho (`Africa/Maseru`), so a server on UTC doesn't put late-evening sales on the wrong day.
+- Weeks run Monday to Sunday, so the weekly summary lands on Sunday.
+- `record_entry`'s checks live in `checkEntry()` in `lib/ledger.ts`: a missing amount, a zero or negative amount, an invalid date, a future date, a date more than 60 days back, and amounts over M20,000 without `confirmed`. Amounts are rounded to cents. M20,000 exactly is allowed without confirmation.
+- `correct_entry` with `"last"` changes the entry recorded most recently (by `createdAt`), not the one with the latest date.
+- Summaries count "days with no entries" only up to today. Profit can be negative and formats as "-M800".
+- Which period to file (`filingPeriod()` in `lib/tax.ts`): the period that has just ended until its due date, then the current one. On 20 October 2026 that is 2026-Q3; from 21 October it is 2026-Q4.
+- `config/tax.ts` also accepts `filingPeriod: "monthly"` (periods named like `2026-10`). If the due day doesn't exist in a month, the due date is that month's last day.
+- Tax estimates are rounded to cents. A `TaxEstimate` carries `note`: the placeholder note while `TAX.placeholder` is true, otherwise `null`.
+- The `TraderState` zod schema also caps sizes (5,000 entries, 100 returns, 100-character notes, 60-character profile fields) and requires return references to start with `MOCK-`. `loadState()` returns a fresh state when saved data is missing, broken or unreadable, and never throws.

@@ -47,3 +47,4 @@ npm run data       # rebuilds data/worklist.json from the Python simulation in s
 - Mobile first. Check every trader screen at 360px wide.
 - Keep user-facing text short and plain. All UI strings live in `lib/strings.ts`, so Sesotho can be added later.
 - When something in `SPEC.md` is unclear or conflicts with these rules, stop and ask rather than guessing.
+- Whenever you build or decide anything `SPEC.md` doesn't cover (extra files, judgement calls, changes from the plan), record it in `SPEC.md` in the same step: update the section it belongs to, and add it to section 14, "Decisions made during the build". Commit the spec change with the step.
