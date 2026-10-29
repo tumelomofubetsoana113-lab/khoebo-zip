@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { TAX } from "@/config/tax";
 import { emptyState, TraderStateSchema, type Entry, type TraderState } from "@/lib/state";
+import { strings } from "@/lib/strings";
 import { describeAction, runTool, toolDefinitions, type ChatAction, type ToolContext } from "@/lib/tools";
 
 const TODAY = "2026-10-29"; // Thursday; current filing period 2026-Q4
@@ -307,6 +308,15 @@ describe("cards with no state change", () => {
     ]);
     expect(runTool("offer_quick_replies", { options: ["1", "2", "3", "4", "5", "6", "7"] }, setUp, ctx()).isError).toBe(true);
     expect(runTool("offer_quick_replies", { options: ["This option is far too long"] }, setUp, ctx()).isError).toBe(true);
+  });
+
+  it("allows all ten districts as quick replies, but not other long lists", () => {
+    const districts = [...strings.onboarding.districts];
+    expect(runTool("offer_quick_replies", { options: districts }, setUp, ctx()).ui).toEqual([
+      { type: "quick_replies", options: districts },
+    ]);
+    const mixed = [...districts.slice(0, 6), "Other"];
+    expect(runTool("offer_quick_replies", { options: mixed }, setUp, ctx()).isError).toBe(true);
   });
 });
 

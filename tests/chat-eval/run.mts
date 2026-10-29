@@ -31,9 +31,15 @@ type Expect = {
   stateUnchanged?: boolean;
   replyMatches?: string[];
   replyExcludes?: string[];
+  quickReplies?: string[]; // these options, in any order
 };
-type Case = { message: string; note?: string; expect: Expect };
-type ChatResponse = { reply: string; state: State; tools: { name: string; input: Record<string, unknown> }[] };
+type Case = { message: string; note?: string; setup?: Partial<State>; expect: Expect };
+type ChatResponse = {
+  reply: string;
+  state: State;
+  ui: { type: string; options?: string[] }[];
+  tools: { name: string; input: Record<string, unknown> }[];
+};
 
 const BASE_URL = process.env.EVAL_URL ?? "http://localhost:3000";
 const REPEAT = Number(process.env.EVAL_REPEAT) || 1;
@@ -119,11 +125,16 @@ function check(c: Case, before: State, res: ChatResponse): string[] {
   for (const pattern of e.replyExcludes ?? []) {
     if (new RegExp(pattern, "i").test(res.reply)) problems.push(`reply shouldn't match /${pattern}/`);
   }
+  if (e.quickReplies) {
+    const shown = res.ui.find((b) => b.type === "quick_replies")?.options ?? [];
+    const same = shown.length === e.quickReplies.length && e.quickReplies.every((o) => shown.includes(o));
+    if (!same) problems.push(`expected quick replies ${JSON.stringify(e.quickReplies)}, got ${JSON.stringify(shown)}`);
+  }
   return problems;
 }
 
 async function run(c: Case): Promise<{ problems: string[]; res?: ChatResponse }> {
-  const state = baseState();
+  const state = { ...baseState(), ...c.setup };
   const response = await fetch(`${BASE_URL}/api/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

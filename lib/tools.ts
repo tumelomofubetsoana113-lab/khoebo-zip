@@ -147,7 +147,17 @@ const inputs = {
   start_registration: z.object({}),
   show_reminder: z.object({}),
   offer_quick_replies: z.object({
-    options: z.array(z.string().min(1).max(23)).min(1).max(6),
+    // Up to 6 options, or all ten districts for the district question.
+    options: z
+      .array(z.string().min(1).max(23))
+      .min(1)
+      .max(strings.onboarding.districts.length)
+      .refine(
+        (options) =>
+          options.length <= 6 ||
+          options.every((o) => (strings.onboarding.districts as readonly string[]).includes(o)),
+        { message: "At most 6 options, unless every option is a district." },
+      ),
   }),
 };
 
@@ -170,7 +180,7 @@ const descriptions: Record<ToolName, string> = {
   start_registration: "Show what the trader needs to register with RSL, and where to go.",
   show_reminder: "Show the filing reminder for the current filing period, with the estimated tax and due date.",
   offer_quick_replies:
-    "Show up to 6 short tap-to-reply options (under 24 characters each) under your message. Use whenever you ask a question with a few likely answers.",
+    "Show up to 6 short tap-to-reply options (under 24 characters each) under your message, or all ten districts when asking for the district. Use whenever you ask a question with a few likely answers.",
 };
 
 function toInputSchema(schema: z.ZodType): Anthropic.Tool.InputSchema {

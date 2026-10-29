@@ -364,13 +364,13 @@ All amounts in and out are maloti. Every handler is a pure function of `(state, 
 | `start_payment` | `period` | Sends a `payment_card` UI block showing a mock mobile money payment. Marks the return paid only after the "Pay (demo)" button sends an action. |
 | `start_registration` | none | Sends a `registration_card` listing what the trader will need and where to go. Use "RSL registration channel (to be confirmed)" rather than inventing a URL or office address. |
 | `show_reminder` | none | Added in step 4. Sends a `reminder_card` for the current filing period, for the demo menu's "Simulate a reminder". |
-| `offer_quick_replies` | `options` (1 to 6, each under 24 characters) | Added in step 4. Sends a `quick_replies` UI block. The model has no other way to show quick replies. |
+| `offer_quick_replies` | `options` (1 to 6, each under 24 characters, or all ten districts) | Added in step 4. Sends a `quick_replies` UI block. The model has no other way to show quick replies. |
 
 ### UI blocks
 
 The API can return these alongside the reply text:
 
-- `quick_replies`: `{ options: string[] }`, at most 6, each under 24 characters
+- `quick_replies`: `{ options: string[] }`, at most 6, each under 24 characters (all ten districts for the district question)
 - `entry_receipt`: the recorded entry, with a green tick and an "Undo" button
 - `summary_card`: period label, money in, money out, profit, entries count
 - `return_card`: period, turnover, estimated tax, due date, placeholder note, Confirm and Change buttons
@@ -598,7 +598,8 @@ Anything built that the sections above don't cover is recorded here, with the st
 - **Session cap.** `messageCount` goes up by one per request, including button taps. At the cap the route replies with the limit message without calling the model.
 - **Errors.** 400 for bad JSON, a bad body or no trader message; 413 over 100 KB; 503 when rate limited; 502 for other API errors; 500 otherwise. The browser shows "Not sent. Tap to retry" for all of them. Logs hold the event, model, tool names, stop reason, token counts and time, never message text.
 - The Anthropic client is created on the first request, so `npm run build` works without the key.
-- **Chat eval.** `tests/chat-eval/cases.json` holds the 14 messages from section 12. `npm run eval:chat` runs `tests/chat-eval/run.mts` with Node's built-in TypeScript support against `http://localhost:3000`, or `EVAL_URL`. It checks the tools called, their inputs, and the change in state. `EVAL_REPEAT=3` runs each case three times; `EVAL_ONLY="350|RSL"` runs only the cases whose message matches.
+- **Chat eval.** `tests/chat-eval/cases.json` holds the 14 messages from section 12, plus the district case below. A case can set a starting `setup` (state fields) and check `quickReplies`. `npm run eval:chat` runs `tests/chat-eval/run.mts` with Node's built-in TypeScript support against `http://localhost:3000`, or `EVAL_URL`. It checks the tools called, their inputs, and the change in state. `EVAL_REPEAT=3` runs each case three times; `EVAL_ONLY="350|RSL"` runs only the cases whose message matches.
 - **Eval result, 29 October 2026, Haiku 5.5:** 42 of 42 passed (each of the 14 cases run three times), so Sonnet wasn't needed. Median reply time 2.4 seconds; the system prompt is read from cache on every request. The first run of three found two prompt gaps, now fixed: the model sometimes called `record_entry` with no input before knowing sale or purchase, and once called `offer_quick_replies` twice on an off-topic question. The "350" check also accepts "sold or bought" as well as "sale or purchase".
 - If the model sends more than one set of quick replies in a reply, the route keeps only the last.
-- **Open: district quick replies.** Section 5.2 asks for quick replies for all ten districts, but quick replies are capped at 6. For now the prompt offers Maseru, Leribe, Berea, Mafeteng, Mohale's Hoek and Other, and accepts any of the ten typed.
+- **Eval after the district change, 29 October 2026:** 44 of 45 (15 cases, three runs each). The district case passed 3 of 3. The one failure was the injection case: the reply contained "0%" while the records were unchanged and no tool was called. Its text wasn't captured, and 15 further runs of that case all passed. If it comes back, read the reply before changing the check.
+- **District quick replies.** Section 5.2 asks for all ten districts as quick replies, which is more than the cap of 6. Decided 29 October 2026: show all ten. `offer_quick_replies` accepts up to 10 options only when every option is a district; any other list is still capped at 6. The chat eval has a 15th case, "I sell fruit and veg" from a trader who isn't set up, which checks that all ten districts appear.
