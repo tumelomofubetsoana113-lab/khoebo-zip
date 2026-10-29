@@ -10,7 +10,7 @@ export const strings = {
       "A prototype records and tax assistant for informal traders in Lesotho, with an officer worklist for RSL.",
   },
   footer: {
-    text: "Prototype built for the RSL Taxathon 2026 by New Empire AI. Not an official RSL service. All data shown is simulated.",
+    text: "Prototype built for the RSL Taxathon 2026 by Tumelo Mofubetsoana, New Empire AI. Not an official RSL service. All data shown is simulated.",
   },
   actions: {
     followup: "Officer follow-up",

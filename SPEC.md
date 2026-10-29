@@ -142,7 +142,7 @@ Every status pill shows its written label. Colour is never the only signal.
 - No mokorotlo emblem, no RSL logo, no WhatsApp name, logo or green.
 - The wordmark is the word "Khoebo" set in bold `flag-blue`. No logo graphic is needed.
 - A small pill reading "Prototype · RSL Taxathon 2026" sits in every page header.
-- Footer text on every page: "Prototype built for the RSL Taxathon 2026 by New Empire AI. Not an official RSL service. All data shown is simulated."
+- Footer text on every page: "Prototype built for the RSL Taxathon 2026 by Tumelo Mofubetsoana, New Empire AI. Not an official RSL service. All data shown is simulated."
 
 ### Accessibility
 
@@ -622,3 +622,9 @@ Anything built that the sections above don't cover is recorded here, with the st
 - **Voice sheet.** The Sesotho sample also shows its English translation under the transcript.
 - **Demo trader** (`lib/demo.ts`): 28 days of records ending today, a sale every day (busier Friday and Saturday, quieter Sunday) and stock from the wholesaler every Monday and Friday morning. Amounts are rounded to M10 and repeatable for the same day. Every full week makes a profit of roughly M1,200 to M2,100. On Monday and Tuesday "this week" can show a small loss, because the Monday restock comes before the week's sales, as for a real trader. Loading it replaces the chat with a welcome message and quick replies "How am I doing?", "How much tax do I owe?", "File my return".
 - **Checkpoint, 29 October 2026,** at 360px in Chrome: onboarding (business type, all ten districts, registration), five sales and two purchases (typed, a voice note, Sesotho, quantity × price, yesterday), weekly summary, reminder, File now, Confirm (reference MOCK-VRWJB7), Pay (demo). Also tested: Undo, a failed send and retry, reload, Reset with the in-app confirm, Load demo trader. No horizontal scroll and no tap target under 40px. Lighthouse mobile on `/trader`: performance 91, accessibility 100. Testing on a real cheap Android phone over mobile data is step 6.
+
+### Credit (29 October 2026)
+
+- The footer names the builder as "Tumelo Mofubetsoana, New Empire AI" (section 4 updated), so judges see the person behind the entry as well as the company that may keep the code (see section 13).
+- The assistant still describes itself as "built by New Empire AI" in `lib/prompt.ts`: traders don't need a personal name.
+- Check at the 2 November Q&A whether entries must be in an individual's or a company's name, and adjust the footer if needed.
