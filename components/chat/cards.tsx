@@ -1,0 +1,216 @@
+// Cards that render inside Khoebo's bubbles. Amounts arrive as numbers from
+// the tools and are only formatted here, never calculated.
+
+import { CheckCircle2, Circle, Info } from "lucide-react";
+import type { ReactNode } from "react";
+import { Button } from "@/components/ui/Button";
+import type { ChatAction, UiBlock } from "@/lib/blocks";
+import { buttonKey } from "@/lib/chat";
+import { formatDate } from "@/lib/dates";
+import { formatMoney } from "@/lib/ledger";
+import { strings } from "@/lib/strings";
+import { SummaryCard } from "./SummaryCard";
+
+const t = strings.chat.cards;
+
+type ActionProps = {
+  used: string[];
+  disabled: boolean; // while a request is on its way
+  onAction: (action: ChatAction, label: string) => void;
+};
+
+function CardFrame({ title, children }: { title?: string; children: ReactNode }) {
+  return (
+    <div className="mt-2 min-w-56 rounded-card border border-line bg-page p-3">
+      {title && <p className="font-semibold">{title}</p>}
+      {children}
+    </div>
+  );
+}
+
+function Rows({ rows }: { rows: { label: string; value: string }[] }) {
+  return (
+    <dl className="mt-2 space-y-1">
+      {rows.map((row) => (
+        <div key={row.label} className="flex justify-between gap-4">
+          <dt className="text-muted">{row.label}</dt>
+          <dd className="text-right font-semibold">{row.value}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+export function PlaceholderNote({ text }: { text: string }) {
+  return (
+    <p className="mt-2 flex gap-1.5 text-sm text-muted">
+      <Info size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
+      <span>{text}</span>
+    </p>
+  );
+}
+
+// A card button that can be tapped once. After that it shows what happened.
+function CardButton({
+  action,
+  label,
+  doneLabel,
+  variant = "primary",
+  used,
+  disabled,
+  onAction,
+}: ActionProps & { action: ChatAction; label: string; doneLabel: string; variant?: "primary" | "secondary" }) {
+  if (used.includes(buttonKey(action))) {
+    return (
+      <span className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-green-text">
+        <CheckCircle2 size={18} aria-hidden="true" className="text-flag-green" />
+        {doneLabel}
+      </span>
+    );
+  }
+  return (
+    <Button variant={variant} size="sm" disabled={disabled} onClick={() => onAction(action, label)}>
+      {label}
+    </Button>
+  );
+}
+
+function EntryReceipt({ entry, ...props }: ActionProps & { entry: Extract<UiBlock, { type: "entry_receipt" }>["entry"] }) {
+  return (
+    <CardFrame>
+      <div className="flex items-start gap-2">
+        <CheckCircle2 size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-flag-green" />
+        <div className="min-w-0 flex-1">
+          <p className="font-semibold text-green-text">{t.recorded}</p>
+          <p>
+            {entry.kind === "sale" ? t.sale : t.purchase} {formatMoney(entry.amount)} · {formatDate(entry.date)}
+          </p>
+          {entry.note && <p className="text-sm text-muted">{entry.note}</p>}
+        </div>
+      </div>
+      <div className="mt-1 flex justify-end">
+        <CardButton
+          {...props}
+          action={{ type: "undo_entry", entryId: entry.id }}
+          label={t.undo}
+          doneLabel={t.undone}
+          variant="secondary"
+        />
+      </div>
+    </CardFrame>
+  );
+}
+
+function ReturnCard({ block, ...props }: ActionProps & { block: Extract<UiBlock, { type: "return_card" }> }) {
+  const confirm: ChatAction = { type: "confirm_return", period: block.period, turnover: block.turnover };
+  const change: ChatAction = { type: "change_return", period: block.period };
+  const confirmed = props.used.includes(buttonKey(confirm));
+  return (
+    <CardFrame title={t.returnTitle(block.period)}>
+      <p className="text-sm text-muted">{t.periodDates(formatDate(block.start), formatDate(block.end))}</p>
+      <Rows
+        rows={[
+          { label: t.turnover, value: formatMoney(block.turnover) },
+          { label: t.estimatedTax, value: formatMoney(block.taxEstimate) },
+          { label: t.dueDate, value: formatDate(block.dueDate) },
+        ]}
+      />
+      {block.note && <PlaceholderNote text={block.note} />}
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <CardButton {...props} action={confirm} label={t.confirm} doneLabel={t.confirmed} />
+        {!confirmed && (
+          <CardButton {...props} action={change} label={t.change} doneLabel={t.change} variant="secondary" />
+        )}
+      </div>
+    </CardFrame>
+  );
+}
+
+function PaymentCard({ block, ...props }: ActionProps & { block: Extract<UiBlock, { type: "payment_card" }> }) {
+  return (
+    <CardFrame title={t.paymentTitle}>
+      <Rows
+        rows={[
+          { label: t.amount, value: formatMoney(block.amount) },
+          { label: t.reference, value: block.reference },
+        ]}
+      />
+      <PlaceholderNote text={t.noRealMoney} />
+      {block.note && <PlaceholderNote text={block.note} />}
+      <div className="mt-3">
+        <CardButton {...props} action={{ type: "pay_return", period: block.period }} label={t.pay} doneLabel={t.paid} />
+      </div>
+    </CardFrame>
+  );
+}
+
+function ReminderCard({ block, ...props }: ActionProps & { block: Extract<UiBlock, { type: "reminder_card" }> }) {
+  return (
+    <CardFrame title={t.reminderTitle(block.period)}>
+      <Rows
+        rows={[
+          { label: t.dueDate, value: formatDate(block.dueDate) },
+          { label: t.estimatedTax, value: formatMoney(block.taxEstimate) },
+        ]}
+      />
+      {block.note && <PlaceholderNote text={block.note} />}
+      <div className="mt-3">
+        <CardButton {...props} action={{ type: "file_now", period: block.period }} label={t.fileNow} doneLabel={t.done} />
+      </div>
+    </CardFrame>
+  );
+}
+
+function RegistrationCard({ block }: { block: Extract<UiBlock, { type: "registration_card" }> }) {
+  return (
+    <CardFrame title={t.registrationTitle}>
+      <p className="mt-1 text-muted">{t.registrationIntro}</p>
+      <ul className="mt-1 space-y-1">
+        {block.checklist.map((item) => (
+          <li key={item} className="flex gap-2">
+            <Circle size={16} aria-hidden="true" className="mt-1 shrink-0 text-flag-blue" />
+            <span>{item}</span>
+          </li>
+        ))}
+      </ul>
+      <p className="mt-2 font-semibold">{block.handoff}</p>
+    </CardFrame>
+  );
+}
+
+// Renders a message's UI blocks. Quick replies are drawn separately, under the list.
+export function UiBlocks({ blocks, ...props }: ActionProps & { blocks: UiBlock[] }) {
+  return (
+    <>
+      {blocks.map((block, i) => {
+        switch (block.type) {
+          case "entry_receipt":
+            return <EntryReceipt key={i} entry={block.entry} {...props} />;
+          case "summary_card":
+            return (
+              <SummaryCard
+                key={i}
+                period={`${block.label} · ${formatDate(block.start)} to ${formatDate(block.end)}`}
+                moneyIn={formatMoney(block.moneyIn)}
+                moneyOut={formatMoney(block.moneyOut)}
+                profit={formatMoney(block.profit)}
+                entries={block.entryCount}
+              />
+            );
+          case "return_card":
+            return <ReturnCard key={i} block={block} {...props} />;
+          case "payment_card":
+            return <PaymentCard key={i} block={block} {...props} />;
+          case "reminder_card":
+            return <ReminderCard key={i} block={block} {...props} />;
+          case "registration_card":
+            return <RegistrationCard key={i} block={block} />;
+          case "placeholder_note":
+            return <PlaceholderNote key={i} text={block.text} />;
+          default:
+            return null; // quick_replies, and anything unknown from an older save
+        }
+      })}
+    </>
+  );
+}

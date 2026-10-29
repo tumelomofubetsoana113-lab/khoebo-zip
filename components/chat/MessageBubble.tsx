@@ -5,17 +5,19 @@ import type { ReactNode } from "react";
 export function MessageBubble({
   from,
   time,
+  wide = false,
   children,
 }: {
   from: "trader" | "assistant";
   time?: string;
+  wide?: boolean; // for messages that carry cards
   children: ReactNode;
 }) {
   const mine = from === "trader";
   return (
     <div className={`flex flex-col ${mine ? "items-end" : "items-start"}`}>
       <div
-        className={`max-w-[85%] rounded-bubble px-3.5 py-2 text-base leading-snug ${
+        className={`${wide ? "w-[92%]" : "max-w-[85%]"} rounded-bubble px-3.5 py-2 text-base leading-snug ${
           mine
             ? "rounded-br-md bg-flag-blue text-surface"
             : "rounded-bl-md border border-line bg-surface text-ink"

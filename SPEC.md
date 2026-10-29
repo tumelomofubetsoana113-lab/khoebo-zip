@@ -61,7 +61,8 @@ app/
   api/chat/route.ts     the only place the API key is used
 components/
   landing/              one file per landing section, plus PhoneFrame (hero phone) and IconCircle
-  chat/                 ChatShell, MessageBubble, SummaryCard, QuickReplies, cards, Composer, VoiceSheet, DemoMenu
+  chat/                 ChatShell, MessageBubble, SummaryCard, QuickReplies, cards, Composer, VoiceSheet, VoiceBubble,
+                        TypingIndicator, DemoMenu
   officer/              SummaryStrip, Filters, WorklistTable, EvidenceChart, OverridePanel
   ui/                   Button, Card, Pill (includes ActionPill and PrototypePill), Sheet, ConfirmDialog,
                         Stripe, SiteHeader (with Wordmark), SiteFooter
@@ -70,6 +71,9 @@ lib/
   ledger.ts             entries, totals, summaries, money rounding and formatting (pure functions)
   tax.ts                periods, estimates, due dates (pure functions)
   results.ts            landing page figures worked out from data/test_results.json
+  blocks.ts             button actions and UI block types, shared by the API and the browser
+  chat.ts               chat messages in the browser: history for the API, quick replies, localStorage
+  demo.ts               the demo trader's four weeks of records
   tools.ts              tool definitions and their handlers
   state.ts              TraderState type, zod schema, localStorage load/save
   strings.ts            all UI text, keyed, English only for now
@@ -90,6 +94,7 @@ tests/
   tax.test.ts
   state.test.ts
   results.test.ts
+  chat.test.ts          also covers lib/demo.ts
   tools.test.ts
   chat-eval/            cases.json (sample messages and expected tool calls, section 12) and run.mts
 ```
@@ -603,3 +608,17 @@ Anything built that the sections above don't cover is recorded here, with the st
 - If the model sends more than one set of quick replies in a reply, the route keeps only the last.
 - **Eval after the district change, 29 October 2026:** 44 of 45 (15 cases, three runs each). The district case passed 3 of 3. The one failure was the injection case: the reply contained "0%" while the records were unchanged and no tool was called. Its text wasn't captured, and 15 further runs of that case all passed. If it comes back, read the reply before changing the check.
 - **District quick replies.** Section 5.2 asks for all ten districts as quick replies, which is more than the cap of 6. Decided 29 October 2026: show all ten. `offer_quick_replies` accepts up to 10 options only when every option is a district; any other list is still capped at 6. The chat eval has a 15th case, "I sell fruit and veg" from a trader who isn't set up, which checks that all ten districts appear.
+
+### Trader chat UI (step 5)
+
+- **Loading.** `ChatShell` renders a static frame (header, prototype strip, footer text) on the server and during hydration, then mounts the live chat in the browser, reading localStorage in the state initialisers. This avoids a hydration mismatch.
+- **Storage.** The chat is saved in localStorage under `khoebo.chat.v1` (last 200 messages, with their UI blocks and which buttons were tapped), next to the trader's state under `khoebo.trader.v1`. A message still "sending" when the page closed loads as "Not sent. Tap to retry". Reset clears both.
+- **Footer text.** The chat has no room for a page footer, so the footer text from section 4 sits in small `muted` type at the top of the message list.
+- **First visit.** The greeting is shown without calling the API, with the business types as quick replies. The model handles the rest of onboarding.
+- **Button taps** show as a small trader bubble with the button's label ("Confirm", "Pay (demo)") and go to the API as an action, not text. Each card button can be tapped once; afterwards it shows what happened ("Confirmed", "Paid (demo)", "Undone"). Confirm also hides the card's Change button.
+- **Simulate a reminder** posts no trader bubble. If it fails, a "Simulate a reminder" bubble appears so it can be retried.
+- **While a reply is on its way** the composer, quick replies, card buttons and API-backed demo menu items are disabled. Requests time out after 30 seconds.
+- **Bubbles** that carry cards are 92% wide instead of up to 85%, so cards fit at 360px. The header subline is 12px on phones so it fits beside the Demo button.
+- **Voice sheet.** The Sesotho sample also shows its English translation under the transcript.
+- **Demo trader** (`lib/demo.ts`): 28 days of records ending today, a sale every day (busier Friday and Saturday, quieter Sunday) and stock from the wholesaler every Monday and Friday morning. Amounts are rounded to M10 and repeatable for the same day. Every full week makes a profit of roughly M1,200 to M2,100. On Monday and Tuesday "this week" can show a small loss, because the Monday restock comes before the week's sales, as for a real trader. Loading it replaces the chat with a welcome message and quick replies "How am I doing?", "How much tax do I owe?", "File my return".
+- **Checkpoint, 29 October 2026,** at 360px in Chrome: onboarding (business type, all ten districts, registration), five sales and two purchases (typed, a voice note, Sesotho, quantity × price, yesterday), weekly summary, reminder, File now, Confirm (reference MOCK-VRWJB7), Pay (demo). Also tested: Undo, a failed send and retry, reload, Reset with the in-app confirm, Load demo trader. No horizontal scroll and no tap target under 40px. Lighthouse mobile on `/trader`: performance 91, accessibility 100. Testing on a real cheap Android phone over mobile data is step 6.
