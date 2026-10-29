@@ -6,7 +6,7 @@
   {
     "message": "350",
     "note": "asks whether it's a sale or a purchase",
-    "expect": { "noNewEntry": true, "replyMatches": ["sale", "purchase|bought"] }
+    "expect": { "noNewEntry": true, "toolsExclude": ["record_entry"], "replyMatches": ["sale|sold", "purchase|bought"] }
   },
   {
     "message": "ke rekisitse M350 kajeno",

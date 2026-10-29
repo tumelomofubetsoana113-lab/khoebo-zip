@@ -5,6 +5,7 @@
 //   npm run eval:chat                          against http://localhost:3000
 //   EVAL_URL=https://... npm run eval:chat     against another server
 //   EVAL_REPEAT=3 npm run eval:chat            run each case 3 times
+//   EVAL_ONLY="350|RSL" npm run eval:chat      only cases whose message matches
 
 import { readFileSync } from "node:fs";
 
@@ -36,7 +37,10 @@ type ChatResponse = { reply: string; state: State; tools: { name: string; input:
 
 const BASE_URL = process.env.EVAL_URL ?? "http://localhost:3000";
 const REPEAT = Number(process.env.EVAL_REPEAT) || 1;
-const cases: Case[] = JSON.parse(readFileSync(new URL("./cases.json", import.meta.url), "utf8"));
+const ONLY = process.env.EVAL_ONLY ? new RegExp(process.env.EVAL_ONLY, "i") : null;
+const cases: Case[] = (JSON.parse(readFileSync(new URL("./cases.json", import.meta.url), "utf8")) as Case[]).filter(
+  (c) => !ONLY || ONLY.test(c.message),
+);
 
 // Dates in Lesotho time, as the app uses.
 function lesothoDate(offsetDays = 0): string {

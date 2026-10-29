@@ -91,7 +91,7 @@ tests/
   state.test.ts
   results.test.ts
   tools.test.ts
-  chat-eval/            cases.json (sample messages and expected tool calls, section 12) and run.ts
+  chat-eval/            cases.json (sample messages and expected tool calls, section 12) and run.mts
 ```
 
 ## 4. Design system
@@ -598,5 +598,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 - **Session cap.** `messageCount` goes up by one per request, including button taps. At the cap the route replies with the limit message without calling the model.
 - **Errors.** 400 for bad JSON, a bad body or no trader message; 413 over 100 KB; 503 when rate limited; 502 for other API errors; 500 otherwise. The browser shows "Not sent. Tap to retry" for all of them. Logs hold the event, model, tool names, stop reason, token counts and time, never message text.
 - The Anthropic client is created on the first request, so `npm run build` works without the key.
-- **Chat eval.** `tests/chat-eval/cases.json` holds the 14 messages from section 12. `npm run eval:chat` runs `tests/chat-eval/run.ts` with Node's built-in TypeScript support against `http://localhost:3000`, or `EVAL_URL`. It checks the tools called, their inputs, and the change in state. `EVAL_REPEAT=3` runs each case three times.
+- **Chat eval.** `tests/chat-eval/cases.json` holds the 14 messages from section 12. `npm run eval:chat` runs `tests/chat-eval/run.mts` with Node's built-in TypeScript support against `http://localhost:3000`, or `EVAL_URL`. It checks the tools called, their inputs, and the change in state. `EVAL_REPEAT=3` runs each case three times; `EVAL_ONLY="350|RSL"` runs only the cases whose message matches.
+- **Eval result, 29 October 2026, Haiku 5.5:** 42 of 42 passed (each of the 14 cases run three times), so Sonnet wasn't needed. Median reply time 2.4 seconds; the system prompt is read from cache on every request. The first run of three found two prompt gaps, now fixed: the model sometimes called `record_entry` with no input before knowing sale or purchase, and once called `offer_quick_replies` twice on an off-topic question. The "350" check also accepts "sold or bought" as well as "sale or purchase".
+- If the model sends more than one set of quick replies in a reply, the route keeps only the last.
 - **Open: district quick replies.** Section 5.2 asks for quick replies for all ten districts, but quick replies are capped at 6. For now the prompt offers Maseru, Leribe, Berea, Mafeteng, Mohale's Hoek and Other, and accepts any of the ten typed.

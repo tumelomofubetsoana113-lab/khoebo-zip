@@ -210,10 +210,12 @@ export async function POST(request: Request) {
     }),
   );
 
+  // Only the last set of quick replies is shown.
+  const lastQuickReplies = ui.findLastIndex((b) => b.type === "quick_replies");
   const response: ChatResponse = {
     reply: reply || strings.chat.replies.fallback,
     state,
-    ui,
+    ui: ui.filter((b, i) => b.type !== "quick_replies" || i === lastQuickReplies),
     tools,
     remaining: Math.max(0, MAX_MESSAGES - state.messageCount),
   };
