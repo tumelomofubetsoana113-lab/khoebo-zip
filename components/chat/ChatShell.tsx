@@ -4,6 +4,7 @@ import { ArrowLeft, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ChatResponse } from "@/app/api/chat/route";
+import { Logo } from "@/components/ui/Logo";
 import { PrototypePill } from "@/components/ui/Pill";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import type { ChatAction } from "@/lib/blocks";
@@ -62,12 +63,7 @@ function ChatHeader({ onDemo }: { onDemo?: () => void }) {
         >
           <ArrowLeft size={22} aria-hidden="true" />
         </Link>
-        <span
-          aria-hidden="true"
-          className="flex size-10 shrink-0 items-center justify-center rounded-full bg-surface text-lg font-bold text-flag-blue"
-        >
-          K
-        </span>
+        <Logo size={40} className="rounded-full ring-2 ring-surface" />
         <div className="min-w-0 flex-1 leading-tight">
           <h1 className="font-semibold">{t.title}</h1>
           <p className="text-xs sm:text-sm">{t.subtitle}</p>

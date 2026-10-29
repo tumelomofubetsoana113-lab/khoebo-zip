@@ -1,11 +1,13 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { strings } from "@/lib/strings";
+import { Logo } from "./Logo";
 import { PrototypePill } from "./Pill";
 
 export function Wordmark() {
   return (
-    <Link href="/" className="inline-flex min-h-11 items-center rounded text-xl font-bold text-flag-blue">
+    <Link href="/" className="inline-flex min-h-11 items-center gap-2 rounded text-xl font-bold text-flag-blue">
+      <Logo size={28} />
       {strings.brand.name}
     </Link>
   );

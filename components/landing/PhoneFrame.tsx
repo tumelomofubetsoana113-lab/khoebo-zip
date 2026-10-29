@@ -1,5 +1,6 @@
 import { MessageBubble } from "@/components/chat/MessageBubble";
 import { SummaryCard } from "@/components/chat/SummaryCard";
+import { Logo } from "@/components/ui/Logo";
 import { strings } from "@/lib/strings";
 
 const t = strings.landing.hero;
@@ -14,12 +15,7 @@ export function PhoneFrame() {
       className="mx-auto w-full max-w-[320px] overflow-hidden rounded-[40px] border-[10px] border-ink bg-page shadow-xl shadow-ink/10"
     >
       <div className="flex items-center gap-3 bg-flag-blue px-4 pb-3 pt-5 text-surface">
-        <span
-          aria-hidden="true"
-          className="flex size-9 items-center justify-center rounded-full bg-surface font-bold text-flag-blue"
-        >
-          K
-        </span>
+        <Logo size={36} className="rounded-full ring-2 ring-surface" />
         <div className="leading-tight">
           <p className="font-semibold">{strings.chat.title}</p>
           <p className="text-xs">{strings.chat.subtitle}</p>

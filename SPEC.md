@@ -54,6 +54,8 @@ Use the current stable version of each package at the time of setup.
 app/
   layout.tsx            fonts, metadata, prototype banner
   page.tsx              landing page
+  icon.svg              browser-tab icon (the Khoebo mark)
+  apple-icon.png        180 px home-screen icon
   styleguide/           internal test page for the palette and UI components (added in step 1, delete before submitting)
   trader/page.tsx       chat
   officer/page.tsx      worklist
@@ -65,7 +67,7 @@ components/
                         TypingIndicator, DemoMenu
   officer/              SummaryStrip, Filters, WorklistTable, EvidenceChart, OverridePanel
   ui/                   Button, Card, Pill (includes ActionPill and PrototypePill), Sheet, ConfirmDialog,
-                        Stripe, SiteHeader (with Wordmark), SiteFooter
+                        Stripe, SiteHeader (with Wordmark), SiteFooter, Logo
 lib/
   dates.ts              YYYY-MM-DD date maths in Lesotho time (pure functions)
   ledger.ts             entries, totals, summaries, money rounding and formatting (pure functions)
@@ -78,6 +80,7 @@ lib/
   state.ts              TraderState type, zod schema, localStorage load/save
   strings.ts            all UI text, keyed, English only for now
   prompt.ts             the system prompt
+public/brand/            khoebo-logo.svg (round), khoebo-profile.svg and 512/1024 px PNGs (square, for profile pictures)
 config/
   tax.ts                placeholder SBT settings (see section 7)
 data/
@@ -140,7 +143,7 @@ Every status pill shows its written label. Colour is never the only signal.
 
 - A thin tricolour stripe (blue, white, green, 4px total height) runs across the top of every page. This is the only use of the flag.
 - No mokorotlo emblem, no RSL logo, no WhatsApp name, logo or green.
-- The wordmark is the word "Khoebo" set in bold `flag-blue`. No logo graphic is needed.
+- The wordmark is the word "Khoebo" set in bold `flag-blue`, with the Khoebo mark to its left (added 29 October 2026, see section 14): a white chat bubble holding three rising bars, the last one `flag-green`, on a `flag-blue` circle.
 - A small pill reading "Prototype · RSL Taxathon 2026" sits in every page header.
 - Footer text on every page: "Prototype built for the RSL Taxathon 2026 by Tumelo Mofubetsoana, New Empire AI. Not an official RSL service. All data shown is simulated."
 
@@ -628,3 +631,11 @@ Anything built that the sections above don't cover is recorded here, with the st
 - The footer names the builder as "Tumelo Mofubetsoana, New Empire AI" (section 4 updated), so judges see the person behind the entry as well as the company that may keep the code (see section 13).
 - The assistant still describes itself as "built by New Empire AI" in `lib/prompt.ts`: traders don't need a personal name.
 - Check at the 2 November Q&A whether entries must be in an individual's or a company's name, and adjust the footer if needed.
+
+### Logo (29 October 2026)
+
+- Section 4 said no logo graphic was needed; the owner asked for one to use as a profile picture. Three options were drawn (a K in a chat bubble, a K with a rising green arrow, a chat bubble with rising bars) and option C, the records bubble, was chosen: it says what Khoebo does without needing the name.
+- Only flag colours. No mokorotlo, nothing from RSL, and not WhatsApp's shape (a round bubble with a phone) or green.
+- In the app it is `components/ui/Logo.tsx`, an inline SVG coloured with theme tokens. It replaces the "K" avatar in the chat header and the hero phone, with a 2px white ring so it reads as a round profile picture on the blue header, and sits left of the wordmark in the site header.
+- `app/icon.svg` and `app/apple-icon.png` use Next's file conventions and replace the scaffold's Next.js `favicon.ico`.
+- `public/brand/khoebo-profile-1024.png` and `-512.png` are square, full-bleed versions for profile pictures (WhatsApp Business, social accounts). Everything sits inside the circle those apps crop to. They were rendered from `khoebo-profile.svg` with headless Chrome. The brand files use hex values directly, since they are image files rather than components.

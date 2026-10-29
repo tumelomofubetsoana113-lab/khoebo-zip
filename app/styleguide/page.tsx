@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
+import { Logo } from "@/components/ui/Logo";
 import { ActionPill, Pill, PrototypePill } from "@/components/ui/Pill";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 import { SiteHeader } from "@/components/ui/SiteHeader";
@@ -123,6 +124,25 @@ export default function StyleGuide() {
 
         <Section title="Sheet and confirm dialog">
           <OverlayDemos />
+        </Section>
+
+        <Section title="Logo">
+          <Card className="flex flex-wrap items-center gap-6">
+            <Logo size={128} />
+            <div className="flex items-center gap-2 rounded-card bg-flag-blue px-3 py-2 text-surface">
+              <Logo size={40} className="rounded-full ring-2 ring-surface" />
+              <div className="leading-tight">
+                <p className="font-semibold">Khoebo</p>
+                <p className="text-xs">Records and tax assistant</p>
+              </div>
+            </div>
+            <Logo size={28} />
+            <Logo size={16} />
+            <p className="text-muted">
+              Files: <code>public/brand/</code> (SVG, and square PNGs for profile pictures), <code>app/icon.svg</code>,{" "}
+              <code>app/apple-icon.png</code>.
+            </p>
+          </Card>
         </Section>
       </main>
       <SiteFooter />
