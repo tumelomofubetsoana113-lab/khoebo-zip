@@ -133,6 +133,7 @@ export const strings = {
         `undeclared traders per ${population}, close to the ${baseline} found by following up every nil return`,
       note: (population: number) =>
         `Average of 30 simulated populations of ${population} traders. No real taxpayer data was used. The next step is testing on masked RSL data.`,
+      stubNote: "Placeholder figures until the simulation results are added.",
     },
     closing: {
       heading: "See it for yourself.",

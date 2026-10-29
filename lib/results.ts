@@ -5,6 +5,7 @@ type Stat = { mean: number; min: number; max: number };
 type RunStats = { visits: Stat; caught: Stat; precision: Stat; recall: Stat };
 
 export type TestResults = {
+  stub?: boolean; // true until scripts/export_worklist.py writes real results
   demo_population_seed_7: { population: number };
   thirty_runs: {
     worklist_officer: RunStats;

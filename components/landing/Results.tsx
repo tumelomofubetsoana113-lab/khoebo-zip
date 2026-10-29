@@ -26,6 +26,9 @@ export function Results() {
           ))}
         </ul>
         <p className="mt-10 text-sm text-muted">{t.note(f.population)}</p>
+        {"stub" in testResults && testResults.stub && (
+          <p className="mt-2 text-sm font-semibold text-status-followup">{t.stubNote}</p>
+        )}
       </div>
     </section>
   );
