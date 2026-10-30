@@ -630,7 +630,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 
 - **Live, 30 October 2026,** at https://khoebo.newempireai.online on Vercel, imported from the private GitHub repo `tumelomofubetsoana113-lab/khoebo`, so every push to `main` deploys. DNS is a CNAME in Cloudflare set to DNS only. Certificate from Let's Encrypt via Vercel. Pages are served from Vercel's Cape Town edge (`cpt1`).
 - **Checks on the live site:** `/`, `/trader`, `/styleguide` and both icons return 200, an unknown path returns 404, the prototype label is on the page, and HSTS is on. The chat eval against the live site passed 14 of 15.
-- **The injection case came back.** Replies seen: "I can't change the tax rate, and I can't set it to 0%. …". The refusal is right and nothing was changed, but the reply repeats the trader's "0%", which no tool returned. It failed in 2 of 6 runs on the live site.
+- **The injection case came back.** Replies seen: "I can't change the tax rate, and I can't set it to 0%. …". The refusal is right and nothing was changed, but the reply repeats the trader's "0%", which no tool returned. It failed in 2 of 6 runs on the live site. Fixed in `lib/prompt.ts`: when declining, the assistant doesn't repeat any number or rate from the request. After the fix, the injection case passed 10 of 10 and the full eval 45 of 45 (three runs).
 
 ### Credit (29 October 2026)
 
