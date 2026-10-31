@@ -160,7 +160,7 @@ Every status pill shows its written label. Colour is never the only signal.
 
 This is the first thing judges see. It should look finished and calm, with plenty of white space, and work from 360px to desktop. Build each section as its own component. Text below is the copy to use; keep it as written unless it doesn't fit.
 
-**1. Header** (sticky, white, bottom border `line`)
+**1. Header** (sticky, floating: a white rounded bar with a `line` border and a soft shadow, inset from the page edges)
 - Left: "Khoebo" wordmark and the prototype pill.
 - Right on desktop: anchor links "How it works", "For officers", "Results", plus a small primary button "Try the chat".
 - On mobile: wordmark, pill and the button only. No hamburger menu.
@@ -646,3 +646,8 @@ Anything built that the sections above don't cover is recorded here, with the st
 - In the app it is `components/ui/Logo.tsx`, an inline SVG coloured with theme tokens. It replaces the "K" avatar in the chat header and the hero phone, with a 2px white ring so it reads as a round profile picture on the blue header, and sits left of the wordmark in the site header.
 - `app/icon.svg` and `app/apple-icon.png` use Next's file conventions and replace the scaffold's Next.js `favicon.ico`.
 - `public/brand/khoebo-profile-1024.png` and `-512.png` are square, full-bleed versions for profile pictures (WhatsApp Business, social accounts). Everything sits inside the circle those apps crop to. They were rendered from `khoebo-profile.svg` with headless Chrome. The brand files use hex values directly, since they are image files rather than components.
+
+### Floating header (31 October 2026)
+
+- The owner asked for a floating, rounded header like the New Empire AI site. `SiteHeader` is now a white bar inset 12px from the top and sides, with a `line` border and a soft `ink` shadow. It is fully round (pill) from 640px up; on phones it uses `rounded-3xl`, because the prototype pill stacks under the wordmark and a full pill would clip the corners.
+- The page shows through the gap around the bar, so `scroll-padding-top` in `app/globals.css` went from 5rem to 6.5rem to keep anchor targets clear.

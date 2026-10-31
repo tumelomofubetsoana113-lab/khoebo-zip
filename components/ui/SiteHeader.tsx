@@ -13,12 +13,12 @@ export function Wordmark() {
   );
 }
 
-// Sticky white header shared by the landing and officer pages.
+// Floating rounded header shared by the landing and officer pages.
 // Page-specific links and buttons go in `children` on the right.
 export function SiteHeader({ children }: { children?: ReactNode }) {
   return (
-    <header className="sticky top-0 z-20 border-b border-line bg-surface">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-2 sm:px-6">
+    <header className="sticky top-0 z-20 px-3 pt-3 sm:px-6">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-3xl border border-line bg-surface px-4 py-2 shadow-lg shadow-ink/5 sm:rounded-full sm:pl-5 sm:pr-2">
         <div className="flex min-w-0 flex-col items-start gap-x-3 pb-1 sm:flex-row sm:pb-0 sm:items-center">
           <Wordmark />
           <PrototypePill />
