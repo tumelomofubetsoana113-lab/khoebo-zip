@@ -11,8 +11,8 @@ const links = [
   { href: "#results", label: t.results },
 ];
 
-// Anchor links and the button on desktop. On phones there's no room for both
-// the button and a menu, so the links and the button sit in a three-line menu.
+// Anchor links on desktop. On phones the links sit in a three-line menu, and
+// the button stays in the bar beside it.
 export function Header() {
   return (
     <SiteHeader>
@@ -30,11 +30,9 @@ export function Header() {
           ))}
         </ul>
       </nav>
-      <div className="hidden md:block">
-        <ButtonLink href="/trader" size="sm">
-          {t.tryChat}
-        </ButtonLink>
-      </div>
+      <ButtonLink href="/trader" size="sm">
+        {t.tryChat}
+      </ButtonLink>
       <MobileMenu links={links} />
     </SiteHeader>
   );

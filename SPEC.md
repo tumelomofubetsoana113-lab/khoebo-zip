@@ -163,7 +163,7 @@ This is the first thing judges see. It should look finished and calm, with plent
 **1. Header** (sticky, floating: a white rounded bar with a `line` border and a soft shadow, inset from the page edges)
 - Left: "Khoebo" wordmark and the prototype pill.
 - Right on desktop: anchor links "How it works", "For officers", "Results", plus a small primary button "Try the chat".
-- On phones and tablets (below 768px): wordmark and pill, and a three-line menu button. It opens a rounded panel under the header with the three anchor links and the "Try the chat" button. It closes on a link tap, Escape, or a tap outside it.
+- On phones and tablets (below 768px): wordmark, the "Try the chat" button and a three-line menu button. The menu opens a rounded panel under the header with the three anchor links, and closes on a link tap, Escape, or a tap outside it. Below 640px the prototype pill sits on its own row under the wordmark, inside the header.
 
 **2. Hero**
 - Two columns on desktop (text left, phone right). Stacked on mobile, phone below text.
@@ -697,5 +697,5 @@ Anything built that the sections above don't cover is recorded here, with the st
 ### Phone menu (31 October 2026)
 
 - Section 5.1 said "No hamburger menu" on mobile. The owner asked for one, so the landing page links can be reached on a phone. `components/landing/MobileMenu.tsx` is a client component with a three-line button (lucide `Menu`, `X` when open) and a panel that drops below the floating header.
-- At 360px there is no room for the wordmark and pill, "Try the chat" and a menu button in one bar, so below 768px "Try the chat" moves into the menu panel as a full-width button. The hero's "Try it as a trader" button is still the first thing under the header.
+- At 360px the wordmark with the pill under it, "Try the chat" and a menu button don't fit in one row. "Try the chat" first moved into the menu panel; the owner wanted it visible straight away, so it is back in the bar, and below 640px the prototype pill now sits on its own row across the bottom of the header (flex-wrap with `order-last`). That frees enough width: with slightly tighter gaps and padding below 640px (and the bar 8px from the screen edges instead of 12px), the first row fits down to 320px, checked in Chrome at 320 and 360.
 - The button has `aria-expanded` and `aria-controls`, and its label ("Open menu" / "Close menu") is in `lib/strings.ts`. Escape closes the panel and returns focus to the button.

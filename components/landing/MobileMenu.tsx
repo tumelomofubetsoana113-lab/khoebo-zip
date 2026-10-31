@@ -2,7 +2,6 @@
 
 import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { ButtonLink } from "@/components/ui/Button";
 import { strings } from "@/lib/strings";
 
 const t = strings.landing.nav;
@@ -52,7 +51,7 @@ export function MobileMenu({ links }: { links: NavLink[] }) {
         <nav
           id="mobile-menu"
           aria-label={t.label}
-          className="absolute inset-x-3 top-full mt-2 rounded-3xl border border-line bg-surface p-3 shadow-lg shadow-ink/5 sm:inset-x-6"
+          className="absolute inset-x-2 top-full mt-2 rounded-3xl border border-line bg-surface p-3 shadow-lg shadow-ink/5 sm:inset-x-6"
         >
           <ul className="flex flex-col">
             {links.map((link) => (
@@ -67,9 +66,6 @@ export function MobileMenu({ links }: { links: NavLink[] }) {
               </li>
             ))}
           </ul>
-          <ButtonLink href="/trader" className="mt-2 w-full">
-            {t.tryChat}
-          </ButtonLink>
         </nav>
       )}
     </div>
