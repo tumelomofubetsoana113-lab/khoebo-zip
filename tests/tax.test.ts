@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { TAX, type TaxConfig } from "@/config/tax";
 import type { Entry } from "@/lib/state";
 import {
+  checkTaxConfig,
   dueDate,
   estimateTax,
   filingPeriod,
@@ -12,6 +13,7 @@ import {
   reminderDate,
   taxEstimate,
   turnover,
+  workOutTax,
 } from "@/lib/tax";
 
 const MONTHLY: TaxConfig = { ...TAX, filingPeriod: "monthly" };
@@ -102,7 +104,7 @@ describe("estimates", () => {
     expect(estimateTax(10_000)).toBe(200);
     expect(estimateTax(770.25)).toBe(15.41); // 15.405 rounds up
     expect(estimateTax(0)).toBe(0);
-    expect(estimateTax(1000, { ...TAX, rateOnTurnover: 0.035 })).toBe(35);
+    expect(estimateTax(1000, { ...TAX, bands: [{ upTo: null, rate: 0.035, fixed: 0 }] })).toBe(35);
   });
 
   it("builds a full estimate with the placeholder note", () => {
@@ -113,6 +115,8 @@ describe("estimates", () => {
       end: "2026-09-30",
       turnover: 15_500,
       rate: 0.02,
+      fixed: 0,
+      belowThreshold: false,
       estimate: 310,
       dueDate: "2026-10-20",
       placeholder: true,
@@ -123,5 +127,90 @@ describe("estimates", () => {
   it("drops the note once rates are confirmed", () => {
     const confirmed: TaxConfig = { ...TAX, placeholder: false };
     expect(taxEstimate([], "2026-Q3", confirmed)).toMatchObject({ placeholder: false, note: null });
+  });
+});
+
+describe("thresholds and bands", () => {
+  // Per-period amounts, so the numbers in the tests are the numbers in the table.
+  const BANDED: TaxConfig = {
+    ...TAX,
+    amountsPer: "period",
+    threshold: 5_000,
+    bands: [
+      { upTo: 20_000, rate: 0.01, fixed: 0 },
+      { upTo: 50_000, rate: 0.02, fixed: 100 },
+      { upTo: null, rate: 0.03, fixed: 0 },
+    ],
+  };
+
+  it("accepts the placeholder settings", () => {
+    expect(checkTaxConfig(TAX)).toEqual([]);
+  });
+
+  it("charges nothing at or below the threshold", () => {
+    expect(workOutTax(5_000, BANDED)).toEqual({ tax: 0, rate: 0, fixed: 0, belowThreshold: true });
+    expect(workOutTax(0, BANDED).belowThreshold).toBe(true);
+  });
+
+  it("applies the whole band's rate and fixed amount to all turnover", () => {
+    expect(workOutTax(5_000.01, BANDED)).toMatchObject({ tax: 50, rate: 0.01, belowThreshold: false });
+    expect(workOutTax(20_000, BANDED).tax).toBe(200); // band limits are inclusive
+    expect(workOutTax(30_000, BANDED)).toEqual({ tax: 700, rate: 0.02, fixed: 100, belowThreshold: false });
+    expect(workOutTax(60_000, BANDED).tax).toBe(1_800);
+  });
+
+  it("taxes each slice at its own rate with the marginal method", () => {
+    const marginal: TaxConfig = { ...BANDED, threshold: 0, bandMethod: "marginal" };
+    // 20,000 at 1% + 10,000 at 2% + the band's fixed 100
+    expect(workOutTax(30_000, marginal).tax).toBe(500);
+    // 20,000 at 1% + 30,000 at 2% + 10,000 at 3%
+    expect(workOutTax(60_000, marginal).tax).toBe(1_100);
+  });
+
+  it("supports a tax-free first slice", () => {
+    const freeSlice: TaxConfig = {
+      ...TAX,
+      amountsPer: "period",
+      bandMethod: "marginal",
+      bands: [
+        { upTo: 10_000, rate: 0, fixed: 0 },
+        { upTo: null, rate: 0.02, fixed: 0 },
+      ],
+    };
+    expect(workOutTax(9_000, freeSlice).tax).toBe(0);
+    expect(workOutTax(15_000, freeSlice).tax).toBe(100);
+  });
+
+  it("shares yearly amounts over the filing periods", () => {
+    const yearly: TaxConfig = { ...BANDED, amountsPer: "year", threshold: 40_000 };
+    // Quarterly, everything is a quarter of the yearly figure: threshold 10,000,
+    // the second band runs to 12,500 and its fixed amount is 25.
+    expect(workOutTax(10_000, yearly).belowThreshold).toBe(true);
+    expect(workOutTax(10_001, yearly)).toMatchObject({ rate: 0.02, fixed: 25 });
+    const monthly: TaxConfig = { ...yearly, filingPeriod: "monthly" };
+    expect(workOutTax(3_333, monthly).belowThreshold).toBe(true);
+    expect(workOutTax(3_334, monthly).belowThreshold).toBe(false);
+  });
+
+  it("refuses broken settings with a clear message", () => {
+    const broken: TaxConfig = {
+      ...TAX,
+      bands: [
+        { upTo: 10_000, rate: 0.02, fixed: 0 },
+        { upTo: 5_000, rate: 1.5, fixed: 0 },
+      ],
+    };
+    expect(checkTaxConfig(broken)).toEqual([
+      "Band 2: the rate must be between 0 and 1.",
+      "The last band must have upTo: null.",
+      "Band 2: upTo must be higher than the band before.",
+    ]);
+    expect(() => workOutTax(1_000, broken)).toThrow(/config\/tax\.ts/);
+    expect(checkTaxConfig({ ...TAX, bands: [] })).toEqual(["There must be at least one band."]);
+  });
+
+  it("passes threshold and fixed amounts through to the estimate", () => {
+    const entries = [sale(3_000, "2026-08-14")];
+    expect(taxEstimate(entries, "2026-Q3", BANDED)).toMatchObject({ estimate: 0, belowThreshold: true });
   });
 });

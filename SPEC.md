@@ -367,7 +367,7 @@ All amounts in and out are maloti. Every handler is a pure function of `(state, 
 | `record_entry` | `kind`, and either `amount` or `quantity` + `unit_price`, plus `date?`, `note?` | Works out the amount (quantity × unit price is done here, never by the model). Rejects amounts of zero or less. Amounts over M20,000 come back as `needs_confirmation` so the assistant asks first. Date defaults to today, can't be in the future or more than 60 days back. Returns the entry plus the week's running totals. |
 | `correct_entry` | `entry_id` or `"last"`, `new_amount?`, `delete?` | Changes or removes one entry. Returns what changed. |
 | `get_summary` | `period`: `this_week`, `last_week`, `this_month`, `filing_period` | Money in, money out, profit estimate (in minus out), number of entries, days with no entries. |
-| `get_tax_estimate` | `period?` (default: current filing period) | Turnover, rate, estimate, due date, and `placeholder: true` while rates are unconfirmed. |
+| `get_tax_estimate` | `period?` (default: current filing period) | Turnover, rate, estimate, due date, and `placeholder: true` while rates are unconfirmed. Adds `below_threshold: true` or `fixed_amount` when they apply. |
 | `prepare_return` | `period` | Builds the pre-filled return and sends a `return_card` UI block with Confirm and Change buttons. Doesn't file anything. |
 | `confirm_return` | `period`, `turnover` | Only callable when the request carries a matching `action` from the Confirm button. Saves a `FiledReturn` with a mock reference. |
 | `start_payment` | `period` | Sends a `payment_card` UI block showing a mock mobile money payment. Marks the return paid only after the "Pay (demo)" button sends an action. |
@@ -417,7 +417,10 @@ The Call for Innovation leaves the SBT threshold and rates blank, so everything 
 ```ts
 export const TAX = {
   placeholder: true,              // shows the placeholder note everywhere
-  rateOnTurnover: 0.02,           // PLACEHOLDER, confirm with RSL
+  threshold: 0,                   // PLACEHOLDER: turnover at or below pays no tax; 0 = none
+  bands: [{ upTo: null, rate: 0.02, fixed: 0 }], // PLACEHOLDER: a flat 2% on all sales
+  bandMethod: "whole",            // PLACEHOLDER: "whole" or "marginal"
+  amountsPer: "year",             // PLACEHOLDER: threshold, band limits and fixed amounts are yearly
   filingPeriod: "quarterly",      // PLACEHOLDER
   dueDayAfterPeriodEnd: 20,       // PLACEHOLDER: due on the 20th of the following month
   reminderDaysBefore: 3,
@@ -425,7 +428,17 @@ export const TAX = {
 };
 ```
 
-Changing these values must be the only change needed once RSL confirms the real rules. `tax.test.ts` covers period boundaries, due dates and rounding.
+How the estimate for one filing period is worked out (`workOutTax` in `lib/tax.ts`):
+
+1. Turnover is the sum of sales in the period.
+2. If `amountsPer` is `"year"`, the threshold, band limits and fixed amounts are shared out evenly: a quarter of each for quarterly filing, a twelfth for monthly.
+3. Turnover at or below the threshold pays nothing, and the result is marked `below_threshold`.
+4. Bands run from the lowest turnover up. `upTo` is inclusive, and the last band has `upTo: null`.
+   - `"whole"`: the band the turnover falls in sets the rate for all of it, plus that band's `fixed` amount. This suits a presumptive tax with a rate or fixed amount per turnover band.
+   - `"marginal"`: each slice of turnover is taxed at its own band's rate, like income tax, plus the `fixed` amount of the band the turnover reaches. A first band with rate 0 gives "only the part above X is taxed".
+5. The result is rounded to cents.
+
+Whatever form the real rules take (a flat rate, a threshold, bands of rates, or fixed amounts per band), only this file changes. `checkTaxConfig` refuses broken settings (bands out of order, a rate outside 0 to 1, a missing last band) with a message naming the problem. `tax.test.ts` covers period boundaries, due dates, rounding, thresholds, both band methods and yearly amounts.
 
 ## 8. Officer data
 
@@ -665,3 +678,10 @@ Anything built that the sections above don't cover is recorded here, with the st
 ### Stripes removed (31 October 2026)
 
 - The owner asked to remove the tricolour stripes above the header and under the footer, so the floating header and rounded sections stand on their own. `components/ui/Stripe.tsx` is deleted, and the chat frame height no longer subtracts the stripe's 4px.
+
+### Tax bands ready (31 October 2026)
+
+- The config had only a flat rate on turnover, so a threshold or bands from RSL would have needed code changes, not just new values. `config/tax.ts` now also takes `threshold`, `bands` (each with `upTo`, `rate` and `fixed`), `bandMethod` and `amountsPer`, and `lib/tax.ts` works the estimate out from them (section 7). With the placeholder values the results are unchanged: 2% of all sales.
+- `rateOnTurnover` is gone; a flat rate is now a single band with `upTo: null`.
+- The tax tools add `below_threshold` and `fixed_amount` when they apply, and the system prompt tells the assistant to mention them using only the figures in the result.
+- Not covered, as nothing suggests it so far: thresholds based on a trader's whole year of sales rather than each period's, and different rules for different kinds of business. Either would need a code change.

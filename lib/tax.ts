@@ -67,8 +67,78 @@ export function turnover(entries: Entry[], period: string): number {
   );
 }
 
+// Problems with a tax config, as plain sentences. Empty when it is usable.
+export function checkTaxConfig(config: TaxConfig): string[] {
+  const problems: string[] = [];
+  const { bands } = config;
+  if (!(config.threshold >= 0)) problems.push("The threshold can't be negative.");
+  if (bands.length === 0) problems.push("There must be at least one band.");
+  bands.forEach((band, i) => {
+    const last = i === bands.length - 1;
+    if (!(band.rate >= 0 && band.rate <= 1)) problems.push(`Band ${i + 1}: the rate must be between 0 and 1.`);
+    if (!(band.fixed >= 0)) problems.push(`Band ${i + 1}: the fixed amount can't be negative.`);
+    if (last && band.upTo !== null) problems.push("The last band must have upTo: null.");
+    if (!last && band.upTo === null) problems.push(`Band ${i + 1}: only the last band can have upTo: null.`);
+    const previous = i > 0 ? bands[i - 1].upTo : 0;
+    if (band.upTo !== null && previous !== null && !(band.upTo > previous)) {
+      problems.push(`Band ${i + 1}: upTo must be higher than the band before.`);
+    }
+  });
+  return problems;
+}
+
+// Share of a yearly amount that falls in one filing period.
+function periodShare(config: TaxConfig): number {
+  if (config.amountsPer === "period") return 1;
+  return config.filingPeriod === "monthly" ? 1 / 12 : 1 / 4;
+}
+
+export type TaxWorking = {
+  tax: number;
+  rate: number; // rate of the band the turnover falls in
+  fixed: number; // fixed amount added, already shared out for the period
+  belowThreshold: boolean;
+};
+
+// Tax for one filing period's turnover, following the threshold and bands.
+export function workOutTax(turnoverAmount: number, config: TaxConfig = TAX): TaxWorking {
+  const problems = checkTaxConfig(config);
+  if (problems.length > 0) throw new Error(`Tax settings in config/tax.ts: ${problems.join(" ")}`);
+
+  const share = periodShare(config);
+  const scaled = config.bands.map((band) => ({
+    top: band.upTo === null ? Infinity : band.upTo * share,
+    rate: band.rate,
+    fixed: band.fixed * share,
+  }));
+
+  if (turnoverAmount <= config.threshold * share) {
+    return { tax: 0, rate: 0, fixed: 0, belowThreshold: true };
+  }
+
+  const index = scaled.findIndex((band) => turnoverAmount <= band.top);
+  const band = scaled[index];
+  let fromRate: number;
+  if (config.bandMethod === "whole") {
+    fromRate = turnoverAmount * band.rate;
+  } else {
+    fromRate = 0;
+    let bottom = 0;
+    for (const b of scaled.slice(0, index + 1)) {
+      fromRate += (Math.min(turnoverAmount, b.top) - bottom) * b.rate;
+      bottom = b.top;
+    }
+  }
+  return {
+    tax: roundMoney(fromRate + band.fixed),
+    rate: band.rate,
+    fixed: roundMoney(band.fixed),
+    belowThreshold: false,
+  };
+}
+
 export function estimateTax(turnoverAmount: number, config: TaxConfig = TAX): number {
-  return roundMoney(turnoverAmount * config.rateOnTurnover);
+  return workOutTax(turnoverAmount, config).tax;
 }
 
 export type TaxEstimate = {
@@ -76,7 +146,9 @@ export type TaxEstimate = {
   start: string;
   end: string;
   turnover: number;
-  rate: number;
+  rate: number; // rate of the band the turnover falls in
+  fixed: number; // fixed amount included in the estimate
+  belowThreshold: boolean;
   estimate: number;
   dueDate: string;
   placeholder: boolean;
@@ -85,12 +157,15 @@ export type TaxEstimate = {
 
 export function taxEstimate(entries: Entry[], period: string, config: TaxConfig = TAX): TaxEstimate {
   const t = turnover(entries, period);
+  const working = workOutTax(t, config);
   return {
     period,
     ...periodRange(period),
     turnover: t,
-    rate: config.rateOnTurnover,
-    estimate: estimateTax(t, config),
+    rate: working.rate,
+    fixed: working.fixed,
+    belowThreshold: working.belowThreshold,
+    estimate: working.tax,
     dueDate: dueDate(period, config),
     placeholder: config.placeholder,
     note: config.placeholder ? config.note : null,

@@ -130,7 +130,7 @@ const descriptions: Record<ToolName, string> = {
   correct_entry: "Change the amount of one entry, or delete it.",
   get_summary: "Money in, money out, profit estimate, number of entries and days with no entries for a period.",
   get_tax_estimate:
-    "Turnover, rate, estimated tax and due date for a filing period. The rate is a placeholder until RSL confirms it.",
+    "Turnover, rate, estimated tax and due date for a filing period, plus below_threshold or fixed_amount when they apply. The rate is a placeholder until RSL confirms it.",
   prepare_return:
     "Build the pre-filled return for a filing period and show it with Confirm and Change buttons. Does not file anything.",
   confirm_return:
@@ -190,6 +190,8 @@ function estimateResult(e: TaxEstimate) {
     to: formatDate(e.end),
     turnover: money(e.turnover),
     rate_text: `${roundMoney(e.rate * 100)}%`,
+    ...(e.fixed > 0 ? { fixed_amount: money(e.fixed) } : {}),
+    ...(e.belowThreshold ? { below_threshold: true } : {}),
     estimated_tax: money(e.estimate),
     due_date: formatDate(e.dueDate),
     placeholder_rate: e.placeholder,
