@@ -167,6 +167,7 @@ This is the first thing judges see. It should look finished and calm, with plent
 
 **2. Hero**
 - Two columns on desktop (text left, phone right). Stacked on mobile, phone below text.
+- The phone stands on a rounded panel holding a photo of green mountains (`public/landing/maloti.jpg`).
 - Eyebrow, small `muted` caps: "For informal traders and RSL officers"
 - Headline: "Keep your business records in a chat. File your tax return in a minute."
 - Subline: "Khoebo helps traders in Lesotho log sales by message, see what their business earns each week, and file a pre-filled return. RSL officers get a short list of who to follow up, with the reasons written out."
@@ -183,7 +184,7 @@ This is the first thing judges see. It should look finished and calm, with plent
 
 **4. How it works for traders** (id `how-it-works`)
 - Heading: "How it works for traders"
-- Four cards in a row on desktop, two by two on tablet, stacked on mobile. Each card has a lucide icon in a `flag-blue` circle, a short title and one sentence.
+- Four cards in a row on desktop, two by two on tablet, stacked on mobile. Each card is `flag-blue` with white text and lifts slightly on hover, and has a lucide icon in a white circle, a short title and one sentence.
   1. MessageSquare — "Log a sale" — "Send a short message or voice note, like 'sold 350 today'."
   2. BarChart3 — "See your week" — "Get money in, money out and profit every Sunday."
   3. BellRing — "Get a reminder" — "A message before each due date, with your estimated tax."
@@ -214,20 +215,20 @@ This is the first thing judges see. It should look finished and calm, with plent
   - "96% of field visits" — "reached a trader who really was under-declaring"
   - "48 found" — "undeclared traders per 300, close to the 49 found by following up every nil return"
 - Read every figure from `data/test_results.json`. Never type them into the page.
-- Small note under them in `muted`: "Average of 30 simulated populations of 300 traders. No real taxpayer data was used. The next step is testing on masked RSL data."
+- Small centred note under them in `muted`: "Average of 30 simulated populations of 300 traders. No real taxpayer data was used. The next step is testing on masked RSL data."
 
-**8. Closing band** (full width, `flag-blue` background, white text)
+**8. Closing band** (a rounded `flag-blue` card inset from the page edges, white text)
 - "See it for yourself."
 - Buttons: white "Try the trader chat", and outlined white "Open the officer view".
 
 **9. Footer**
-- Footer text from section 4, then the tricolour stripe along the bottom edge.
+- Footer text from section 4, centred, then the tricolour stripe along the bottom edge.
 
 Landing checkpoint: Lighthouse performance and accessibility both 90 or above on mobile, no horizontal scroll at 360px, all figures read from JSON.
 
 ### 5.2 Trader chat (`/trader`)
 
-A full-height chat that feels like a messaging app, centred in a 420px column on desktop with the `page` colour around it.
+A full-height chat that feels like a messaging app, centred in a 420px column on desktop with the `page` colour around it. The column is a rounded frame (28px corners, `line` border, soft shadow) with a small gap on every side, on phones too.
 
 **Header** (`flag-blue`, white text)
 - Back arrow to `/`, a round avatar with the letter K, "Khoebo" and a subline "Records and tax assistant".
@@ -651,3 +652,12 @@ Anything built that the sections above don't cover is recorded here, with the st
 
 - The owner asked for a floating, rounded header like the New Empire AI site. `SiteHeader` is now a white bar inset 12px from the top and sides, with a `line` border and a soft `ink` shadow. It is fully round (pill) from 640px up; on phones it uses `rounded-3xl`, because the prototype pill stacks under the wordmark and a full pill would clip the corners.
 - The page shows through the gap around the bar, so `scroll-padding-top` in `app/globals.css` went from 5rem to 6.5rem to keep anchor targets clear.
+
+### Rounded look (31 October 2026)
+
+- The owner asked for a rounder, softer landing page and chat, to match the floating header:
+  - The closing band is a rounded `flag-blue` card inset from the page edges instead of a full-width band.
+  - The footer text and the results note are centred.
+  - The four "How it works" cards are `flag-blue` with white text and a white icon circle (`IconCircle` has an `inverse` option). They lift 6px with a soft blue shadow on hover; the movement is off when the visitor prefers reduced motion.
+  - The hero phone stands on a rounded panel holding a photo of green mountains supplied by the owner. It was resized to 1400px and saved as `public/landing/maloti.jpg` (about 370 KB, from a 3.5 MB PNG) and is shown with `next/image`. The photo is decorative, so its alt text is empty. It contains no flag emblem or RSL material.
+  - The trader chat is a rounded frame with an 8px gap around it on phones and 16px from 640px up. That costs a little screen on phones; the owner asked for it at all widths.

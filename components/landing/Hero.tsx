@@ -1,6 +1,8 @@
+import Image from "next/image";
 import { ButtonLink } from "@/components/ui/Button";
 import { strings } from "@/lib/strings";
 import { PhoneFrame } from "./PhoneFrame";
+import maloti from "@/public/landing/maloti.jpg";
 
 const t = strings.landing.hero;
 
@@ -21,7 +23,21 @@ export function Hero() {
             </ButtonLink>
           </div>
         </div>
-        <PhoneFrame />
+        {/* Maloti photo in a rounded panel, with the phone standing on it */}
+        <div className="relative overflow-hidden rounded-[32px] px-4 py-8 sm:py-10">
+          <Image
+            src={maloti}
+            alt=""
+            fill
+            priority
+            placeholder="blur"
+            sizes="(min-width: 768px) 560px, 100vw"
+            className="object-cover"
+          />
+          <div className="relative">
+            <PhoneFrame />
+          </div>
+        </div>
       </div>
     </section>
   );
