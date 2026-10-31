@@ -1,6 +1,7 @@
 import { ButtonLink } from "@/components/ui/Button";
 import { SiteHeader } from "@/components/ui/SiteHeader";
 import { strings } from "@/lib/strings";
+import { MobileMenu } from "./MobileMenu";
 
 const t = strings.landing.nav;
 
@@ -10,7 +11,8 @@ const links = [
   { href: "#results", label: t.results },
 ];
 
-// Anchor links on desktop only. On mobile: wordmark, pill and the button.
+// Anchor links and the button on desktop. On phones there's no room for both
+// the button and a menu, so the links and the button sit in a three-line menu.
 export function Header() {
   return (
     <SiteHeader>
@@ -28,9 +30,12 @@ export function Header() {
           ))}
         </ul>
       </nav>
-      <ButtonLink href="/trader" size="sm">
-        {t.tryChat}
-      </ButtonLink>
+      <div className="hidden md:block">
+        <ButtonLink href="/trader" size="sm">
+          {t.tryChat}
+        </ButtonLink>
+      </div>
+      <MobileMenu links={links} />
     </SiteHeader>
   );
 }

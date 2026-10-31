@@ -166,6 +166,8 @@ export const strings = {
       forOfficers: "For officers",
       results: "Results",
       tryChat: "Try the chat",
+      openMenu: "Open menu",
+      closeMenu: "Close menu",
     },
     hero: {
       eyebrow: "For informal traders and RSL officers",
