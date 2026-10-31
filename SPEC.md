@@ -689,3 +689,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 ### English-only replies (31 October 2026)
 
 - In the chat eval, the assistant answered "ke rekisitse M350 kajeno" in English but added a Sesotho sentence of its own ("Ke tsoelisa ka mosebetsi oa hao"), which nobody had checked. The owner decided replies stay in English for now. The system prompt now says not to add Sesotho words, phrases or greetings, and the eval case fails if the reply contains common Sesotho words.
+
+### White behind the header (31 October 2026)
+
+- The floating header showed the grey `page` colour in the gap around it at the top of the landing page. The landing page now sits on a white wrapper in `app/page.tsx`, so the bar stands on white with its shadow. Sections that use `page` (the problem band, "Built for Lesotho") stay grey. The header itself is unchanged.

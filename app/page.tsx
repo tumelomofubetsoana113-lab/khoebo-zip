@@ -9,8 +9,9 @@ import { Results } from "@/components/landing/Results";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 
 export default function Home() {
+  // White behind the floating header, instead of the grey page colour.
   return (
-    <>
+    <div className="flex flex-1 flex-col bg-surface">
       <Header />
       <main className="flex-1">
         <Hero />
@@ -22,6 +23,6 @@ export default function Home() {
         <ClosingBand />
       </main>
       <SiteFooter />
-    </>
+    </div>
   );
 }
