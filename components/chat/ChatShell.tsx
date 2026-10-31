@@ -85,7 +85,7 @@ function ChatHeader({ onDemo }: { onDemo?: () => void }) {
 }
 
 const frameClass =
-  "mx-auto my-2 flex h-[calc(100dvh-20px)] w-[calc(100%-16px)] max-w-[420px] flex-col overflow-hidden rounded-[28px] border border-line bg-page shadow-xl shadow-ink/10 sm:my-4 sm:h-[calc(100dvh-36px)]";
+  "mx-auto my-2 flex h-[calc(100dvh-16px)] w-[calc(100%-16px)] max-w-[420px] flex-col overflow-hidden rounded-[28px] border border-line bg-page shadow-xl shadow-ink/10 sm:my-4 sm:h-[calc(100dvh-32px)]";
 
 function ChatFrame() {
   return (

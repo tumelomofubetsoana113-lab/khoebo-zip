@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { Stripe } from "@/components/ui/Stripe";
 import { strings } from "@/lib/strings";
 import "./globals.css";
 
@@ -21,7 +20,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="h-full antialiased">
       <body className="flex min-h-full flex-col">
-        <Stripe />
         {children}
       </body>
     </html>

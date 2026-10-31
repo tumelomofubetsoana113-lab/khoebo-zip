@@ -67,7 +67,7 @@ components/
                         TypingIndicator, DemoMenu
   officer/              SummaryStrip, Filters, WorklistTable, EvidenceChart, OverridePanel
   ui/                   Button, Card, Pill (includes ActionPill and PrototypePill), Sheet, ConfirmDialog,
-                        Stripe, SiteHeader (with Wordmark), SiteFooter, Logo
+                        SiteHeader (with Wordmark), SiteFooter, Logo
 lib/
   dates.ts              YYYY-MM-DD date maths in Lesotho time (pure functions)
   ledger.ts             entries, totals, summaries, money rounding and formatting (pure functions)
@@ -111,7 +111,7 @@ Define these as Tailwind theme colours. Components use the token names only.
 | Token | Hex | Used for |
 | --- | --- | --- |
 | `flag-blue` | #00209F | Header, primary buttons, the trader's own message bubbles, links |
-| `flag-green` | #009543 | Success fills, "recorded" ticks, icons, the green stripe |
+| `flag-green` | #009543 | Success fills, "recorded" ticks, icons |
 | `green-text` | #007A37 | Any green text (flag green is too light for small text on white) |
 | `page` | #F4F6FA | Page and chat background |
 | `surface` | #FFFFFF | Assistant bubbles, cards, panels |
@@ -141,7 +141,7 @@ Every status pill shows its written label. Colour is never the only signal.
 
 ### Brand rules
 
-- A thin tricolour stripe (blue, white, green, 4px total height) runs across the top of every page. This is the only use of the flag.
+- No flag stripe: the tricolour stripe that ran along the top and bottom of every page was removed on 31 October 2026 (see section 14).
 - No mokorotlo emblem, no RSL logo, no WhatsApp name, logo or green.
 - The wordmark is the word "Khoebo" set in bold `flag-blue`, with the Khoebo mark to its left (added 29 October 2026, see section 14): a white chat bubble holding three rising bars, the last one `flag-green`, on a `flag-blue` circle.
 - A small pill reading "Prototype · RSL Taxathon 2026" sits in every page header.
@@ -222,7 +222,7 @@ This is the first thing judges see. It should look finished and calm, with plent
 - Buttons: white "Try the trader chat", and outlined white "Open the officer view".
 
 **9. Footer**
-- Footer text from section 4, centred, then the tricolour stripe along the bottom edge.
+- Footer text from section 4, centred.
 
 Landing checkpoint: Lighthouse performance and accessibility both 90 or above on mobile, no horizontal scroll at 360px, all figures read from JSON.
 
@@ -565,7 +565,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 - Next.js 16.4 with Tailwind CSS 4. `create-next-app` turned on Cache Components and Partial Prefetching in `next.config.ts`; they are left on. This Next.js version has its own docs in `node_modules/next/dist/docs/` (see `AGENTS.md`).
 - The palette is set in `app/globals.css` with Tailwind's `@theme`, and Tailwind's default colours are switched off (`--color-*: initial`), so a colour outside section 4 fails to build. White is the `surface` token.
 - Two extra radius tokens: `rounded-card` (12px) and `rounded-bubble` (18px).
-- The tricolour stripe is in `app/layout.tsx`, so it is on every page. `SiteFooter` repeats it along the bottom edge.
+- The tricolour stripe is in `app/layout.tsx`, so it is on every page. `SiteFooter` repeats it along the bottom edge. (Removed on 31 October 2026; see "Stripes removed" below.)
 - `SiteHeader` is shared by the landing and officer pages. At narrow widths the prototype pill sits under the wordmark so the header fits at 360px. The wordmark links to `/`.
 - `Sheet` and `ConfirmDialog` use the native `<dialog>` element, for focus trapping and Escape to close.
 - The phone browser bar colour (`themeColor` in `app/layout.tsx`) is the only hex value outside `globals.css`, because Next.js metadata needs a literal value.
@@ -661,3 +661,7 @@ Anything built that the sections above don't cover is recorded here, with the st
   - The four "How it works" cards are `flag-blue` with white text and a white icon circle (`IconCircle` has an `inverse` option). They lift 6px with a soft blue shadow on hover; the movement is off when the visitor prefers reduced motion.
   - The hero phone stands on a rounded panel holding a photo of green mountains supplied by the owner. It was resized to 1400px and saved as `public/landing/maloti.jpg` (about 370 KB, from a 3.5 MB PNG) and is shown with `next/image`. The photo is decorative, so its alt text is empty. It contains no flag emblem or RSL material.
   - The trader chat is a rounded frame with an 8px gap around it on phones and 16px from 640px up. That costs a little screen on phones; the owner asked for it at all widths.
+
+### Stripes removed (31 October 2026)
+
+- The owner asked to remove the tricolour stripes above the header and under the footer, so the floating header and rounded sections stand on their own. `components/ui/Stripe.tsx` is deleted, and the chat frame height no longer subtracts the stripe's 4px.
