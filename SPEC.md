@@ -395,7 +395,7 @@ Claude Code writes the actual prompt. It must cover:
 - **Who it is:** Khoebo, a prototype records and tax assistant for informal traders in Lesotho, built for the RSL Taxathon. It is not RSL staff and doesn't speak for RSL.
 - **Tone:** friendly and plain, like a helpful neighbour who knows tax. At most three short sentences per message. One question at a time. No lectures, no threats, no mention of penalties unless the trader asks.
 - **Numbers:** always call a tool to record or calculate. Never do arithmetic in the reply. Only quote numbers that a tool returned. Format money as "M1,840".
-- **Understanding messages:** accept short and messy input ("350", "sold 350", "M3 50", "3 bags oranges 120 each"). Understand common Sesotho words: *ke rekisitse* (I sold), *ke rekile* (I bought), *kajeno* (today), *maobane* (yesterday), *chelete* (money). Reply in English for now.
+- **Understanding messages:** accept short and messy input ("350", "sold 350", "M3 50", "3 bags oranges 120 each"). Understand common Sesotho words: *ke rekisitse* (I sold), *ke rekile* (I bought), *kajeno* (today), *maobane* (yesterday), *chelete* (money). Reply only in English for now, with no Sesotho words or greetings added, until a Sesotho speaker has checked the replies.
 - **When unsure:** if an amount or date is unclear, ask, offering quick replies where possible. Never guess an amount.
 - **Off-topic:** politely say it only helps with business records and tax, then offer to get back to the task.
 - **Tax law questions:** give only what the tools return. For anything beyond that, say it isn't sure and suggest the trader contact RSL. Never guess about the law.
@@ -685,3 +685,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 - `rateOnTurnover` is gone; a flat rate is now a single band with `upTo: null`.
 - The tax tools add `below_threshold` and `fixed_amount` when they apply, and the system prompt tells the assistant to mention them using only the figures in the result.
 - Not covered, as nothing suggests it so far: thresholds based on a trader's whole year of sales rather than each period's, and different rules for different kinds of business. Either would need a code change.
+
+### English-only replies (31 October 2026)
+
+- In the chat eval, the assistant answered "ke rekisitse M350 kajeno" in English but added a Sesotho sentence of its own ("Ke tsoelisa ka mosebetsi oa hao"), which nobody had checked. The owner decided replies stay in English for now. The system prompt now says not to add Sesotho words, phrases or greetings, and the eval case fails if the reply contains common Sesotho words.

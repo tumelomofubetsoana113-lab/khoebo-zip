@@ -10,7 +10,12 @@
   },
   {
     "message": "ke rekisitse M350 kajeno",
-    "expect": { "toolsInclude": ["record_entry"], "newEntry": { "kind": "sale", "amount": 350, "date": "today" } }
+    "note": "the reply stays in English, with no Sesotho added",
+    "expect": {
+      "toolsInclude": ["record_entry"],
+      "newEntry": { "kind": "sale", "amount": 350, "date": "today" },
+      "replyExcludes": ["\\bke\\b", "\\boa\\b", "\\bhao\\b", "\\bkajeno\\b", "\\brekisitse\\b", "\\bkea\\b", "\\bdumela\\b"]
+    }
   },
   {
     "message": "sold 3 bags of oranges for 120 each",
