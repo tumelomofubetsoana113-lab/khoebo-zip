@@ -126,7 +126,7 @@ const descriptions: Record<ToolName, string> = {
   save_profile:
     "Save the trader's business type, district, RSL registration status, or name. Call as soon as the trader gives any of these.",
   record_entry:
-    "Record one sale or purchase. Give either amount, or quantity and unit_price; the code works out the total. Returns the entry and this week's totals.",
+    "Record one sale or purchase. Give either amount, or quantity and unit_price; the code works out the total. Returns the entry and the totals for the Monday-to-Sunday week the entry falls in, which may be last week.",
   correct_entry: "Change the amount of one entry, or delete it.",
   get_summary: "Money in, money out, profit estimate, number of entries and days with no entries for a period.",
   get_tax_estimate:
@@ -178,9 +178,20 @@ function summaryResult(s: Summary) {
   };
 }
 
-function weekTotals(state: TraderState, today: string) {
-  const s = summarize(state.entries, summaryRange("this_week", today), today);
-  return { money_in: money(s.moneyIn), money_out: money(s.moneyOut), profit_estimate: money(s.profit) };
+// Totals for the Monday-to-Sunday week an entry falls in, with that week's
+// dates. Not always this week: on a Monday, "yesterday" is last week, and
+// totals for this week alone made the model think the entry hadn't saved.
+function entryWeekTotals(state: TraderState, date: string, today: string) {
+  const range = summaryRange("this_week", date);
+  const s = summarize(state.entries, range, today);
+  return {
+    from: formatDate(range.start),
+    to: formatDate(range.end),
+    is_this_week: range.start === summaryRange("this_week", today).start,
+    money_in: money(s.moneyIn),
+    money_out: money(s.moneyOut),
+    profit_estimate: money(s.profit),
+  };
 }
 
 function estimateResult(e: TaxEstimate) {
@@ -289,7 +300,7 @@ const handlers: Handlers = {
     const next = { ...state, entries: [...state.entries, entry] };
     return {
       state: next,
-      result: { recorded: entryResult(entry), this_week: weekTotals(next, ctx.today) },
+      result: { recorded: entryResult(entry), week_of_entry: entryWeekTotals(next, entry.date, ctx.today) },
       ui: [{ type: "entry_receipt", entry }],
     };
   },
@@ -313,7 +324,7 @@ const handlers: Handlers = {
       result: {
         before: entryResult(result.before),
         after: result.after ? entryResult(result.after) : "deleted",
-        this_week: weekTotals(next, ctx.today),
+        week_of_entry: entryWeekTotals(next, (result.after ?? result.before).date, ctx.today),
       },
       ui: result.after ? [{ type: "entry_receipt", entry: result.after }] : [],
     };

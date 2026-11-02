@@ -99,13 +99,27 @@ describe("record_entry", () => {
     });
     expect(out.result).toMatchObject({
       recorded: { amount: { amount: 350, text: "M350" }, date_text: "29 October 2026" },
-      this_week: {
+      week_of_entry: {
+        from: "26 October 2026",
+        to: "1 November 2026",
+        is_this_week: true,
         money_in: { text: "M1,700" },
         money_out: { text: "M400" },
         profit_estimate: { text: "M1,300" },
       },
     });
     expect(out.ui).toEqual([{ type: "entry_receipt", entry: out.state.entries[4] }]);
+  });
+
+  it("gives the totals for the week the entry falls in, so a Sunday entry on a Monday counts in last week", () => {
+    const monday = { ...ctx(), today: "2026-11-02" };
+    const out = runTool("record_entry", { kind: "sale", amount: 420, date: "2026-11-01" }, setUp, monday);
+    expect(out.result).toMatchObject({
+      recorded: { amount: { text: "M420" }, date_text: "1 November 2026" },
+      week_of_entry: { from: "26 October 2026", to: "1 November 2026", is_this_week: false },
+    });
+    const week = (out.result as { week_of_entry: { money_in: { amount: number } } }).week_of_entry;
+    expect(week.money_in.amount).toBeGreaterThanOrEqual(420);
   });
 
   it("works out quantity times unit price in code", () => {
@@ -155,7 +169,7 @@ describe("correct_entry", () => {
   it("deletes an entry, as the Undo button asks", () => {
     const out = runTool("correct_entry", { entry_id: "b", delete: true }, setUp, ctx());
     expect(out.state.entries.map((e) => e.id)).toEqual(["a", "c", "q3"]);
-    expect(out.result).toMatchObject({ after: "deleted", this_week: { money_out: { text: "M0" } } });
+    expect(out.result).toMatchObject({ after: "deleted", week_of_entry: { money_out: { text: "M0" } } });
   });
 });
 
