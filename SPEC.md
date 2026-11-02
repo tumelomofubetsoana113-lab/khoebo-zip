@@ -550,7 +550,7 @@ Ten traders: traders 1 and 2 on 31 October 2026 on the owner's phone (an Android
 
 The page loaded well on every phone.
 
-**Why they'd keep using it**, in their own words (Sesotho translations by Claude, to be checked by a Sesotho speaker):
+**Why they'd keep using it**, in their own words (Sesotho translations by Claude, checked by the owner, a Sesotho speaker, on 2 November 2026):
 
 1. "user friendly"
 2. "It's very simple to understand and use"
@@ -754,7 +754,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 - On 31 October 2026 two traders used the trader chat on the owner's phone. The owner then asked 8 more traders to try it on their own phones, unsupervised, using the same questions. All 10 are recorded in section 11, "Results". Step 8 went ahead on 2 November 2026 while waiting for the last eight, since it doesn't depend on them.
 - **Checkpoint met, 2 November 2026:** the test form is filled in for each of the 10 traders.
 - **No fixes came out of it.** Nobody got stuck, so step 7's "fixes only" window produced no code changes.
-- **For the pilot plan:** half the traders wanted Sesotho as well as English, which supports adding Sesotho replies once a Sesotho speaker has checked them. The Sesotho quotes in section 11 were translated by Claude and should be checked the same way.
+- **For the pilot plan:** half the traders wanted Sesotho as well as English, which supports adding Sesotho replies once a Sesotho speaker has checked them. The Sesotho quotes in section 11 were translated by Claude; the owner, a Sesotho speaker, confirmed the translations on 2 November 2026.
 
 ### Officer side (step 8)
 
