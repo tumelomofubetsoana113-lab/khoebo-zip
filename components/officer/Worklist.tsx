@@ -5,6 +5,8 @@ import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { strings, type ActionKey } from "@/lib/strings";
 import {
   filterRows,
+  nextPage,
+  PAGE_SIZE,
   parseQuery,
   queryString,
   toggleAction,
@@ -36,6 +38,15 @@ export function WorklistView({
   onChange,
 }: Props & { query: WorklistQuery; onChange?: (q: WorklistQuery) => void }) {
   const shown = useMemo(() => filterRows(rows, query), [rows, query]);
+  const [limit, setLimit] = useState(PAGE_SIZE);
+  const listed = shown.slice(0, limit);
+  const more = nextPage(listed.length, shown.length);
+
+  // A new filter starts again from the first page.
+  const change = (q: WorklistQuery) => {
+    setLimit(PAGE_SIZE);
+    onChange?.(q);
+  };
 
   return (
     <div className="space-y-8">
@@ -43,14 +54,26 @@ export function WorklistView({
         counts={counts}
         total={rows.length}
         selected={query.actions}
-        onToggle={(action) => onChange?.(toggleAction(query, action))}
+        onToggle={(action) => change(toggleAction(query, action))}
       />
       {children}
-      <Filters query={query} districts={districts} sectors={sectors} onChange={onChange} />
+      <Filters query={query} districts={districts} sectors={sectors} onChange={onChange && change} />
       <p className="text-sm text-muted" aria-live="polite">
         {strings.officer.filters.showing(shown.length, rows.length)}
       </p>
-      <WorklistTable rows={shown} />
+      <WorklistTable rows={listed} />
+      {more > 0 && (
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <p className="text-sm text-muted">{strings.officer.filters.listed(listed.length, shown.length)}</p>
+          <button
+            type="button"
+            onClick={() => setLimit((n) => n + PAGE_SIZE)}
+            className="min-h-11 rounded-full border border-flag-blue px-5 font-semibold text-flag-blue hover:bg-page"
+          >
+            {strings.officer.filters.showMore(more)}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

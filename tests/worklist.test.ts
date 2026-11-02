@@ -6,6 +6,8 @@ import {
   EMPTY_QUERY,
   filterRows,
   monthShort,
+  nextPage,
+  PAGE_SIZE,
   parseQuery,
   queryString,
   RULE_ACTIONS,
@@ -162,5 +164,15 @@ describe("display helpers", () => {
     expect(axisMax(13_780)).toBe(20_000);
     expect(axisMax(3_290)).toBe(4_000);
     expect(axisMax(74_430)).toBe(80_000);
+  });
+});
+
+describe("paging", () => {
+  it("adds a full page, or whatever is left", () => {
+    expect(PAGE_SIZE).toBe(50);
+    expect(nextPage(50, 303)).toBe(50);
+    expect(nextPage(300, 303)).toBe(3);
+    expect(nextPage(303, 303)).toBe(0);
+    expect(nextPage(35, 35)).toBe(0);
   });
 });

@@ -184,6 +184,8 @@ export const strings = {
       clear: "Clear filters",
       showing: (shown: number, total: number) => `Showing ${shown} of ${total} traders`,
       none: "No traders match these filters.",
+      listed: (listed: number, matching: number) => `Listing ${listed} of ${matching}.`,
+      showMore: (n: number) => `Show ${n} more`,
     },
     table: {
       caption: "Traders, sorted by action and then by the gap between evidence and declared turnover",

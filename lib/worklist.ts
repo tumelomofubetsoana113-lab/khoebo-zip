@@ -117,6 +117,15 @@ export type WorklistQuery = {
 
 export const EMPTY_QUERY: WorklistQuery = { actions: [], district: "", sector: "", search: "" };
 
+// The list shows this many traders at a time, with a "Show more" button.
+// Drawing all 303 at once blocked a mid-range phone for about 3 seconds.
+export const PAGE_SIZE = 50;
+
+// How many more rows "Show more" adds: a full page, or whatever is left.
+export function nextPage(listed: number, matching: number): number {
+  return Math.max(0, Math.min(PAGE_SIZE, matching - listed));
+}
+
 type Params = { get(name: string): string | null };
 
 export function parseQuery(params: Params): WorklistQuery {
