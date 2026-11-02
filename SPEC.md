@@ -531,6 +531,47 @@ For each trader, note:
 
 Reset the app between traders with the demo menu.
 
+### Results
+
+Ten traders: traders 1 and 2 on 31 October 2026 on the owner's phone (an Android), traders 3 to 10 on their own phones, without the owner there. No names or phone numbers were recorded. Times are rough ranges, not stopwatch timings, and include the assistant's reply. Answers from traders 3 to 10 are what they reported.
+
+| # | Business, district | Phone | Logged a sale alone | First sale | Weekly summary | Filing | Stuck | Keep using | Language |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Spaza / general dealer, Maseru | Owner's Android | Yes | 10–15 s | Yes | Yes | No | Yes | English |
+| 2 | Fruit and veg, Maseru | Owner's Android | Yes | 10–15 s | Yes | Yes | No | Yes | English |
+| 3 | Street food, Maseru | iPhone | Yes | 15–20 s | Yes | Yes | No | Yes | English |
+| 4 | Hair salon, Maseru | Android | Yes | 15–20 s | Yes | Yes | No | Yes | English and Sesotho |
+| 5 | Clothing, Maseru | Android | Yes | 20–25 s | Yes | Yes | No | Yes | English |
+| 6 | Phone accessories, Maseru | iPhone | Yes | 10–15 s | Yes | Yes | No | Yes | English and Sesotho |
+| 7 | Spaza, Berea | Android | Yes | 15–20 s | Yes | Yes | No | Yes | English and Sesotho |
+| 8 | Street food, Maseru | Android | Yes | 15–20 s | Yes | Yes | No | Yes | English |
+| 9 | Hair salon, Maseru | Android | Yes | 20–25 s | Yes | Yes | No | Yes | English and Sesotho |
+| 10 | Clothing, Maseru | Android | Yes | 15–20 s | Yes | Yes | No | Yes | English and Sesotho |
+
+The page loaded well on every phone.
+
+**Why they'd keep using it**, in their own words (Sesotho translations by Claude, to be checked by a Sesotho speaker):
+
+1. "user friendly"
+2. "It's very simple to understand and use"
+3. "I won't need to pay someone to keep my records and file my returns"
+4. "E boloka nako" (It saves time)
+5. "I love it, i'm not a tech person but I can understand and be able to use it"
+6. "E etsa mosebetsi oa ho patala tax o be bobebe" (It makes paying tax easy)
+7. "I won't need to keep my records on note book anymore"
+8. Said it was very helpful (the owner's summary, not their words)
+9. "it's user friendly and very understandable, kea e rata" (I like it)
+10. "e thusa haholo, e etsa mosebetsi o bobebe" (It helps a lot, it makes the work easy)
+
+**Summary**
+
+- All 10 logged a sale without help, found the weekly summary and got through the filing step. None got stuck, and all 10 said they would keep using it.
+- First sale in 10 to 25 seconds, including the reply.
+- 5 preferred English and 5 wanted both English and Sesotho. Nobody wanted Sesotho only.
+- 8 Android phones (counting the owner's) and 2 iPhones.
+
+**Limits, stated plainly:** 10 traders, 9 of them in Maseru and 1 in Berea, found through the owner's contacts. Eight tested unsupervised, so whether anyone helped them isn't known. Times are estimates. This shows the chat is usable by traders like these; it isn't a measure of how all informal traders would do.
+
 ## 12. Test checklist
 
 ### Chat eval set (`tests/chat-eval/`)
@@ -710,8 +751,10 @@ Anything built that the sections above don't cover is recorded here, with the st
 
 ### Trader testing (step 7)
 
-- On 31 October 2026 two traders used the trader chat on the owner's phone, against the plan's 5 to 10. The owner has asked 8 more traders to try it on their own phones, unsupervised, using a shortened version of the section 11 form. Their notes will be written up here when they come back. Remote testing can't time the first sale, so that answer may be "not recorded".
-- Step 8 went ahead on 2 November 2026 while waiting for those answers, since it doesn't depend on them.
+- On 31 October 2026 two traders used the trader chat on the owner's phone. The owner then asked 8 more traders to try it on their own phones, unsupervised, using the same questions. All 10 are recorded in section 11, "Results". Step 8 went ahead on 2 November 2026 while waiting for the last eight, since it doesn't depend on them.
+- **Checkpoint met, 2 November 2026:** the test form is filled in for each of the 10 traders.
+- **No fixes came out of it.** Nobody got stuck, so step 7's "fixes only" window produced no code changes.
+- **For the pilot plan:** half the traders wanted Sesotho as well as English, which supports adding Sesotho replies once a Sesotho speaker has checked them. The Sesotho quotes in section 11 were translated by Claude and should be checked the same way.
 
 ### Officer side (step 8)
 
