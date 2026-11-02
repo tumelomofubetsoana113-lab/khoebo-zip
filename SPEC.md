@@ -56,7 +56,6 @@ app/
   page.tsx              landing page
   icon.svg              browser-tab icon (the Khoebo mark)
   apple-icon.png        180 px home-screen icon
-  styleguide/           internal test page for the palette and UI components (added in step 1, delete before submitting)
   trader/page.tsx       chat
   officer/page.tsx      worklist
   officer/[id]/page.tsx trader detail
@@ -295,7 +294,7 @@ Each card shows the action pill, two lines of reasons, and a "View" link.
 
 **Filters**: action chips (multi-select), district dropdown, sector dropdown, and a search box for trader ID. Filters are reflected in the URL query string, so a filtered view can be shared.
 
-**Table columns**: Trader ID · Sector · District · Action · Declared (6 months) · Evidence minimum · Months with evidence · Nil returns. Default sort: action order (follow-up, review, check-in, none), then the biggest gap between evidence and declared. Amounts as "M74,430". Each row links to the detail page.
+**Table columns**: Trader ID · Sector · District · Action · Declared (6 months) · Evidence minimum · Months with evidence · Nil returns. Default sort: action order (follow-up, review, check-in, none), then the biggest gap between evidence and declared. Amounts as "M74,430". Each row links to the detail page. The list shows 50 traders at a time, with a "Show 50 more" button; changing a filter starts again from the first 50.
 
 ### 5.4 Trader detail (`/officer/[id]`)
 
@@ -370,7 +369,7 @@ All amounts in and out are maloti. Every handler is a pure function of `(state, 
 | Tool | Input | What the code does |
 | --- | --- | --- |
 | `save_profile` | `business_type?`, `district?`, `registered?`, `name?` | Updates the profile. Marks onboarding done when the first three are set. |
-| `record_entry` | `kind`, and either `amount` or `quantity` + `unit_price`, plus `date?`, `note?` | Works out the amount (quantity × unit price is done here, never by the model). Rejects amounts of zero or less. Amounts over M20,000 come back as `needs_confirmation` so the assistant asks first. Date defaults to today, can't be in the future or more than 60 days back. Returns the entry plus the week's running totals. |
+| `record_entry` | `kind`, and either `amount` or `quantity` + `unit_price`, plus `date?`, `note?` | Works out the amount (quantity × unit price is done here, never by the model). Rejects amounts of zero or less. Amounts over M20,000 come back as `needs_confirmation` so the assistant asks first. Date defaults to today, can't be in the future or more than 60 days back. Returns the entry plus the running totals for the Monday-to-Sunday week the entry falls in, with that week's dates (`week_of_entry`). |
 | `correct_entry` | `entry_id` or `"last"`, `new_amount?`, `delete?` | Changes or removes one entry. Returns what changed. |
 | `get_summary` | `period`: `this_week`, `last_week`, `this_month`, `filing_period` | Money in, money out, profit estimate (in minus out), number of entries, days with no entries. |
 | `get_tax_estimate` | `period?` (default: current filing period) | Turnover, rate, estimate, due date, and `placeholder: true` while rates are unconfirmed. Adds `below_threshold: true` or `fixed_amount` when they apply. |
@@ -610,7 +609,9 @@ A script, `npm run eval:chat`, sends each message to the running API with a know
 - No `hidden_` field in `data/worklist.json`
 - Every tax amount on screen shows the placeholder note while `TAX.placeholder` is true
 
-## 13. Open items (waiting on the 2 November Q&A)
+## 13. Open items (still waiting on RSL)
+
+The owner missed the 2 November Q&A and is putting these questions to the organisers directly. Until RSL answers, the placeholders and the placeholder note stay.
 
 - SBT rate, threshold, filing period and due dates
 - Whether AI processing outside Lesotho is acceptable for a pilot
@@ -631,7 +632,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 - `SiteHeader` is shared by the landing and officer pages. At narrow widths the prototype pill sits under the wordmark so the header fits at 360px. The wordmark links to `/`.
 - `Sheet` and `ConfirmDialog` use the native `<dialog>` element, for focus trapping and Escape to close.
 - The phone browser bar colour (`themeColor` in `app/layout.tsx`) is the only hex value outside `globals.css`, because Next.js metadata needs a literal value.
-- `/styleguide` is an internal test page for the step 1 checkpoint. It is hidden from search engines, and its text is not in `lib/strings.ts`. Delete it before submitting.
+- `/styleguide` was an internal test page for the step 1 checkpoint, hidden from search engines, with text outside `lib/strings.ts`. Deleted in step 10 (2 November 2026).
 - Vitest config is `vitest.config.mts`. `npm run test` passes when there are no test files.
 - The repo is the private GitHub repo `tumelomofubetsoana113-lab/khoebo`, branch `main`.
 
@@ -777,3 +778,25 @@ Anything built that the sections above don't cover is recorded here, with the st
 
 - The officer pages are open to anyone in the prototype, because every trader is simulated and logins are out of scope. Judges may ask whether a pilot would leave them open, so the owner asked for a line saying it wouldn't. `PilotAccessNote` (lock icon, `muted` text) shows "In a pilot, only signed-in RSL officers can see this page." under the title on `/officer` and on each trader page.
 - What a pilot would do, for the pilot plan: the officer view runs inside RSL's network, not linked from the public page; officers sign in with their RSL accounts (Khoebo keeps no passwords); access depends on role (a field officer sees their district, supervisors see escalations); every decision goes to RSL's case system with the officer's name and time. Traders don't get a login: on WhatsApp the phone number identifies them, linked once to their tax number.
+
+### Polish (step 10)
+
+- **Step 9 had no changes.** The owner missed the 2 November Q&A and is asking the organisers directly, so `config/tax.ts` and the placeholder note are unchanged (section 13).
+- **`/styleguide` deleted,** as planned in step 1. It now returns 404.
+- **Bug fixed: "your sale may not have saved".** Found on Monday 2 November 2026 in the Slow 4G run. `record_entry` returned this week's totals, so a sale dated yesterday (Sunday, last week) wasn't in them. The model then told the trader the sale and a purchase might be missing and offered to record them again, which would have doubled them. Everything had saved. `record_entry` and `correct_entry` now return `week_of_entry`: the totals for the week the entry falls in, with its dates and `is_this_week`. The prompt also says a recorded entry is final and an entry before Monday counts in last week. After the fix the same messages gave "It counts in last week's totals" and no doubts. A test covers the Monday case.
+- **Officer list shows 50 at a time.** Drawing all 303 traders (a table and a card list) blocked the main thread for about 3 seconds on Lighthouse's mobile setting. With 50 it's about 0.65 seconds. The count line still says how many traders match; a second line says how many are listed.
+
+**Checklist (section 12), 2 November 2026, on a local production build:**
+
+| Check | Result |
+| --- | --- |
+| Chat eval | 15 of 15 passed |
+| Ordinary case | Passed at 360px over Slow 4G: set-up, five sales and two purchases (yesterday, Saturday, Sesotho, quantity × price), summary, reminder, file (reference MOCK-Q8RJ2Y), pay (demo). Turnover M1,910 matches the five sales. Replies took 3 to 5 seconds, and the page loaded in under 3 |
+| Seasonal case | `DEMO-SEASONAL` shows No action, and the reason says nil months match months with no trading evidence |
+| Human review case | `DEMO-REVIEW` shows the mobile money reason. Saving a decision was checked in step 8 and hasn't changed |
+| No horizontal scroll at 360px | None on `/`, `/trader`, `/officer`, the three demo pages and a simulated trader page, at 360px and 1280px |
+| API key not in the browser bundle | Not found in `.next/static`, by value, by `sk-ant` or by name |
+| No `hidden_` field | None in `data/worklist.json` (also a test) |
+| Placeholder note on every tax amount | Shown under the reminder, the return, the filed return and the payment |
+| Lighthouse accessibility | 100 on `/`, `/trader`, `/officer` and `/officer/DEMO-REVIEW` |
+| Lighthouse performance (mobile) | Not reliably measured. On this PC the same build scored 69 to 92 on `/` and 77 to 90 on `/trader`, because Lighthouse's CPU benchmark here varies from about 650 to 1,250. Both pages only run Next.js and React; there's nothing big left to cut. To be confirmed on PageSpeed Insights against the live site |
