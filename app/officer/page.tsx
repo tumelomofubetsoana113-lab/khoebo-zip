@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { DemoCases } from "@/components/officer/DemoCases";
 import { OfficerHeader } from "@/components/officer/OfficerHeader";
+import { PilotAccessNote } from "@/components/officer/PilotAccessNote";
 import { Worklist, WorklistView } from "@/components/officer/Worklist";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 import { strings, type ActionKey } from "@/lib/strings";
@@ -29,6 +30,7 @@ export default function OfficerPage() {
           <p className="mt-1 text-muted">
             {t.subline(worklist.simulated, pinned.length, windowLabel(worklist.window))}
           </p>
+          <PilotAccessNote className="mt-2" />
         </div>
         {/* The filters live in the URL. The server renders the unfiltered list;
             the browser then applies whatever the URL asks for. */}

@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { EvidenceChart } from "@/components/officer/EvidenceChart";
 import { OfficerHeader } from "@/components/officer/OfficerHeader";
 import { OverridePanel } from "@/components/officer/OverridePanel";
+import { PilotAccessNote } from "@/components/officer/PilotAccessNote";
 import { ActionPill } from "@/components/ui/Pill";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 import { formatMoney } from "@/lib/ledger";
@@ -59,6 +60,7 @@ export default async function TraderPage({ params }: PageProps<"/officer/[id]">)
               {trader.sector} · {trader.district}
             </p>
             <p className="mt-1 text-sm text-muted">{trader.label ? t.demoCase : t.simulated}</p>
+            <PilotAccessNote className="mt-2" />
           </div>
           <ActionPill action={ACTION_KEY[trader.action]} />
         </div>

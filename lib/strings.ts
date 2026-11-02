@@ -165,6 +165,7 @@ export const strings = {
     subline: (simulated: number, demos: number, window: string) =>
       `Simulated data · ${simulated} traders and ${demos} demo cases · ${window}`,
     navHome: "Home",
+    pilotAccess: "In a pilot, only signed-in RSL officers can see this page.",
     summaryLabel: "Traders by action",
     summaryShare: (pct: number) => `${pct}% of traders`,
     summaryFilter: (action: string) => `Show only ${action}`,

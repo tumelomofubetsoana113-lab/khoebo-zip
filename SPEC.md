@@ -282,7 +282,7 @@ A full-height chat that feels like a messaging app, centred in a 420px column on
 
 Desktop first, but it must not break on mobile (the table becomes cards under 768px).
 
-**Header**: same style as the landing header, with "Try the chat" on the right. Under it, the title "Officer worklist" and the subline "Simulated data · 300 traders and 3 demo cases · May to Oct 2026" (worked out from the data).
+**Header**: same style as the landing header, with "Try the chat" on the right. Under it, the title "Officer worklist" and the subline "Simulated data · 300 traders and 3 demo cases · May to Oct 2026" (worked out from the data). Under the subline, a small `muted` note with a lock icon: "In a pilot, only signed-in RSL officers can see this page."
 
 **Summary strip**: four cards, one per action, each with its pill, the count, and the share of traders. Clicking a card filters the table.
 
@@ -300,7 +300,7 @@ Each card shows the action pill, two lines of reasons, and a "View" link.
 ### 5.4 Trader detail (`/officer/[id]`)
 
 - Back link "All traders".
-- Top: trader ID, sector, district, the action pill, and a "Simulated trader" note.
+- Top: trader ID, sector, district, the action pill, and a "Simulated trader" note, with the same sign-in note as the worklist under it.
 - "Why this action": the reasons as a short list, in the order the rules produced them.
 - Evidence chart (plain SVG, about 760×280): for each of the six months, two bars side by side: declared turnover (`flag-blue`) and the evidence minimum (`muted` at 40% opacity). Values on hover via `<title>`. A light legend above. Under the chart, a row of small markers per month for filing: filed on time (green tick), filed late (amber clock), missing (grey dash).
 - Key figures: declared total, evidence minimum, declared as a share of evidence, months with evidence, nil returns, missing returns, licence status.
@@ -729,3 +729,8 @@ Anything built that the sections above don't cover is recorded here, with the st
 - **Decisions** are saved in localStorage under `khoebo.decisions.v1`, keyed by trader ID, newest first, at most 200 per trader. The reason is trimmed and must be 10 to 500 characters. The form is disabled until the browser has loaded saved decisions. Times show in Lesotho time.
 - **Landing figures** now come from the real `data/test_results.json` (the stub flag is gone): 38% fewer officer cases (74.7 against 120.8 a population), 96% follow-up precision, 48 found against 49. They match the copy in 5.1.
 - **Checked, 2 November 2026,** on a local production build in Chrome: summary card and chip filters, a shared filter URL (`?action=review&district=Berea` shows 7 traders), all three demo detail pages, saving a decision with and without a reason, the log after reload, and no horizontal scroll at 360px on `/officer` and the detail pages. Not yet checked on the live site.
+
+### Sign-in note on officer pages (2 November 2026)
+
+- The officer pages are open to anyone in the prototype, because every trader is simulated and logins are out of scope. Judges may ask whether a pilot would leave them open, so the owner asked for a line saying it wouldn't. `PilotAccessNote` (lock icon, `muted` text) shows "In a pilot, only signed-in RSL officers can see this page." under the title on `/officer` and on each trader page.
+- What a pilot would do, for the pilot plan: the officer view runs inside RSL's network, not linked from the public page; officers sign in with their RSL accounts (Khoebo keeps no passwords); access depends on role (a field officer sees their district, supervisors see escalations); every decision goes to RSL's case system with the officer's name and time. Traders don't get a login: on WhatsApp the phone number identifies them, linked once to their tax number.
