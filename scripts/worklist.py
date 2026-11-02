@@ -57,7 +57,8 @@ def assess(trader_rows):
     if purchases:
         reasons.append(f"Supplier e-invoices show {money(purchases)} of stock bought May to Oct 2026.")
     if momo_trade:
-        reasons.append(f"Mobile money wallet inflows above M1,000 total {money(momo_trade)} over the same months.")
+        reasons.append(f"Mobile money wallet inflows above M1,000 total {money(momo_trade)} "
+                       + ("over the same months." if purchases else "from May to Oct 2026."))
     reasons.append(f"Declared turnover for the period: {money(declared)}"
                    + (f" ({len(nil_months)} nil returns)." if nil_months else "."))
 
@@ -100,10 +101,32 @@ def assess(trader_rows):
         "declared_6m": round(declared),
         "est_min_sales_6m": round(est_min_sales),
         "declared_vs_evidence": "" if ratio is None else f"{ratio:.0%}",
+        "ratio": None if ratio is None else round(ratio, 4),
         "trading_evidence_months": len(signal_months),
         "nil_returns_6m": len(nil_months),
         "missing_returns_6m": len(missing),
-        "reasons": " ".join(reasons),
+        "licence_active": licence_active_now,
+        "reasons": reasons,
+        "months": [month_figures(r) for r in win],
+    }
+
+
+def month_figures(r):
+    """One month as the officer sees it. The evidence minimum for a month uses
+    the same floors as the six-month figure: purchases, or wallet inflows above
+    M1,000, whichever is larger."""
+    filed = r["filed"] in (1, "1")
+    purchases = num(r["einvoice_purchases"])
+    momo = num(r["momo_wallet_inflows"])
+    momo_trade = momo if momo > MOMO_PERSONAL_FLOOR else 0.0
+    return {
+        "month": r["month"],
+        "declared": round(num(r["declared_turnover"])) if filed else None,
+        "purchases": round(purchases),
+        "wallet_inflows": round(momo),
+        "evidence_min": round(max(purchases, momo_trade)),
+        "filed": filed,
+        "on_time": r.get("filed_on_time") in (1, "1"),
     }
 
 

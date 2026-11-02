@@ -68,6 +68,24 @@ def score(traders, records):
     return wl, res
 
 
+APPROACHES = ["worklist_officer", "worklist_followup_only", "baseline_a_all_nil", "baseline_b_random"]
+
+
+def thirty_runs(seeds=range(1, 31)):
+    """Mean, min and max of each approach's results over 30 simulated populations."""
+    runs = [score(*simulate(seed=s))[1] for s in seeds]
+
+    def agg(get):
+        vals = [get(r) for r in runs]
+        return {"mean": statistics.mean(vals), "min": min(vals), "max": max(vals)}
+
+    out = {name: {m: agg(lambda r, n=name, m=m: r[n][m])
+                  for m in ["visits", "caught", "precision", "recall"]}
+           for name in APPROACHES}
+    out["undeclared_per_population"] = agg(lambda r: r["undeclared"])
+    return out
+
+
 if __name__ == "__main__":
     base = Path(__file__).parent
 
@@ -76,24 +94,13 @@ if __name__ == "__main__":
     write_csv(base / "data" / "traders.csv", traders)
     write_csv(base / "data" / "monthly_records.csv", records)
     wl, demo = score(traders, records)
-    write_csv(base / "outputs" / "worklist.csv", wl)
+    # reasons are a list and months a nested list; flatten them for the CSV
+    write_csv(base / "outputs" / "worklist.csv",
+              [{**{k: v for k, v in r.items() if k != "months"}, "reasons": " ".join(r["reasons"])}
+               for r in wl])
 
     # 30 populations for the headline numbers
-    runs = [score(*simulate(seed=s))[1] for s in range(1, 31)]
-
-    def agg(path):
-        vals = [eval_path(r, path) for r in runs]
-        return {"mean": statistics.mean(vals), "min": min(vals), "max": max(vals)}
-
-    def eval_path(r, path):
-        for p in path:
-            r = r[p]
-        return r
-
-    summary = {"demo_population_seed_7": demo, "thirty_runs": {}}
-    for name in ["worklist_officer", "worklist_followup_only", "baseline_a_all_nil", "baseline_b_random"]:
-        summary["thirty_runs"][name] = {m: agg([name, m]) for m in ["visits", "caught", "precision", "recall"]}
-    summary["thirty_runs"]["undeclared_per_population"] = agg(["undeclared"])
+    summary = {"demo_population_seed_7": demo, "thirty_runs": thirty_runs()}
 
     (base / "outputs").mkdir(exist_ok=True)
     with open(base / "outputs" / "test_results.json", "w") as f:

@@ -1,75 +1,101 @@
 {
-  "stub": true,
-  "note": "Placeholder values chosen to match the copy in SPEC.md 5.1. Replaced by scripts/export_worklist.py in step 8.",
-  "demo_population_seed_7": {
-    "population": 300
+ "generatedAt": "2026-11-02",
+ "demo_population_seed_7": {
+  "population": 300
+ },
+ "thirty_runs": {
+  "worklist_officer": {
+   "visits": {
+    "mean": 74.6667,
+    "min": 56,
+    "max": 101
+   },
+   "caught": {
+    "mean": 47.9,
+    "min": 35,
+    "max": 71
+   },
+   "precision": {
+    "mean": 0.6404,
+    "min": 0.5455,
+    "max": 0.7465
+   },
+   "recall": {
+    "mean": 0.7191,
+    "min": 0.6034,
+    "max": 0.8387
+   }
   },
-  "thirty_runs": {
-    "worklist_officer": {
-      "visits": {
-        "mean": 62,
-        "min": 62,
-        "max": 62
-      },
-      "caught": {
-        "mean": 48,
-        "min": 48,
-        "max": 48
-      },
-      "precision": {
-        "mean": 0,
-        "min": 0,
-        "max": 0
-      },
-      "recall": {
-        "mean": 0,
-        "min": 0,
-        "max": 0
-      }
-    },
-    "worklist_followup_only": {
-      "visits": {
-        "mean": 0,
-        "min": 0,
-        "max": 0
-      },
-      "caught": {
-        "mean": 0,
-        "min": 0,
-        "max": 0
-      },
-      "precision": {
-        "mean": 0.96,
-        "min": 0.96,
-        "max": 0.96
-      },
-      "recall": {
-        "mean": 0,
-        "min": 0,
-        "max": 0
-      }
-    },
-    "baseline_a_all_nil": {
-      "visits": {
-        "mean": 100,
-        "min": 100,
-        "max": 100
-      },
-      "caught": {
-        "mean": 49,
-        "min": 49,
-        "max": 49
-      },
-      "precision": {
-        "mean": 0,
-        "min": 0,
-        "max": 0
-      },
-      "recall": {
-        "mean": 0,
-        "min": 0,
-        "max": 0
-      }
-    }
+  "worklist_followup_only": {
+   "visits": {
+    "mean": 33.5,
+    "min": 25,
+    "max": 52
+   },
+   "caught": {
+    "mean": 32.2667,
+    "min": 23,
+    "max": 51
+   },
+   "precision": {
+    "mean": 0.9599,
+    "min": 0.8519,
+    "max": 1.0
+   },
+   "recall": {
+    "mean": 0.4822,
+    "min": 0.3731,
+    "max": 0.6
+   }
+  },
+  "baseline_a_all_nil": {
+   "visits": {
+    "mean": 120.8333,
+    "min": 103,
+    "max": 149
+   },
+   "caught": {
+    "mean": 48.9667,
+    "min": 37,
+    "max": 71
+   },
+   "precision": {
+    "mean": 0.4044,
+    "min": 0.3109,
+    "max": 0.4803
+   },
+   "recall": {
+    "mean": 0.7343,
+    "min": 0.6269,
+    "max": 0.8689
+   }
+  },
+  "baseline_b_random": {
+   "visits": {
+    "mean": 74.6667,
+    "min": 56,
+    "max": 101
+   },
+   "caught": {
+    "mean": 16.7033,
+    "min": 10.8,
+    "max": 28.6
+   },
+   "precision": {
+    "mean": 0.2219,
+    "min": 0.17,
+    "max": 0.2833
+   },
+   "recall": {
+    "mean": 0.2489,
+    "min": 0.1867,
+    "max": 0.3367
+   }
+  },
+  "undeclared_per_population": {
+   "mean": 66.5667,
+   "min": 51,
+   "max": 85
   }
+ }
 }

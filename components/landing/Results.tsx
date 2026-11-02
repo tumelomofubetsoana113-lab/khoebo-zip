@@ -1,12 +1,13 @@
 import testResults from "@/data/test_results.json";
-import { headlineFigures } from "@/lib/results";
+import { headlineFigures, type TestResults } from "@/lib/results";
 import { strings } from "@/lib/strings";
 
 const t = strings.landing.results;
 
 // Every figure comes from data/test_results.json.
 export function Results() {
-  const f = headlineFigures(testResults);
+  const results: TestResults = testResults;
+  const f = headlineFigures(results);
   const figures = [
     { value: t.fewerCases(f.fewerCasesPct), label: t.fewerCasesLabel },
     { value: t.precision(f.followupPrecisionPct), label: t.precisionLabel },
@@ -26,7 +27,7 @@ export function Results() {
           ))}
         </ul>
         <p className="mt-10 text-center text-sm text-muted">{t.note(f.population)}</p>
-        {"stub" in testResults && testResults.stub && (
+        {results.stub === true && (
           <p className="mt-2 text-center text-sm font-semibold text-status-followup">{t.stubNote}</p>
         )}
       </div>

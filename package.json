@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "test": "vitest run --passWithNoTests",
-    "eval:chat": "node tests/chat-eval/run.mts"
+    "eval:chat": "node tests/chat-eval/run.mts",
+    "data": "python3 scripts/export_worklist.py"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",

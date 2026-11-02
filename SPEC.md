@@ -65,7 +65,8 @@ components/
   landing/              one file per landing section, plus PhoneFrame (hero phone) and IconCircle
   chat/                 ChatShell, MessageBubble, SummaryCard, QuickReplies, cards, Composer, VoiceSheet, VoiceBubble,
                         TypingIndicator, DemoMenu
-  officer/              SummaryStrip, Filters, WorklistTable, EvidenceChart, OverridePanel
+  officer/              SummaryStrip, Filters, WorklistTable, EvidenceChart, OverridePanel,
+                        Worklist (strip, filters and table, synced with the URL), DemoCases, OfficerHeader
   ui/                   Button, Card, Pill (includes ActionPill and PrototypePill), Sheet, ConfirmDialog,
                         SiteHeader (with Wordmark), SiteFooter, Logo
 lib/
@@ -79,6 +80,9 @@ lib/
   tools.ts              tool definitions and their handlers
   state.ts              TraderState type, zod schema, localStorage load/save
   strings.ts            all UI text, keyed, English only for now
+  worklist.ts           worklist types, zod schema, filters, sorting (safe in the browser)
+  worklist-data.ts      loads and checks data/worklist.json (server only)
+  decisions.ts          officer decisions: checks and localStorage
   prompt.ts             the system prompt
 public/brand/            khoebo-logo.svg (round), khoebo-profile.svg and 512/1024 px PNGs (square, for profile pictures)
 config/
@@ -99,6 +103,8 @@ tests/
   results.test.ts
   chat.test.ts          also covers lib/demo.ts
   tools.test.ts
+  worklist.test.ts      the worklist file, the three demo cases, filters
+  decisions.test.ts
   chat-eval/            cases.json (sample messages and expected tool calls, section 12) and run.mts
 ```
 
@@ -276,7 +282,7 @@ A full-height chat that feels like a messaging app, centred in a 420px column on
 
 Desktop first, but it must not break on mobile (the table becomes cards under 768px).
 
-**Header**: same style as the landing header, with the title "Officer worklist" and the subline "Simulated data · 300 traders · May to October 2026".
+**Header**: same style as the landing header, with "Try the chat" on the right. Under it, the title "Officer worklist" and the subline "Simulated data · 300 traders and 3 demo cases · May to Oct 2026" (worked out from the data).
 
 **Summary strip**: four cards, one per action, each with its pill, the count, and the share of traders. Clicking a card filters the table.
 
@@ -453,8 +459,9 @@ Whatever form the real rules take (a flat rate, a threshold, bands of rates, or 
 4. Writes `data/worklist.json`:
    ```json
    {
-     "generatedAt": "...",
+     "generatedAt": "2026-11-02",
      "window": ["2026-05", "...", "2026-10"],
+     "simulated": 300,
      "counts": { "OFFICER FOLLOW-UP": 0, "HUMAN REVIEW": 0, "AUTOMATED CHECK-IN": 0, "NO ACTION": 0 },
      "pinned": ["DEMO-ORDINARY", "DEMO-SEASONAL", "DEMO-REVIEW"],
      "traders": [
@@ -463,12 +470,13 @@ Whatever form the real rules take (a flat rate, a threshold, bands of rates, or 
          "reasons": ["...", "..."],
          "metrics": { "declared": 0, "evidenceMin": 0, "ratio": 0, "evidenceMonths": 0, "nilReturns": 0, "missingReturns": 0, "licenceActive": true },
          "months": [ { "month": "2026-05", "declared": 0, "purchases": 0, "walletInflows": 0, "evidenceMin": 0, "filed": true, "onTime": true } ]
+         // "declared" is null in a month with no return filed
        }
      ]
    }
    ```
    Demo traders get a `label` such as "Fruit and vegetable seller, Maseru". Simulated traders have `label: null` and show their ID.
-5. Writes `data/test_results.json` by running `evaluate.py`'s 30-population test, for the landing page figures.
+5. Writes `data/test_results.json` by running `evaluate.py`'s 30-population test, for the landing page figures: `demo_population_seed_7.population` and `thirty_runs` (mean, min and max of visits, caught, precision and recall for each approach). Nothing else derived from the hidden columns.
 
 Changes to the Python files:
 
@@ -592,7 +600,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 - The officer reason card is copied from worklist line TRD-0167 in the seed 7 simulation.
 - A thin `line` divider separates "How it works" and "For officers", since both have white backgrounds.
 - `lib/results.ts` works out the three results figures from `data/test_results.json`, which has the same shape as `evaluate.py`'s output: fewer cases = 1 − worklist officer visits ÷ all-nil visits; field visits = follow-up precision; found = worklist officer caught, against all-nil caught.
-- Until step 8, `data/test_results.json` is a stub with `"stub": true` and placeholder values that match the copy in 5.1. No real simulation output is committed before step 8. While the stub flag is set, the results section shows "Placeholder figures until the simulation results are added." The export script must write the file without the flag.
+- Until step 8 (done; see "Officer side (step 8)"), `data/test_results.json` was a stub with `"stub": true` and placeholder values that match the copy in 5.1. No real simulation output is committed before step 8. While the stub flag is set, the results section shows "Placeholder figures until the simulation results are added." The export script must write the file without the flag.
 
 ### Ledger, tax and state (step 3)
 
@@ -699,3 +707,25 @@ Anything built that the sections above don't cover is recorded here, with the st
 - Section 5.1 said "No hamburger menu" on mobile. The owner asked for one, so the landing page links can be reached on a phone. `components/landing/MobileMenu.tsx` is a client component with a three-line button (lucide `Menu`, `X` when open) and a panel that drops below the floating header.
 - At 360px the wordmark with the pill under it, "Try the chat" and a menu button don't fit in one row. "Try the chat" first moved into the menu panel; the owner wanted it visible straight away, so it is back in the bar, and below 640px the prototype pill now sits on its own row across the bottom of the header (flex-wrap with `order-last`). That frees enough width: with slightly tighter gaps and padding below 640px (and the bar 8px from the screen edges instead of 12px), the first row fits down to 320px, checked in Chrome at 320 and 360.
 - The button has `aria-expanded` and `aria-controls`, and its label ("Open menu" / "Close menu") is in `lib/strings.ts`. Escape closes the panel and returns focus to the button.
+
+### Trader testing (step 7)
+
+- On 31 October 2026 two traders used the trader chat on the owner's phone, against the plan's 5 to 10. The owner has asked 8 more traders to try it on their own phones, unsupervised, using a shortened version of the section 11 form. Their notes will be written up here when they come back. Remote testing can't time the first sale, so that answer may be "not recorded".
+- Step 8 went ahead on 2 November 2026 while waiting for those answers, since it doesn't depend on them.
+
+### Officer side (step 8)
+
+- **Export.** `npm run data` runs `python3 scripts/export_worklist.py`. It writes both JSON files, prints the counts and the three demo actions, and exits with an error if a demo trader lands on the wrong action or any `hidden_*` key appears anywhere in either file. `scripts/__pycache__`, `scripts/data/` and `scripts/outputs/` (written by running `evaluate.py` on its own) are git-ignored.
+- **Python changes.** `worklist.assess()` returns `reasons` as a list, plus `ratio`, `licence_active` and `months` (per-month figures). `evaluate.py` flattens these for its CSV, and its 30-population aggregation is now the function `thirty_runs()`, shared with the export. When a trader has wallet inflows but no supplier invoices, the wallet reason reads "from May to Oct 2026" instead of "over the same months", which only made sense after the invoice reason.
+- **Monthly evidence minimum.** For the chart, a month's evidence minimum is the larger of that month's supplier purchases and its wallet inflows above M1,000, using the same floors as the rules. The six-month figure stays as the rules define it (the larger of the two six-month totals), so the monthly bars don't always add up to it. The chart note explains the measure.
+- **Demo traders** (`scripts/demo_cases.py`) are built from a fixed seed, so every export gives the same figures. They have no hidden columns. Results: DEMO-ORDINARY No action ("in line with the available evidence"); DEMO-SEASONAL No action (only Sep and Oct are nil, so the check-in rule's three nil returns isn't met), with the reason "Nil months match months with no trading evidence"; DEMO-REVIEW Human review, with the mobile money guardrail reason. The seasonal trader's sector is "Clothing reseller", since the simulation has no blanket sector; its label says "Blanket seller, Mokhotlong (trades in winter)".
+- **The table holds 303 traders:** the 300 simulated ones and the 3 demo traders, so the summary counts and shares match what the table shows. Counts: follow-up 35, review 30, check-in 62, no action 176.
+- **Loading the data.** `lib/worklist-data.ts` imports `data/worklist.json` on the server only and checks it with strict zod schemas, so an unexpected field (a `hidden_` column, say) fails the build. The browser only receives the table columns, not reasons or monthly figures.
+- **Filters** are in the URL (`?action=review,followup&district=Berea&sector=...&q=...`). The server renders the unfiltered list as the Suspense fallback; the browser then applies the URL's filters and keeps the URL in step with the History API, so filtering doesn't wait for the server. Tapping a summary card toggles that action, the same as its chip. The ID search also matches demo trader labels.
+- **Demo case cards** show the last two reasons, which carry the decision. They sit between the summary strip and the filters, as in 5.3.
+- **Detail pages** are built ahead of time for all 303 traders (`generateStaticParams`); an unknown ID gives a 404. Demo traders show their label as the title, with "Demo case · simulated trader". Reasons are a numbered list in the rules' order.
+- **Chart.** Two SVG drawings of the same data: 760x280 from 768px up, 300x250 on phones, so the text stays readable. A nil return shows a 2px bar on the axis (M0); a month with no return shows no declared bar. Filing markers are drawn in the SVG under each month, with a legend under the chart. Each month has a `<title>` with its figures. A "Show the monthly figures" table under the chart gives the same numbers (declared, supplier purchases, mobile money in, evidence minimum, return status) for screen readers and for officers who want them.
+- **Key figures** show "Declared as a share of evidence" as a whole percentage, or "No evidence" when the evidence minimum is zero.
+- **Decisions** are saved in localStorage under `khoebo.decisions.v1`, keyed by trader ID, newest first, at most 200 per trader. The reason is trimmed and must be 10 to 500 characters. The form is disabled until the browser has loaded saved decisions. Times show in Lesotho time.
+- **Landing figures** now come from the real `data/test_results.json` (the stub flag is gone): 38% fewer officer cases (74.7 against 120.8 a population), 96% follow-up precision, 48 found against 49. They match the copy in 5.1.
+- **Checked, 2 November 2026,** on a local production build in Chrome: summary card and chip filters, a shared filter URL (`?action=review&district=Berea` shows 7 traders), all three demo detail pages, saving a decision with and without a reason, the log after reload, and no horizontal scroll at 360px on `/officer` and the detail pages. Not yet checked on the live site.
