@@ -150,7 +150,7 @@ Every status pill shows its written label. Colour is never the only signal.
 - No mokorotlo emblem, no RSL logo, no WhatsApp name, logo or green.
 - The wordmark is the word "Khoebo" set in bold `flag-blue`, with the Khoebo mark to its left (added 29 October 2026, see section 14): a white chat bubble holding three rising bars, the last one `flag-green`, on a `flag-blue` circle.
 - A small pill reading "Prototype · RSL Taxathon 2026" sits in every page header.
-- Footer text on every page: "Prototype built for the RSL Taxathon 2026 by Tumelo Mofubetsoana, New Empire AI. Not an official RSL service. All data shown is simulated."
+- Footer text on every page: "Prototype built for the RSL Taxathon 2026 by Tumelo Mofubetsoana. Not an official RSL service. All data shown is simulated."
 
 ### Accessibility
 
@@ -712,9 +712,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 
 ### Credit (29 October 2026)
 
-- The footer names the builder as "Tumelo Mofubetsoana, New Empire AI" (section 4 updated), so judges see the person behind the entry as well as the company that may keep the code (see section 13).
-- The assistant still describes itself as "built by New Empire AI" in `lib/prompt.ts`: traders don't need a personal name.
-- Check at the 2 November Q&A whether entries must be in an individual's or a company's name, and adjust the footer if needed.
+- **Changed 5 November 2026:** at the owner's request, the site credits only "Tumelo Mofubetsoana". New Empire AI is gone from the footer (section 4 updated) and from the assistant's self-description in `lib/prompt.ts`. RSL's Q&A confirms individuals may enter (section 13). The address khoebo.newempireai.online still contains the company name, because changing it is a separate DNS and Vercel job.
 
 ### Logo (29 October 2026)
 
