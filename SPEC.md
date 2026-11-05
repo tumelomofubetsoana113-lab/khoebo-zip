@@ -872,3 +872,9 @@ The owner asked for this after reading RSL's Lekuka public awareness session: in
 **Limits, stated plainly:** these are receipts we drew, with damage we drew, so these figures show it works on realistic layouts. They don't show how it does on real phone photos of real wholesale receipts, which are likely to be harder, so "0 wrong" won't hold forever: that's why the trader checks the card before saving. None of the 10 test traders has tried receipts yet, and the median reply of 3.2 seconds was on a fast connection.
 
 **Real phone test, 5 November 2026:** the owner took a photo of a receipt with the phone camera through Take a photo, and reported that it worked cleanly. This is the first test of the camera itself; the earlier tests used the file picker. It is one receipt on one phone, so the limits above still apply.
+
+### Concept note updated (5 November 2026)
+
+The concept note in the owner's Blueprint folder now matches what was built: the live link, the prototype against the pilot, receipts and Lekuka, the officer view, the trader, receipt and chat test results, RSL's Q&A, and a first cost figure. The original is kept beside it, marked as the 27 October version.
+
+- **Cost figure, from the server's token counts on Haiku 5.5 at listed prices:** about US$0.0003 for an ordinary chat message and US$0.0006 to read a receipt. At an assumed 60 messages and 4 receipts a month, that's about US$0.02 per trader, or US$6 a month for 300 traders. It's a floor: real conversations are longer, and the logs don't count prompt cache writes. Hosting, WhatsApp and SMS fees, support and officer time aren't costed yet.
