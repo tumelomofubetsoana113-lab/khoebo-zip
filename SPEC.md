@@ -798,5 +798,5 @@ Anything built that the sections above don't cover is recorded here, with the st
 | API key not in the browser bundle | Not found in `.next/static`, by value, by `sk-ant` or by name |
 | No `hidden_` field | None in `data/worklist.json` (also a test) |
 | Placeholder note on every tax amount | Shown under the reminder, the return, the filed return and the payment |
-| Lighthouse accessibility | 100 on `/`, `/trader`, `/officer` and `/officer/DEMO-REVIEW` |
-| Lighthouse performance (mobile) | Not reliably measured. On this PC the same build scored 69 to 92 on `/` and 77 to 90 on `/trader`, because Lighthouse's CPU benchmark here varies from about 650 to 1,250. Both pages only run Next.js and React; there's nothing big left to cut. To be confirmed on PageSpeed Insights against the live site |
+| Lighthouse accessibility | 100 on `/`, `/trader`, `/officer` and `/officer/DEMO-REVIEW` with Lighthouse 12. PageSpeed Insights (5 November) gave `/trader` 98 because the page had no `<main>` landmark, which Lighthouse 13 checks. The chat's messages and composer now sit in `<main>` |
+| Lighthouse performance (mobile) | Passed on PageSpeed Insights against the live site, 5 November 2026: `/` 99 and `/trader` 100, with best practices and SEO 100 on both. Local runs on the owner's PC varied from 69 to 92 on `/` and 77 to 90 on `/trader`, so they aren't the measure |

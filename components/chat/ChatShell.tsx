@@ -245,63 +245,65 @@ function ChatSession() {
     <div className={frameClass}>
       <ChatHeader onDemo={() => setDemoOpen(true)} />
 
-      <div className="flex-1 overflow-y-auto px-3 py-4">
-        <p className="mx-auto mb-4 max-w-xs text-center text-xs text-muted">{strings.footer.text}</p>
-        <div role="log" aria-live="polite" aria-label={t.messages} className="space-y-3">
-          {messages.map((m) => (
-            <div key={m.id}>
-              <MessageBubble
-                from={m.role === "user" ? "trader" : "assistant"}
-                time={m.status ? undefined : timeLabel(m.at)}
-                wide={m.ui?.some((b) => b.type !== "quick_replies")}
-              >
-                <span className="sr-only">{m.role === "user" ? t.youSaid : t.assistantSaid}: </span>
-                {m.voice ? (
-                  <>
-                    <span className="sr-only">{t.voiceNote(m.voice.duration)}. </span>
-                    <VoiceBubbleContent duration={m.voice.duration} />
-                  </>
-                ) : (
-                  <span className="whitespace-pre-wrap break-words">{m.text}</span>
-                )}
-                {m.ui && (
-                  <UiBlocks
-                    blocks={m.ui}
-                    used={m.used ?? []}
-                    disabled={pending}
-                    onAction={(action, label) => tapButton(m, action, label)}
-                  />
-                )}
-              </MessageBubble>
-              {m.voice && (
-                <p className="ml-auto mt-1 max-w-[85%] text-right text-sm text-muted">
-                  <span className="font-semibold">{t.transcript}:</span> {m.text}
-                </p>
-              )}
-              {m.status === "failed" && (
-                <button
-                  type="button"
-                  onClick={() => retry(m)}
-                  disabled={pending}
-                  className="ml-auto mt-1 flex min-h-11 items-center gap-1 text-sm font-semibold text-status-followup"
+      <main className="flex min-h-0 flex-1 flex-col">
+        <div className="flex-1 overflow-y-auto px-3 py-4">
+          <p className="mx-auto mb-4 max-w-xs text-center text-xs text-muted">{strings.footer.text}</p>
+          <div role="log" aria-live="polite" aria-label={t.messages} className="space-y-3">
+            {messages.map((m) => (
+              <div key={m.id}>
+                <MessageBubble
+                  from={m.role === "user" ? "trader" : "assistant"}
+                  time={m.status ? undefined : timeLabel(m.at)}
+                  wide={m.ui?.some((b) => b.type !== "quick_replies")}
                 >
-                  <RotateCcw size={14} aria-hidden="true" />
-                  {t.notSent}
-                </button>
-              )}
-            </div>
-          ))}
-          {pending && <TypingIndicator />}
-        </div>
-        {quickReplies.length > 0 && (
-          <div className="mt-3">
-            <QuickReplies options={quickReplies} disabled={pending} onPick={(option) => send({ text: option })} />
+                  <span className="sr-only">{m.role === "user" ? t.youSaid : t.assistantSaid}: </span>
+                  {m.voice ? (
+                    <>
+                      <span className="sr-only">{t.voiceNote(m.voice.duration)}. </span>
+                      <VoiceBubbleContent duration={m.voice.duration} />
+                    </>
+                  ) : (
+                    <span className="whitespace-pre-wrap break-words">{m.text}</span>
+                  )}
+                  {m.ui && (
+                    <UiBlocks
+                      blocks={m.ui}
+                      used={m.used ?? []}
+                      disabled={pending}
+                      onAction={(action, label) => tapButton(m, action, label)}
+                    />
+                  )}
+                </MessageBubble>
+                {m.voice && (
+                  <p className="ml-auto mt-1 max-w-[85%] text-right text-sm text-muted">
+                    <span className="font-semibold">{t.transcript}:</span> {m.text}
+                  </p>
+                )}
+                {m.status === "failed" && (
+                  <button
+                    type="button"
+                    onClick={() => retry(m)}
+                    disabled={pending}
+                    className="ml-auto mt-1 flex min-h-11 items-center gap-1 text-sm font-semibold text-status-followup"
+                  >
+                    <RotateCcw size={14} aria-hidden="true" />
+                    {t.notSent}
+                  </button>
+                )}
+              </div>
+            ))}
+            {pending && <TypingIndicator />}
           </div>
-        )}
-        <div ref={endRef} />
-      </div>
+          {quickReplies.length > 0 && (
+            <div className="mt-3">
+              <QuickReplies options={quickReplies} disabled={pending} onPick={(option) => send({ text: option })} />
+            </div>
+          )}
+          <div ref={endRef} />
+        </div>
 
-      <Composer disabled={pending} onSend={(text) => send({ text })} onOpenVoice={() => setVoiceOpen(true)} />
+        <Composer disabled={pending} onSend={(text) => send({ text })} onOpenVoice={() => setVoiceOpen(true)} />
+      </main>
 
       <VoiceSheet open={voiceOpen} disabled={pending} onClose={() => setVoiceOpen(false)} onPick={sendVoice} />
       <DemoMenu open={demoOpen} busy={pending} onClose={() => setDemoOpen(false)} onChoose={chooseDemo} />
