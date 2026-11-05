@@ -523,7 +523,7 @@ One step at a time. Each step ends with `npm run test`, `npm run build`, and its
 | 10 | Tue 3 to Wed 4 Nov | Polish, accessibility pass, Lighthouse, bug fixes | Full test checklist in section 12 passes |
 | 10b | Thu 5 Nov | Receipt upload and the simulated Lekuka check (added by the owner on 5 November, see section 14) | Receipt eval passes with no wrong figures shown; journey works at 360px over Slow 4G |
 | 11 | Thu 5 Nov | Record the demo video | Video covers all three cases |
-| 12 | Fri 6 Nov | Submit | |
+| 12 | Fri 6 Nov | Submit the technical proposal, with the live link, to taxathon@rsl.org.ls by 17:00. RSL's demo and presentation come on 19 to 20 November, if shortlisted | |
 
 If time runs short, cut in this order: the voice sheet, the registration card, the payment card, sector filter. Never cut the three demo cases, the officer reasons or the override panel.
 
@@ -880,3 +880,11 @@ The owner asked for this after reading RSL's Lekuka public awareness session: in
 The concept note in the owner's Blueprint folder now matches what was built: the live link, the prototype against the pilot, receipts and Lekuka, the officer view, the trader, receipt and chat test results, RSL's Q&A, and a first cost figure. The original is kept beside it, marked as the 27 October version.
 
 - **Cost figure, from the server's token counts on Haiku 5.5 at listed prices:** about US$0.0003 for an ordinary chat message and US$0.0006 to read a receipt. At an assumed 60 messages and 4 receipts a month, that's about US$0.02 per trader, or US$6 a month for 300 traders. It's a floor: real conversations are longer, and the logs don't count prompt cache writes. Hosting, WhatsApp and SMS fees, support and officer time aren't costed yet.
+
+### Technical proposal (5 November 2026)
+
+Written at the owner's request, as `Khoebo RSL Taxathon Technical Proposal.docx` in the owner's Blueprint folder. RSL's call and Q&A ask for a technical proposal on 6 November, not a video, so the video moves to preparation for the event if shortlisted.
+
+- **Running costs for 300 traders:** about US$227 a month: AI US$15 (measured, then budgeted at US$0.05 per trader), hosting US$20, WhatsApp US$192 (64 replies per trader at about US$0.01). WhatsApp is about 85% of it. The hosting and WhatsApp prices come from published secondary sources, and Lesotho's WhatsApp rate isn't confirmed. On web chat alone it's about US$35 a month. SMS, the pilot database, moving the officer view into RSL's network, and people aren't costed.
+- **A pilot on WhatsApp needs a secure database,** because there is no browser storage to keep records in. RSL would still see only filed returns, but that promise would then rest on access controls.
+- **Commitments the proposal makes for the owner to confirm:** the one-year engagement, showing the prototype at Thaba-Bosiu, and taking judges through the code on request. It also asks how RSL's IP clause applies to code built before the event.
