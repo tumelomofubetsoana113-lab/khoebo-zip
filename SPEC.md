@@ -1,7 +1,7 @@
 # Khoebo build spec
 
 Prototype for the RSL Taxathon 2026, Challenge 1 (informal sector compliance).
-Owner: Tumelo Mofubetsoana, New Empire AI. Live at khoebo.newempireai.online.
+Owner: Tumelo Mofubetsoana, New Empire AI. Live at https://khoebo-r8lc.vercel.app (the link to submit). Also served at khoebo.newempireai.online.
 Submission due 6 November 2026. Spec written 28 October 2026.
 
 ## 1. What we are building and why
@@ -712,7 +712,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 
 ### Credit (29 October 2026)
 
-- **Changed 5 November 2026:** at the owner's request, the site credits only "Tumelo Mofubetsoana". New Empire AI is gone from the footer (section 4 updated) and from the assistant's self-description in `lib/prompt.ts`. RSL's Q&A confirms individuals may enter (section 13). The address khoebo.newempireai.online still contains the company name, because changing it is a separate DNS and Vercel job.
+- **Changed 5 November 2026:** at the owner's request, the site credits only "Tumelo Mofubetsoana". New Empire AI is gone from the footer (section 4 updated) and from the assistant's self-description in `lib/prompt.ts`. RSL's Q&A confirms individuals may enter (section 13). The owner will submit https://khoebo-r8lc.vercel.app, whose address doesn't contain the company name. On 5 November its pages returned 200 with the new credit, and a test chat message there was answered with the owner's name. khoebo.newempireai.online still serves the same site.
 
 ### Logo (29 October 2026)
 

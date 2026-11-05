@@ -7,7 +7,7 @@ Khoebo is a prototype for the Revenue Services Lesotho (RSL) Taxathon 2026, Chal
 
 The full plan is in `SPEC.md`. Read it before starting any task, and build in the order set out in its "Build order" section. Don't skip ahead.
 
-Submission deadline: 6 November 2026. Live address: khoebo.newempireai.online.
+Submission deadline: 6 November 2026. Live address to submit: https://khoebo-r8lc.vercel.app (also served at khoebo.newempireai.online).
 
 ## Stack
 
