@@ -873,6 +873,8 @@ The owner asked for this after reading RSL's Lekuka public awareness session: in
 
 **Real phone test, 5 November 2026:** the owner took a photo of a receipt with the phone camera through Take a photo, and reported that it worked cleanly. This is the first test of the camera itself; the earlier tests used the file picker. It is one receipt on one phone, so the limits above still apply.
 
+**Found in the proposal screenshots and fixed, 5 November 2026:** the AI sometimes added its own "Save" and "Change" quick replies under the receipt card. Those send a typed message, which by design doesn't save, so a trader could tap Save and nothing would be recorded. `blocksToShow` in `lib/blocks.ts` now drops quick replies beside any card with its own buttons (receipt and return cards), and the prompt says not to offer them.
+
 ### Concept note updated (5 November 2026)
 
 The concept note in the owner's Blueprint folder now matches what was built: the live link, the prototype against the pilot, receipts and Lekuka, the officer view, the trader, receipt and chat test results, RSL's Q&A, and a first cost figure. The original is kept beside it, marked as the 27 October version.

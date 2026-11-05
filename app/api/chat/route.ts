@@ -4,6 +4,7 @@
 
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
+import { blocksToShow } from "@/lib/blocks";
 import { todayISO } from "@/lib/dates";
 import { contextBlock, SYSTEM_PROMPT } from "@/lib/prompt";
 import { attachmentLooksValid, MAX_ATTACHMENT_CHARS, ReceiptAttachmentSchema } from "@/lib/receipts";
@@ -242,12 +243,10 @@ export async function POST(request: Request) {
     }),
   );
 
-  // Only the last set of quick replies is shown.
-  const lastQuickReplies = ui.findLastIndex((b) => b.type === "quick_replies");
   const response: ChatResponse = {
     reply: reply || strings.chat.replies.fallback,
     state,
-    ui: ui.filter((b, i) => b.type !== "quick_replies" || i === lastQuickReplies),
+    ui: blocksToShow(ui),
     tools,
     remaining: Math.max(0, MAX_MESSAGES - state.messageCount),
   };

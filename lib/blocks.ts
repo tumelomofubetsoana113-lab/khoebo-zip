@@ -78,3 +78,12 @@ export type UiBlock =
       lekuka: "verified" | "mismatch" | "not_found" | "no_code";
       possibleDuplicate: boolean;
     };
+
+// What the browser is sent. Only the last set of quick replies shows. A receipt
+// or return card has its own Save or Confirm button, and a quick reply beside it
+// would send a typed message, which by design can't save or file anything.
+export function blocksToShow(ui: UiBlock[]): UiBlock[] {
+  const lastQuickReplies = ui.findLastIndex((b) => b.type === "quick_replies");
+  const hasOwnButtons = ui.some((b) => b.type === "receipt_card" || b.type === "return_card");
+  return ui.filter((b, i) => b.type !== "quick_replies" || (i === lastQuickReplies && !hasOwnButtons));
+}

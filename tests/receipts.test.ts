@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import cases from "./receipt-eval/cases.json";
+import { blocksToShow, type UiBlock } from "@/lib/blocks";
 import { buttonKey } from "@/lib/chat";
 import { checkLekukaInvoice } from "@/lib/lekuka";
 import { attachmentKind, attachmentLooksValid, ReceiptAttachmentSchema, scaleToFit } from "@/lib/receipts";
@@ -231,6 +232,24 @@ describe("receipt files", () => {
     expect(scaleToFit(3000, 4000)).toEqual({ width: 1176, height: 1568 });
     expect(scaleToFit(4000, 1000)).toEqual({ width: 1568, height: 392 });
     expect(scaleToFit(576, 1100)).toEqual({ width: 576, height: 1100 });
+  });
+});
+
+describe("blocksToShow", () => {
+  const quick = (o: string): UiBlock => ({ type: "quick_replies", options: [o] });
+  const card = runTool("read_receipt", LEKUKA_RECEIPT, state, ctx()).ui![0];
+
+  it("keeps only the last set of quick replies", () => {
+    expect(blocksToShow([quick("a"), quick("b")])).toEqual([quick("b")]);
+  });
+
+  it("drops quick replies beside a card with its own buttons", () => {
+    expect(blocksToShow([card, quick("Save"), quick("Change")])).toEqual([card]);
+  });
+
+  it("leaves other blocks alone", () => {
+    const note: UiBlock = { type: "placeholder_note", text: "x" };
+    expect(blocksToShow([note, quick("a")])).toEqual([note, quick("a")]);
   });
 });
 
