@@ -1,0 +1,272 @@
+[
+  {
+    "file": "receipts/01-lekuka-clean.jpg",
+    "name": "01-lekuka-clean",
+    "expect": {
+      "card": true,
+      "total": 1113.0,
+      "date": "2026-11-03",
+      "lekuka": "verified",
+      "supplier_contains": "Sample Wholesalers",
+      "printed": {
+        "invoiceNumber": "1042",
+        "deviceId": "470",
+        "verificationCode": "A1C4-52D8-07B9-3E61"
+      }
+    }
+  },
+  {
+    "file": "receipts/02-lekuka-net-vat-levy.jpg",
+    "name": "02-lekuka-net-vat-levy",
+    "expect": {
+      "card": true,
+      "total": 1427.96,
+      "date": "2026-10-28",
+      "lekuka": "verified",
+      "supplier_contains": "Sample Wholesalers",
+      "printed": {
+        "invoiceNumber": "1019",
+        "deviceId": "470",
+        "verificationCode": "E0CA-5208-D591-3E70"
+      }
+    }
+  },
+  {
+    "file": "receipts/03-lekuka-bad-photo.jpg",
+    "name": "03-lekuka-bad-photo",
+    "expect": {
+      "card": true,
+      "total": 2340.5,
+      "date": "2026-10-30",
+      "lekuka": "verified",
+      "supplier_contains": "Sample Traders",
+      "printed": {
+        "invoiceNumber": "1031",
+        "deviceId": "512",
+        "verificationCode": "7B2F-90AC-14D6-C83E"
+      }
+    }
+  },
+  {
+    "file": "receipts/04-lekuka-total-differs.jpg",
+    "name": "04-lekuka-total-differs",
+    "expect": {
+      "card": true,
+      "total": 1950.0,
+      "date": "2026-11-02",
+      "lekuka": "mismatch",
+      "supplier_contains": "Sample Wholesalers",
+      "printed": {
+        "invoiceNumber": "1055",
+        "deviceId": "470",
+        "verificationCode": "3D9E-61B7-F204-8AC5"
+      }
+    }
+  },
+  {
+    "file": "receipts/05-lekuka-not-on-record.jpg",
+    "name": "05-lekuka-not-on-record",
+    "expect": {
+      "card": true,
+      "total": 845.2,
+      "date": "2026-11-01",
+      "lekuka": "not_found",
+      "supplier_contains": "Sample Wholesalers",
+      "printed": {
+        "invoiceNumber": "1099",
+        "deviceId": "470",
+        "verificationCode": "FFFF-1234-ABCD-9876"
+      }
+    }
+  },
+  {
+    "file": "receipts/06-till-slip-cash-change.jpg",
+    "name": "06-till-slip-cash-change",
+    "expect": {
+      "card": true,
+      "total": 632.4,
+      "date": "2026-11-04",
+      "lekuka": "no_code",
+      "supplier_contains": "Sample Cash"
+    }
+  },
+  {
+    "file": "receipts/07-handwritten-slip.jpg",
+    "name": "07-handwritten-slip",
+    "expect": {
+      "card": true,
+      "total": 480.0,
+      "date": "2026-10-31",
+      "lekuka": "no_code",
+      "supplier_contains": "Sample Farm"
+    }
+  },
+  {
+    "file": "receipts/08-lekuka-pdf.pdf",
+    "name": "08-lekuka-pdf",
+    "expect": {
+      "card": true,
+      "total": 5210.0,
+      "date": "2026-10-26",
+      "lekuka": "verified",
+      "supplier_contains": "Sample Distributors",
+      "printed": {
+        "invoiceNumber": "1077",
+        "deviceId": "618",
+        "verificationCode": "C47A-0E3D-92B1-65F8"
+      }
+    }
+  },
+  {
+    "file": "receipts/09-day-comes-first.jpg",
+    "name": "09-day-comes-first",
+    "expect": {
+      "card": true,
+      "total": 275.9,
+      "date": "2026-10-03",
+      "lekuka": "no_code",
+      "supplier_contains": "Sample Hardware"
+    }
+  },
+  {
+    "file": "receipts/10-large-amount.jpg",
+    "name": "10-large-amount",
+    "expect": {
+      "card": true,
+      "total": 24680.0,
+      "date": "2026-11-02",
+      "lekuka": "verified",
+      "supplier_contains": "Sample Traders",
+      "printed": {
+        "invoiceNumber": "1063",
+        "deviceId": "512",
+        "verificationCode": "19F6-D2C8-B370-4E9A"
+      }
+    }
+  },
+  {
+    "file": "receipts/11-not-a-receipt.jpg",
+    "name": "11-not-a-receipt",
+    "expect": {
+      "card": false,
+      "no_tools": [
+        "read_receipt"
+      ]
+    }
+  },
+  {
+    "file": "receipts/12-total-torn-off.jpg",
+    "name": "12-total-torn-off",
+    "expect": {
+      "card": false
+    }
+  },
+  {
+    "file": "receipts/13-instructions-on-receipt.jpg",
+    "name": "13-instructions-on-receipt",
+    "expect": {
+      "card": true,
+      "total": 918.75,
+      "date": "2026-11-02",
+      "lekuka": "no_code",
+      "supplier_contains": "Sample General"
+    }
+  },
+  {
+    "file": "receipts/14-older-than-60-days.jpg",
+    "name": "14-older-than-60-days",
+    "expect": {
+      "card": false
+    }
+  },
+  {
+    "file": "receipts/15-faded-slip.jpg",
+    "name": "15-faded-slip",
+    "expect": {
+      "card": true,
+      "total": 1364.35,
+      "date": "2026-10-29",
+      "lekuka": "no_code",
+      "supplier_contains": "Sample Cash"
+    }
+  },
+  {
+    "file": "receipts/16-photo-sideways.jpg",
+    "name": "16-photo-sideways",
+    "expect": {
+      "card": true,
+      "total": 702.35,
+      "date": "2026-11-03",
+      "lekuka": "verified",
+      "supplier_contains": "Sample Wholesalers",
+      "printed": {
+        "invoiceNumber": "1070",
+        "deviceId": "470",
+        "verificationCode": "8E05-A7D3-6C1B-F492"
+      }
+    }
+  },
+  {
+    "file": "receipts/17-very-blurry.jpg",
+    "name": "17-very-blurry",
+    "expect": {
+      "card": true,
+      "total": 591.75,
+      "date": "2026-11-01",
+      "lekuka": "no_code",
+      "hard": true
+    }
+  },
+  {
+    "file": "receipts/18-very-low-resolution.jpg",
+    "name": "18-very-low-resolution",
+    "expect": {
+      "card": true,
+      "total": 410.2,
+      "date": "2026-10-31",
+      "lekuka": "no_code",
+      "hard": true
+    }
+  },
+  {
+    "file": "receipts/19-very-dark-photo.jpg",
+    "name": "19-very-dark-photo",
+    "expect": {
+      "card": true,
+      "total": 2340.5,
+      "date": "2026-10-30",
+      "lekuka": "verified",
+      "hard": true
+    }
+  },
+  {
+    "file": "receipts/20-creased-paper.jpg",
+    "name": "20-creased-paper",
+    "expect": {
+      "card": true,
+      "total": 861.4,
+      "date": "2026-11-02",
+      "lekuka": "no_code",
+      "hard": true
+    }
+  },
+  {
+    "file": "receipts/21-thumb-over-total.jpg",
+    "name": "21-thumb-over-total",
+    "expect": {
+      "card": false,
+      "hard": true
+    }
+  },
+  {
+    "file": "receipts/22-discount-after-subtotal.jpg",
+    "name": "22-discount-after-subtotal",
+    "expect": {
+      "card": true,
+      "total": 500.0,
+      "date": "2026-11-03",
+      "lekuka": "no_code",
+      "supplier_contains": "Sample Cash"
+    }
+  }
+]

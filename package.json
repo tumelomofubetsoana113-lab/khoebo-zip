@@ -9,6 +9,7 @@
     "lint": "eslint",
     "test": "vitest run --passWithNoTests",
     "eval:chat": "node tests/chat-eval/run.mts",
+    "eval:receipts": "node tests/receipt-eval/run.mts",
     "data": "python3 scripts/export_worklist.py"
   },
   "dependencies": {

@@ -1,0 +1,238 @@
+{
+  "runAt": "2026-11-05",
+  "model": "claude-haiku-5-5",
+  "receipts": 22,
+  "runsEach": 5,
+  "runs": 110,
+  "normalSet": {
+    "runs": 85,
+    "fullyRight": 85
+  },
+  "hardSet": {
+    "runs": 25,
+    "right": 15,
+    "declined": 10,
+    "wrong": 0
+  },
+  "fields": {
+    "total": {
+      "right": 70,
+      "of": 70
+    },
+    "date": {
+      "right": 70,
+      "of": 70
+    },
+    "supplier": {
+      "right": 70,
+      "of": 70
+    },
+    "lekuka": {
+      "right": 70,
+      "of": 70
+    }
+  },
+  "medianReplySeconds": 3.2,
+  "saveFlowPassed": true,
+  "byReceipt": [
+    {
+      "name": "01-lekuka-clean",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "02-lekuka-net-vat-levy",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "03-lekuka-bad-photo",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "04-lekuka-total-differs",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "05-lekuka-not-on-record",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "06-till-slip-cash-change",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "07-handwritten-slip",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "08-lekuka-pdf",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "09-day-comes-first",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "10-large-amount",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "11-not-a-receipt",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 0,
+      "declined": 5,
+      "wrong": 0
+    },
+    {
+      "name": "12-total-torn-off",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 0,
+      "declined": 5,
+      "wrong": 0
+    },
+    {
+      "name": "13-instructions-on-receipt",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "14-older-than-60-days",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 0,
+      "declined": 5,
+      "wrong": 0
+    },
+    {
+      "name": "15-faded-slip",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "16-photo-sideways",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "17-very-blurry",
+      "hard": true,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "18-very-low-resolution",
+      "hard": true,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "19-very-dark-photo",
+      "hard": true,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    },
+    {
+      "name": "20-creased-paper",
+      "hard": true,
+      "passed": 5,
+      "runs": 5,
+      "right": 0,
+      "declined": 5,
+      "wrong": 0
+    },
+    {
+      "name": "21-thumb-over-total",
+      "hard": true,
+      "passed": 5,
+      "runs": 5,
+      "right": 0,
+      "declined": 5,
+      "wrong": 0
+    },
+    {
+      "name": "22-discount-after-subtotal",
+      "hard": false,
+      "passed": 5,
+      "runs": 5,
+      "right": 5,
+      "declined": 0,
+      "wrong": 0
+    }
+  ],
+  "limits": "Made-up receipts with drawn damage, not real phone photos."
+}

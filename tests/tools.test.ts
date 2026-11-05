@@ -47,6 +47,8 @@ describe("tool definitions", () => {
       "start_payment",
       "start_registration",
       "show_reminder",
+      "read_receipt",
+      "save_receipt",
       "offer_quick_replies",
     ]);
     for (const tool of toolDefinitions) {
