@@ -66,6 +66,31 @@ export const strings = {
     demoLoaded:
       "Demo trader loaded: a fruit and vegetable seller in Maseru, registered with RSL, with four weeks of sales and purchases. Try asking how the week is going.",
     demoQuickReplies: ["How am I doing?", "How much tax do I owe?", "File my return"],
+    receipt: {
+      open: "Send a receipt",
+      title: "Send a receipt",
+      intro: "Send a supplier's receipt and Khoebo fills in the purchase for you. You check it before it's saved.",
+      takePhoto: "Take a photo",
+      choose: "Choose a photo or PDF",
+      preparing: "Getting your file ready…",
+      privacy:
+        "Prototype: the picture goes to Khoebo's AI provider to be read, and Khoebo doesn't save it. Please use a sample, or a receipt you're happy to share.",
+      samplesHeading: "Or try a sample receipt",
+      samples: [
+        { src: "/samples/receipts/lekuka-verified.jpg", title: "Wholesaler receipt with a Lekuka code", hint: "The simulated check passes" },
+        { src: "/samples/receipts/lekuka-mismatch.jpg", title: "Lekuka receipt with a different total", hint: "The simulated check asks you to look again" },
+        { src: "/samples/receipts/till-slip.jpg", title: "Till slip with no Lekuka code", hint: "Can still be saved" },
+      ],
+      photoSent: "Receipt photo",
+      pdfSent: "Receipt PDF",
+      previewAlt: "The receipt you sent",
+      errors: {
+        too_big: "That file is too big. Try a photo, or a PDF under 2 MB.",
+        wrong_type: "Please choose a photo or a PDF.",
+        unreadable: "That file couldn't be opened. Please try another one.",
+        sample: "The sample couldn't be loaded. Please check your connection.",
+      },
+    },
     voice: {
       title: "Voice notes (simulated in this prototype)",
       intro: "Tap a note to send it. In a pilot, Khoebo would transcribe real voice notes.",
@@ -126,6 +151,20 @@ export const strings = {
       reminderTitle: (period: string) => `Reminder: return ${period}`,
       fileNow: "File now",
       done: "Done",
+      receiptTitle: "Check this receipt",
+      supplier: "Supplier",
+      date: "Date",
+      totalPaid: "Total",
+      savePurchase: "Save purchase",
+      saved: "Saved",
+      dateAssumed: "The date wasn't clear, so today is used. Tap Change if that's wrong.",
+      possibleDuplicate: "A receipt with this date and total is already saved. Is this a new purchase?",
+      lekuka: {
+        verified: "Lekuka check passed (simulated)",
+        mismatch: "Lekuka check: something differs from the record (simulated). Please check the figures.",
+        not_found: "Lekuka check: couldn't be matched (simulated). You can still save it.",
+        no_code: "No Lekuka code on this receipt. You can still save it.",
+      },
     },
     // Replies the server sends without asking the model.
     replies: {
@@ -133,6 +172,7 @@ export const strings = {
         "You've reached the message limit for this demo. Open the Demo menu and choose \"Reset everything\" to start again.",
       refusal: "Sorry, I can't help with that. I can help you record sales and purchases, or with your tax return.",
       fallback: "Sorry, something went wrong on my side. Please try again.",
+      fileUnreadable: "Sorry, I couldn't open that file. Please try a clear photo of the receipt, or another PDF.",
     },
   },
   onboarding: {

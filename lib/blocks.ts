@@ -14,6 +14,22 @@ export const ChatActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("file_now"), period: z.string().max(10) }),
   z.object({ type: z.literal("undo_entry"), entryId: z.string().max(32) }),
   z.object({ type: z.literal("simulate_reminder") }),
+  z.object({
+    type: z.literal("confirm_receipt"),
+    receiptId: z.string().max(32),
+    total: z.number(),
+    date: z.iso.date(),
+    note: z.string().max(100).nullable(),
+    invoiceNumber: z.string().max(60).nullable(),
+    deviceId: z.string().max(60).nullable(),
+    verificationCode: z.string().max(60).nullable(),
+  }),
+  z.object({
+    type: z.literal("change_receipt"),
+    receiptId: z.string().max(32),
+    total: z.number(),
+    date: z.iso.date(),
+  }),
 ]);
 
 export type ChatAction = z.infer<typeof ChatActionSchema>;
@@ -47,4 +63,18 @@ export type UiBlock =
   | { type: "payment_card"; period: string; amount: number; reference: string; note: string | null }
   | { type: "registration_card"; checklist: string[]; handoff: string }
   | { type: "reminder_card"; period: string; dueDate: string; taxEstimate: number; note: string | null }
-  | { type: "placeholder_note"; text: string };
+  | { type: "placeholder_note"; text: string }
+  | {
+      type: "receipt_card";
+      receiptId: string;
+      supplier: string | null;
+      date: string;
+      dateAssumed: boolean; // no clear date on the receipt, so today was used
+      total: number;
+      note: string | null;
+      invoiceNumber: string | null;
+      deviceId: string | null;
+      verificationCode: string | null;
+      lekuka: "verified" | "mismatch" | "not_found" | "no_code";
+      possibleDuplicate: boolean;
+    };

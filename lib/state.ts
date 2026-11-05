@@ -12,8 +12,16 @@ export const EntrySchema = z.object({
   amount: money.positive(),
   date: isoDate,
   note: z.string().max(100).optional(),
-  source: z.enum(["text", "voice", "button"]),
+  source: z.enum(["text", "voice", "button", "receipt"]),
   createdAt: z.iso.datetime(),
+  // Only for entries saved from a receipt. The picture itself is never kept.
+  receipt: z
+    .object({
+      invoiceNumber: z.string().max(60).optional(),
+      deviceId: z.string().max(60).optional(),
+      lekuka: z.enum(["verified", "mismatch", "not_found", "no_code"]),
+    })
+    .optional(),
 });
 
 export const FiledReturnSchema = z.object({

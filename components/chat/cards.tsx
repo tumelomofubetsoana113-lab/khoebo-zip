@@ -1,7 +1,7 @@
 // Cards that render inside Khoebo's bubbles. Amounts arrive as numbers from
 // the tools and are only formatted here, never calculated.
 
-import { CheckCircle2, Circle, Info } from "lucide-react";
+import { CheckCircle2, Circle, Info, ShieldCheck } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import type { ChatAction, UiBlock } from "@/lib/blocks";
@@ -86,6 +86,7 @@ function EntryReceipt({ entry, ...props }: ActionProps & { entry: Extract<UiBloc
             {entry.kind === "sale" ? t.sale : t.purchase} {formatMoney(entry.amount)} · {formatDate(entry.date)}
           </p>
           {entry.note && <p className="text-sm text-muted">{entry.note}</p>}
+          {entry.receipt?.lekuka === "verified" && <LekukaLine status="verified" />}
         </div>
       </div>
       <div className="mt-1 flex justify-end">
@@ -96,6 +97,51 @@ function EntryReceipt({ entry, ...props }: ActionProps & { entry: Extract<UiBloc
           doneLabel={t.undone}
           variant="secondary"
         />
+      </div>
+    </CardFrame>
+  );
+}
+
+function LekukaLine({ status }: { status: keyof typeof t.lekuka }) {
+  const verified = status === "verified";
+  const Icon = verified ? ShieldCheck : Info;
+  return (
+    <p className={`mt-2 flex gap-1.5 text-sm ${verified ? "font-semibold text-green-text" : "text-muted"}`}>
+      <Icon size={16} aria-hidden="true" className={`mt-0.5 shrink-0 ${verified ? "text-flag-green" : ""}`} />
+      <span>{t.lekuka[status]}</span>
+    </p>
+  );
+}
+
+function ReceiptCard({ block, ...props }: ActionProps & { block: Extract<UiBlock, { type: "receipt_card" }> }) {
+  const save: ChatAction = {
+    type: "confirm_receipt",
+    receiptId: block.receiptId,
+    total: block.total,
+    date: block.date,
+    note: block.note,
+    invoiceNumber: block.invoiceNumber,
+    deviceId: block.deviceId,
+    verificationCode: block.verificationCode,
+  };
+  const change: ChatAction = { type: "change_receipt", receiptId: block.receiptId, total: block.total, date: block.date };
+  const saved = props.used.includes(buttonKey(save));
+  const changing = props.used.includes(buttonKey(change));
+  return (
+    <CardFrame title={t.receiptTitle}>
+      <Rows
+        rows={[
+          ...(block.supplier ? [{ label: t.supplier, value: block.supplier }] : []),
+          { label: t.date, value: formatDate(block.date) },
+          { label: t.totalPaid, value: formatMoney(block.total) },
+        ]}
+      />
+      <LekukaLine status={block.lekuka} />
+      {block.dateAssumed && <PlaceholderNote text={t.dateAssumed} />}
+      {block.possibleDuplicate && <PlaceholderNote text={t.possibleDuplicate} />}
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        {!changing && <CardButton {...props} action={save} label={t.savePurchase} doneLabel={t.saved} />}
+        {!saved && <CardButton {...props} action={change} label={t.change} doneLabel={t.change} variant="secondary" />}
       </div>
     </CardFrame>
   );
@@ -207,6 +253,8 @@ export function UiBlocks({ blocks, ...props }: ActionProps & { blocks: UiBlock[]
             return <RegistrationCard key={i} block={block} />;
           case "placeholder_note":
             return <PlaceholderNote key={i} text={block.text} />;
+          case "receipt_card":
+            return <ReceiptCard key={i} block={block} {...props} />;
           default:
             return null; // quick_replies, and anything unknown from an older save
         }

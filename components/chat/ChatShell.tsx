@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowLeft, RotateCcw } from "lucide-react";
+import { ArrowLeft, FileText, RotateCcw } from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ChatResponse } from "@/app/api/chat/route";
@@ -22,6 +22,7 @@ import {
 } from "@/lib/chat";
 import { todayISO } from "@/lib/dates";
 import { demoTraderState } from "@/lib/demo";
+import { attachmentKind, type ReceiptAttachment } from "@/lib/receipts";
 import { clearState, emptyState, loadState, saveState, type TraderState } from "@/lib/state";
 import { strings } from "@/lib/strings";
 import { UiBlocks } from "./cards";
@@ -29,14 +30,16 @@ import { Composer } from "./Composer";
 import { DemoMenu, type DemoChoice } from "./DemoMenu";
 import { MessageBubble } from "./MessageBubble";
 import { QuickReplies } from "./QuickReplies";
+import { ReceiptSheet } from "./ReceiptSheet";
 import { TypingIndicator } from "./TypingIndicator";
 import { VoiceBubbleContent } from "./VoiceBubble";
 import { VoiceSheet, type VoiceSample } from "./VoiceSheet";
 
 const t = strings.chat;
 const REQUEST_TIMEOUT_MS = 30_000;
+const RECEIPT_TIMEOUT_MS = 90_000; // sending a picture takes longer on a slow network
 
-type Outgoing = { text: string; voice?: { duration: string }; action?: ChatAction };
+type Outgoing = { text: string; voice?: { duration: string }; action?: ChatAction; attachment?: ReceiptAttachment };
 
 function timeLabel(iso: string): string {
   return new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
@@ -98,6 +101,22 @@ function ChatFrame() {
   );
 }
 
+// The picture shows for this visit only. After a reload there is nothing kept
+// to show, so the bubble just says a receipt was sent.
+function ReceiptPreview({ kind, file }: { kind: "photo" | "pdf"; file?: ReceiptAttachment }) {
+  if (kind === "photo" && file) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- a local data URL, which next/image can't optimise
+      <img
+        src={`data:${file.mediaType};base64,${file.data}`}
+        alt={t.receipt.previewAlt}
+        className="mb-1 max-h-48 rounded-lg"
+      />
+    );
+  }
+  return <FileText size={18} aria-hidden="true" className="mr-1.5 inline-block align-text-bottom" />;
+}
+
 function ChatSession() {
   const [trader, setTrader] = useState<TraderState>(() => loadState());
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
@@ -106,6 +125,10 @@ function ChatSession() {
   });
   const [pending, setPending] = useState(false);
   const [voiceOpen, setVoiceOpen] = useState(false);
+  const [receiptOpen, setReceiptOpen] = useState(false);
+  // Receipts sent this visit, for retrying and for the picture in the bubble.
+  // Held in memory only: they are never written to localStorage.
+  const [attachments, setAttachments] = useState<Record<string, ReceiptAttachment>>({});
   const [demoOpen, setDemoOpen] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
@@ -149,10 +172,13 @@ function ChatSession() {
           text: out.text,
           at: new Date().toISOString(),
           ...(out.voice ? { voice: out.voice } : {}),
+          ...(out.attachment ? { attachment: attachmentKind(out.attachment) } : {}),
           ...(out.action ? { button: true, action: out.action } : {}),
           status: "sending",
         };
         setMessages((all) => [...all, bubble]);
+        const attachment = out.attachment;
+        if (attachment) setAttachments((all) => ({ ...all, [id]: attachment }));
       }
       setPending(true);
 
@@ -164,11 +190,12 @@ function ChatSession() {
         : {
             messages: [...history, { role: "user", content: out.text, ...(out.voice ? { voice: true } : {}) }],
             state: traderRef.current,
+            ...(out.attachment ? { attachment: out.attachment } : {}),
           };
 
       try {
         const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+        const timer = setTimeout(() => controller.abort(), out.attachment ? RECEIPT_TIMEOUT_MS : REQUEST_TIMEOUT_MS);
         const response = await fetch("/api/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -202,7 +229,13 @@ function ChatSession() {
   );
 
   function retry(message: ChatMessage) {
-    send({ text: message.text, voice: message.voice, action: message.action }, { retryOf: message.id });
+    const attachment = attachments[message.id];
+    // The file isn't kept after the page closes, so it has to be chosen again.
+    if (message.attachment && !attachment) {
+      setReceiptOpen(true);
+      return;
+    }
+    send({ text: message.text, voice: message.voice, action: message.action, attachment }, { retryOf: message.id });
   }
 
   // A card button: mark it used on its message, show the tap, send the action.
@@ -214,6 +247,11 @@ function ChatSession() {
   function sendVoice(sample: VoiceSample) {
     setVoiceOpen(false);
     send({ text: sample.transcript, voice: { duration: sample.duration } });
+  }
+
+  function sendReceipt(attachment: ReceiptAttachment) {
+    setReceiptOpen(false);
+    send({ text: attachmentKind(attachment) === "pdf" ? t.receipt.pdfSent : t.receipt.photoSent, attachment });
   }
 
   function chooseDemo(choice: DemoChoice) {
@@ -263,7 +301,10 @@ function ChatSession() {
                       <VoiceBubbleContent duration={m.voice.duration} />
                     </>
                   ) : (
-                    <span className="whitespace-pre-wrap break-words">{m.text}</span>
+                    <>
+                      {m.attachment && <ReceiptPreview kind={m.attachment} file={attachments[m.id]} />}
+                      <span className="whitespace-pre-wrap break-words">{m.text}</span>
+                    </>
                   )}
                   {m.ui && (
                     <UiBlocks
@@ -302,10 +343,16 @@ function ChatSession() {
           <div ref={endRef} />
         </div>
 
-        <Composer disabled={pending} onSend={(text) => send({ text })} onOpenVoice={() => setVoiceOpen(true)} />
+        <Composer
+          disabled={pending}
+          onSend={(text) => send({ text })}
+          onOpenVoice={() => setVoiceOpen(true)}
+          onOpenReceipt={() => setReceiptOpen(true)}
+        />
       </main>
 
       <VoiceSheet open={voiceOpen} disabled={pending} onClose={() => setVoiceOpen(false)} onPick={sendVoice} />
+      <ReceiptSheet open={receiptOpen} disabled={pending} onClose={() => setReceiptOpen(false)} onSend={sendReceipt} />
       <DemoMenu open={demoOpen} busy={pending} onClose={() => setDemoOpen(false)} onChoose={chooseDemo} />
       <ConfirmDialog
         open={resetOpen}

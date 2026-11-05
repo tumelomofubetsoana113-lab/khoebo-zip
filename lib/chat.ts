@@ -11,6 +11,7 @@ export type ChatMessage = {
   text: string;
   at: string; // ISO timestamp
   voice?: { duration: string }; // a (simulated) voice note; text is its transcript
+  attachment?: "photo" | "pdf"; // a receipt was sent; the file itself is never saved
   button?: boolean; // shows a button tap, e.g. "Confirm"
   action?: ChatAction; // the action a button bubble sent, for retrying
   ui?: UiBlock[];
@@ -29,6 +30,7 @@ const ChatMessageSchema = z.object({
   text: z.string(),
   at: z.string(),
   voice: z.object({ duration: z.string() }).optional(),
+  attachment: z.enum(["photo", "pdf"]).optional(),
   button: z.boolean().optional(),
   action: ChatActionSchema.optional(),
   ui: z.array(z.object({ type: z.string() }).loose()).optional(),
@@ -90,6 +92,9 @@ export function buttonKey(action: ChatAction): string {
       return `undo:${action.entryId}`;
     case "simulate_reminder":
       return "reminder";
+    case "confirm_receipt":
+    case "change_receipt":
+      return `${action.type}:${action.receiptId}`;
     default:
       return `${action.type}:${action.period}`;
   }

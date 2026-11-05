@@ -6,6 +6,7 @@ import type Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import { TAX } from "@/config/tax";
 import { formatDate } from "./dates";
+import { checkLekukaInvoice } from "./lekuka";
 import {
   checkEntry,
   correctEntry,
@@ -40,6 +41,10 @@ export function describeAction(action: ChatAction): string {
       return `[Button tapped: Undo, on entry ${action.entryId}. Call correct_entry with entry_id "${action.entryId}" and delete true.]`;
     case "simulate_reminder":
       return "[Demo: simulate the reminder for the current filing period. Call show_reminder.]";
+    case "confirm_receipt":
+      return `[Button tapped: Save purchase, on receipt card ${action.receiptId}. Call save_receipt with receipt_id "${action.receiptId}".]`;
+    case "change_receipt":
+      return `[Button tapped: Change, on the receipt card showing ${formatMoney(action.total)} on ${formatDate(action.date)}. Nothing was saved. Ask what is wrong. When the trader gives the right details, call record_entry with kind "purchase".]`;
   }
 }
 
@@ -50,6 +55,7 @@ export type ToolContext = {
   newReference: () => string; // "MOCK-..."
   source: Entry["source"]; // how the trader's last message arrived
   action?: ChatAction;
+  hasAttachment?: boolean; // the trader's last message came with a receipt
 };
 
 export type ToolOutcome = {
@@ -105,6 +111,29 @@ const inputs = {
   start_payment: z.object({ period: z.string().max(10) }),
   start_registration: z.object({}),
   show_reminder: z.object({}),
+  read_receipt: z.object({
+    supplier: z.string().max(200).optional().describe("The business that issued the receipt, as printed."),
+    date: z
+      .string()
+      .max(40)
+      .optional()
+      .describe("The receipt date as YYYY-MM-DD. Printed dates put the day first: 03/10/2026 is 3 October. Leave out if unclear."),
+    total: z
+      .number()
+      .optional()
+      .describe(
+        "The final amount to pay, copied exactly as printed. Never add up lines or work it out. Leave out if it can't be read.",
+      ),
+    items: z.string().max(300).optional().describe('A few words on what was bought, e.g. "maize meal, cooking oil".'),
+    invoice_number: z.string().max(60).optional().describe("Lekuka receipts only. Leave out if not printed."),
+    device_id: z.string().max(60).optional().describe("Lekuka receipts only. Leave out if not printed."),
+    verification_code: z
+      .string()
+      .max(60)
+      .optional()
+      .describe('The Lekuka verification code, like "E0CA-5208-D591-3E70", copied exactly. Leave out if not printed.'),
+  }),
+  save_receipt: z.object({ receipt_id: z.string().max(32) }),
   offer_quick_replies: z.object({
     // Up to 6 options, or all ten districts for the district question.
     options: z
@@ -138,6 +167,10 @@ const descriptions: Record<ToolName, string> = {
   start_payment: "Show a mock mobile money payment for a filed return. No real money moves.",
   start_registration: "Show what the trader needs to register with RSL, and where to go.",
   show_reminder: "Show the filing reminder for the current filing period, with the estimated tax and due date.",
+  read_receipt:
+    "Report what is printed on the receipt the trader just sent. Checks it and shows a card with Save and Change buttons. Saves nothing. Only call it when a receipt is attached.",
+  save_receipt:
+    "Save the receipt as a purchase. Only works straight after the trader taps Save on the receipt card; never call it because of a typed message.",
   offer_quick_replies:
     "Show up to 6 short tap-to-reply options (under 24 characters each) under your message, or all ten districts when asking for the district. Use whenever you ask a question with a few likely answers.",
 };
@@ -227,6 +260,20 @@ function checkPeriod(period: string, today: string): string | null {
 
 function findReturn(state: TraderState, period: string): FiledReturn | undefined {
   return state.returns.find((r) => r.period === period);
+}
+
+// The same Lekuka invoice can only be saved once.
+function findSavedInvoice(state: TraderState, invoiceNumber?: string | null, deviceId?: string | null): Entry | undefined {
+  if (!invoiceNumber) return undefined;
+  return state.entries.find(
+    (e) => e.receipt?.invoiceNumber === invoiceNumber && (e.receipt?.deviceId ?? null) === (deviceId ?? null),
+  );
+}
+
+// Without an invoice number, the same date and total from a receipt might be a
+// second copy, or might be a second real purchase, so the trader decides.
+function looksLikeSavedReceipt(state: TraderState, total: number, date: string): boolean {
+  return state.entries.some((e) => e.source === "receipt" && e.amount === total && e.date === date);
 }
 
 // ---------------------------------------------------------------------------
@@ -515,6 +562,155 @@ const handlers: Handlers = {
         message: `Write this as a friendly reminder sent ${TAX.reminderDaysBefore} days before the due date.`,
       },
       ui: [{ type: "reminder_card", period, dueDate: dueDate(period), taxEstimate: e.estimate, note: e.note }],
+    };
+  },
+
+  read_receipt(state, input, ctx) {
+    if (!ctx.hasAttachment) {
+      return fail(state, "no_receipt", "No receipt is attached to this message. Ask the trader to send one.");
+    }
+    if (input.total === undefined) {
+      return {
+        state,
+        result: {
+          status: "total_unclear",
+          message: "Nothing to save yet. Ask for a clearer picture, or for the trader to type the amount and date.",
+        },
+      };
+    }
+
+    const check = checkEntry({ amount: input.total, date: input.date, confirmed: true }, ctx.today);
+    if (!check.ok) {
+      if (check.error === "invalid_amount" || check.error === "missing_amount") {
+        return {
+          state,
+          result: {
+            status: "total_unclear",
+            message: "Nothing to save yet. Ask for a clearer picture, or for the trader to type the amount and date.",
+          },
+        };
+      }
+      const messages = {
+        invalid_date: "The date isn't a real date. Ask the trader which day this was.",
+        date_in_future: "The date is in the future, so it may be misread. Ask the trader which day this was.",
+        date_too_old: "Nothing saved. Entries can only go back 60 days, and this receipt is older than that.",
+      };
+      return {
+        state,
+        result: {
+          status: "date_problem",
+          reason: check.error,
+          ...(check.error === "invalid_date" ? {} : { date_text: formatDate(input.date ?? ctx.today) }),
+          message: messages[check.error as keyof typeof messages],
+        },
+      };
+    }
+
+    const invoiceNumber = input.invoice_number?.trim() || null;
+    const deviceId = input.device_id?.trim() || null;
+    const verificationCode = input.verification_code?.trim() || null;
+
+    const saved = findSavedInvoice(state, invoiceNumber, deviceId);
+    if (saved) {
+      return {
+        state,
+        result: {
+          status: "already_saved",
+          saved: entryResult(saved),
+          message: "This invoice is already in the trader's records, so it wasn't added again. Tell them.",
+        },
+      };
+    }
+
+    const lekuka = checkLekukaInvoice(
+      {
+        invoiceNumber: invoiceNumber ?? undefined,
+        deviceId: deviceId ?? undefined,
+        verificationCode: verificationCode ?? undefined,
+      },
+      { total: check.amount, date: check.date },
+    );
+    const supplier = input.supplier?.trim().slice(0, 80) || null;
+    const note = [supplier, input.items?.trim()].filter(Boolean).join(" · ").slice(0, 100) || null;
+    const receiptId = ctx.newId();
+    const dateAssumed = !input.date;
+    const possibleDuplicate = looksLikeSavedReceipt(state, check.amount, check.date);
+
+    return {
+      state,
+      result: {
+        status: "shown",
+        receipt_id: receiptId,
+        shown: "receipt card with Save and Change buttons",
+        supplier,
+        total: money(check.amount),
+        date: check.date,
+        date_text: formatDate(check.date),
+        date_assumed: dateAssumed,
+        lekuka,
+        possible_duplicate: possibleDuplicate,
+        message: "Nothing is saved until the trader taps Save. Ask them to check the card.",
+      },
+      ui: [
+        {
+          type: "receipt_card",
+          receiptId,
+          supplier,
+          date: check.date,
+          dateAssumed,
+          total: check.amount,
+          note,
+          invoiceNumber,
+          deviceId,
+          verificationCode,
+          lekuka: lekuka.status,
+          possibleDuplicate,
+        },
+      ],
+    };
+  },
+
+  save_receipt(state, input, ctx) {
+    const action = ctx.action;
+    if (action?.type !== "confirm_receipt" || action.receiptId !== input.receipt_id) {
+      return fail(state, "needs_button", "Not saved. A receipt is only saved when the trader taps Save on the receipt card.");
+    }
+    // The trader has seen the amount on the card, so a large one needs no second question.
+    const check = checkEntry({ amount: action.total, date: action.date, confirmed: true }, ctx.today);
+    if (!check.ok) return fail(state, check.error, "Not saved. The amount or date on the card can't be used.");
+
+    const saved = findSavedInvoice(state, action.invoiceNumber, action.deviceId);
+    if (saved) {
+      return fail(state, "already_saved", "This invoice is already in the trader's records, so it wasn't added again.");
+    }
+
+    const lekuka = checkLekukaInvoice(
+      {
+        invoiceNumber: action.invoiceNumber ?? undefined,
+        deviceId: action.deviceId ?? undefined,
+        verificationCode: action.verificationCode ?? undefined,
+      },
+      { total: check.amount, date: check.date },
+    );
+    const entry: Entry = {
+      id: ctx.newId(),
+      kind: "purchase",
+      amount: check.amount,
+      date: check.date,
+      ...(action.note ? { note: action.note } : {}),
+      source: "receipt",
+      createdAt: ctx.now,
+      receipt: {
+        ...(action.invoiceNumber ? { invoiceNumber: action.invoiceNumber } : {}),
+        ...(action.deviceId ? { deviceId: action.deviceId } : {}),
+        lekuka: lekuka.status,
+      },
+    };
+    const next = { ...state, entries: [...state.entries, entry] };
+    return {
+      state: next,
+      result: { recorded: entryResult(entry), week_of_entry: entryWeekTotals(next, entry.date, ctx.today) },
+      ui: [{ type: "entry_receipt", entry }],
     };
   },
 

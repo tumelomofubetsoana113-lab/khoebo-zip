@@ -1,6 +1,6 @@
 "use client";
 
-import { Mic, SendHorizontal } from "lucide-react";
+import { Camera, Mic, SendHorizontal } from "lucide-react";
 import { useState } from "react";
 import { strings } from "@/lib/strings";
 
@@ -12,10 +12,12 @@ export function Composer({
   disabled,
   onSend,
   onOpenVoice,
+  onOpenReceipt,
 }: {
   disabled: boolean; // a reply is on its way
   onSend: (text: string) => void;
   onOpenVoice: () => void;
+  onOpenReceipt: () => void;
 }) {
   const [text, setText] = useState("");
   const hasText = text.trim().length > 0;
@@ -30,6 +32,14 @@ export function Composer({
         setText("");
       }}
     >
+      <button
+        type="button"
+        onClick={onOpenReceipt}
+        aria-label={strings.chat.receipt.open}
+        className="flex size-11 shrink-0 items-center justify-center rounded-full border border-line text-flag-blue hover:bg-page"
+      >
+        <Camera size={20} aria-hidden="true" />
+      </button>
       <label htmlFor="composer" className="sr-only">
         {strings.chat.placeholder}
       </label>

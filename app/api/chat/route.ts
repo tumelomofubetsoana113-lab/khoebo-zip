@@ -6,6 +6,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import { todayISO } from "@/lib/dates";
 import { contextBlock, SYSTEM_PROMPT } from "@/lib/prompt";
+import { attachmentLooksValid, MAX_ATTACHMENT_CHARS, ReceiptAttachmentSchema } from "@/lib/receipts";
 import { TraderStateSchema, type TraderState } from "@/lib/state";
 import { strings } from "@/lib/strings";
 import {
@@ -20,6 +21,8 @@ import {
 const MODEL = process.env.ANTHROPIC_MODEL || "claude-haiku-5-5";
 const MAX_MESSAGES = Number(process.env.MAX_MESSAGES_PER_SESSION) || 60;
 const MAX_BODY_BYTES = 100 * 1024;
+// A receipt is the one thing allowed to make a request bigger.
+const MAX_BODY_WITH_RECEIPT_BYTES = MAX_BODY_BYTES + MAX_ATTACHMENT_CHARS;
 const MAX_MESSAGE_CHARS = 500;
 const HISTORY_TURNS = 20;
 const MAX_TOOL_ROUNDS = 5;
@@ -44,6 +47,7 @@ const BodySchema = z.object({
   messages: z.array(MessageSchema).max(MAX_MESSAGES),
   state: TraderStateSchema,
   action: ChatActionSchema.optional(),
+  attachment: ReceiptAttachmentSchema.optional(), // a receipt sent with the last message; never stored or logged
 });
 
 type Body = z.infer<typeof BodySchema>;
@@ -72,6 +76,17 @@ function buildMessages(body: Body): Anthropic.MessageParam[] {
     content: m.role === "user" && m.voice ? `[Voice note transcript] ${m.content}` : m.content,
   }));
   if (body.action) messages.push({ role: "user", content: describeAction(body.action) });
+
+  // A receipt goes with the trader's latest message, on this request only.
+  const last = messages.at(-1);
+  if (body.attachment && last?.role === "user" && typeof last.content === "string") {
+    const { mediaType, data } = body.attachment;
+    const file: Anthropic.ContentBlockParam =
+      mediaType === "application/pdf"
+        ? { type: "document", source: { type: "base64", media_type: mediaType, data } }
+        : { type: "image", source: { type: "base64", media_type: mediaType, data } };
+    last.content = [file, { type: "text", text: `[The trader attached this file.] ${last.content}` }];
+  }
   return messages;
 }
 
@@ -91,9 +106,10 @@ export async function POST(request: Request) {
   const started = Date.now();
 
   const declared = Number(request.headers.get("content-length") ?? 0);
-  if (declared > MAX_BODY_BYTES) return json({ error: "too_large" }, 413);
+  if (declared > MAX_BODY_WITH_RECEIPT_BYTES) return json({ error: "too_large" }, 413);
   const raw = await request.text();
-  if (new TextEncoder().encode(raw).length > MAX_BODY_BYTES) return json({ error: "too_large" }, 413);
+  const size = new TextEncoder().encode(raw).length;
+  if (size > MAX_BODY_WITH_RECEIPT_BYTES) return json({ error: "too_large" }, 413);
 
   let parsed;
   try {
@@ -103,6 +119,10 @@ export async function POST(request: Request) {
   }
   if (!parsed.success) return json({ error: "invalid_request" }, 400);
   const body = parsed.data;
+  if (!body.attachment && size > MAX_BODY_BYTES) return json({ error: "too_large" }, 413);
+  if (body.attachment && (body.action || !attachmentLooksValid(body.attachment))) {
+    return json({ error: "invalid_attachment" }, 400);
+  }
 
   const messages = buildMessages(body);
   if (!messages.length || messages[messages.length - 1].role !== "user") {
@@ -130,6 +150,7 @@ export async function POST(request: Request) {
     newReference: () => `MOCK-${randomString(6)}`,
     source: body.action ? "button" : lastUser?.role === "user" && lastUser.voice ? "voice" : "text",
     action: body.action,
+    hasAttachment: Boolean(body.attachment),
   };
 
   const system: Anthropic.TextBlockParam[] = [
@@ -192,6 +213,17 @@ export async function POST(request: Request) {
     const status = error instanceof Anthropic.APIError ? error.status : undefined;
     const toolNames = tools.map((t) => t.name);
     console.error(JSON.stringify({ event: "chat_error", status, name: (error as Error)?.name, tools: toolNames }));
+    // The file passed our checks but the API couldn't open it. The trader can try another.
+    if (body.attachment && error instanceof Anthropic.BadRequestError) {
+      const response: ChatResponse = {
+        reply: strings.chat.replies.fileUnreadable,
+        state,
+        ui: [],
+        tools,
+        remaining: Math.max(0, MAX_MESSAGES - state.messageCount),
+      };
+      return json(response);
+    }
     if (error instanceof Anthropic.RateLimitError) return json({ error: "busy" }, 503);
     if (error instanceof Anthropic.APIError) return json({ error: "upstream" }, 502);
     return json({ error: "server" }, 500);
