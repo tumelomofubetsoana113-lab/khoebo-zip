@@ -609,15 +609,28 @@ A script, `npm run eval:chat`, sends each message to the running API with a know
 - No `hidden_` field in `data/worklist.json`
 - Every tax amount on screen shows the placeholder note while `TAX.placeholder` is true
 
-## 13. Open items (still waiting on RSL)
+## 13. RSL's answers and open items
 
-The owner missed the 2 November Q&A and is putting these questions to the organisers directly. Until RSL answers, the placeholders and the placeholder note stay.
+From RSL's Participant Q&A document (3 November 2026) and the Q&A session slides (2 November 2026), which the owner received on 5 November.
 
-- SBT rate, threshold, filing period and due dates
-- Whether AI processing outside Lesotho is acceptable for a pilot
-- Submission format and length
-- Whether RSL wants Sesotho in the prototype itself
-- The IP clause and whether New Empire AI keeps the code
+**Answered**
+
+- **What's due:** RSL's stages are a technical proposal on 6 November 2026 at 17:00, then a prototype and presentation on 20 November. The Q&A's summary table and the slide notes also mention the prototype on 6 November, so send the live link with the proposal.
+- **How to submit:** by email to taxathon@rsl.org.ls. Registration has the same deadline and goes to the same address, with the chosen challenge and contact details.
+- **The event:** 19 to 20 November at Thaba-Bosiu Cultural Village. Only shortlisted teams are contacted, with at most 10 teams. Winners commit to at least a year with RSL. Selection is not a procurement commitment and gives no access to live taxpayer systems.
+- **What to include:** the problem; a working prototype or service concept; how a taxpayer and an RSL officer each use it; an ordinary case, an exception and a human-review case; test results, the data needed and its sources; running costs; how it fits RSL's processes; and any policy changes or external agreements needed. Also a pilot definition: user group, test period, baseline, success measures, resources, RSL owner, and what can be tested now against what needs change later.
+- **Judging:** taxpayer and business value 25%, performance and evidence 20%, usability 15%, trust and compliance 15%, pilot potential 15%, innovation 10%.
+- **Design rules:** limited connectivity, language, how businesses keep records, mock data only, explainable and reviewable decisions, and AI only where it adds measurable value.
+- **Eligibility:** individuals may enter, though teams are encouraged. Entrants must be Basotho.
+- **No required technology or platform.**
+
+**Still open**
+
+- SBT rate, threshold, filing period and due dates: not in these documents, so the placeholders and the placeholder note stay.
+- Whether AI processing outside Lesotho is acceptable for a pilot: not answered directly. Declare it in the proposal as a regulatory point to agree.
+- IP: the slides say "Ideas and concepts generated during the event remain RSL's intellectual property". They don't say whether that covers code built before the event, so this needs asking.
+- Whether RSL wants Sesotho in the prototype: not answered directly, but the slides say to speak to users in the language they use, and 5 of the 10 test traders wanted Sesotho as well as English.
+- The baselines the slides say are shared at the briefing, and the briefing minutes the Q&A lists: not yet received.
 
 ## 14. Decisions made during the build
 
@@ -781,7 +794,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 
 ### Polish (step 10)
 
-- **Step 9 had no changes.** The owner missed the 2 November Q&A and is asking the organisers directly, so `config/tax.ts` and the placeholder note are unchanged (section 13).
+- **Step 9 had no code changes.** The owner missed the 2 November Q&A session and received RSL's documents on 5 November. They don't give the tax rates, so `config/tax.ts` and the placeholder note are unchanged. The answers are in section 13.
 - **`/styleguide` deleted,** as planned in step 1. It now returns 404.
 - **Bug fixed: "your sale may not have saved".** Found on Monday 2 November 2026 in the Slow 4G run. `record_entry` returned this week's totals, so a sale dated yesterday (Sunday, last week) wasn't in them. The model then told the trader the sale and a purchase might be missing and offered to record them again, which would have doubled them. Everything had saved. `record_entry` and `correct_entry` now return `week_of_entry`: the totals for the week the entry falls in, with its dates and `is_this_week`. The prompt also says a recorded entry is final and an entry before Monday counts in last week. After the fix the same messages gave "It counts in last week's totals" and no doubts. A test covers the Monday case.
 - **Officer list shows 50 at a time.** Drawing all 303 traders (a table and a card list) blocked the main thread for about 3 seconds on Lighthouse's mobile setting. With 50 it's about 0.65 seconds. The count line still says how many traders match; a second line says how many are listed.
