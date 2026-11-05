@@ -870,3 +870,5 @@ The owner asked for this after reading RSL's Lekuka public awareness session: in
 | Cost | About US$0.0006 to read a receipt at Haiku 5.5's listed prices (averages from the server's token counts: 2,656 input, 427 output, 12,323 cached). Saving is one more ordinary chat turn |
 
 **Limits, stated plainly:** these are receipts we drew, with damage we drew, so these figures show it works on realistic layouts. They don't show how it does on real phone photos of real wholesale receipts, which are likely to be harder, so "0 wrong" won't hold forever: that's why the trader checks the card before saving. None of the 10 test traders has tried receipts yet, and the median reply of 3.2 seconds was on a fast connection.
+
+**Real phone test, 5 November 2026:** the owner took a photo of a receipt with the phone camera through Take a photo, and reported that it worked cleanly. This is the first test of the camera itself; the earlier tests used the file picker. It is one receipt on one phone, so the limits above still apply.
