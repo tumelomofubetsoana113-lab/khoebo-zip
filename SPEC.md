@@ -1,7 +1,7 @@
 # Khoebo build spec
 
 Prototype for the RSL Taxathon 2026, Challenge 1 (informal sector compliance).
-Owner: Tumelo Mofubetsoana, New Empire AI. Live at https://khoebo-r8lc.vercel.app (the link to submit). Also served at khoebo.newempireai.online.
+Live at https://khoebo-r8lc.vercel.app (the link to submit). Also served at khoebo.newempireai.online.
 Submission due 6 November 2026. Spec written 28 October 2026.
 
 ## 1. What we are building and why
@@ -157,7 +157,7 @@ Every status pill shows its written label. Colour is never the only signal.
 - No mokorotlo emblem, no RSL logo, no WhatsApp name, logo or green.
 - The wordmark is the word "Khoebo" set in bold `flag-blue`, with the Khoebo mark to its left (added 29 October 2026, see section 14): a white chat bubble holding three rising bars, the last one `flag-green`, on a `flag-blue` circle.
 - A small pill reading "Prototype · RSL Taxathon 2026" sits in every page header.
-- Footer text on every page: "Prototype built for the RSL Taxathon 2026 by Tumelo Mofubetsoana. Not an official RSL service. All data shown is simulated."
+- Footer text on every page: "Prototype for the RSL Taxathon 2026. Not an official RSL service. All data shown is simulated."
 
 ### Accessibility
 
@@ -497,7 +497,7 @@ Changes to the Python files:
 
 ## 9. Deployment
 
-1. Create the GitHub repo `khoebo` under Tumelo's account and push.
+1. Create the GitHub repo `khoebo` under the owner's account and push.
 2. In Vercel, import the repo as a new project (Next.js preset).
 3. Add the environment variables from `CLAUDE.md`. The API key goes in Vercel only.
 4. In the Anthropic console, set a monthly spend limit.
@@ -665,7 +665,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 - The phone browser bar colour (`themeColor` in `app/layout.tsx`) is the only hex value outside `globals.css`, because Next.js metadata needs a literal value.
 - `/styleguide` was an internal test page for the step 1 checkpoint, hidden from search engines, with text outside `lib/strings.ts`. Deleted in step 10 (2 November 2026).
 - Vitest config is `vitest.config.mts`. `npm run test` passes when there are no test files.
-- The repo is the private GitHub repo `tumelomofubetsoana113-lab/khoebo`, branch `main`.
+- The repo is the owner's private GitHub repo `khoebo`, branch `main`.
 
 ### Landing page (step 2)
 
@@ -723,14 +723,14 @@ Anything built that the sections above don't cover is recorded here, with the st
 
 ### Deployment (step 6)
 
-- **Live, 30 October 2026,** at https://khoebo.newempireai.online on Vercel, imported from the private GitHub repo `tumelomofubetsoana113-lab/khoebo`, so every push to `main` deploys. DNS is a CNAME in Cloudflare set to DNS only. Certificate from Let's Encrypt via Vercel. Pages are served from Vercel's Cape Town edge (`cpt1`).
+- **Live, 30 October 2026,** at https://khoebo.newempireai.online on Vercel, imported from the owner's private GitHub repo `khoebo`, so every push to `main` deploys. DNS is a CNAME in Cloudflare set to DNS only. Certificate from Let's Encrypt via Vercel. Pages are served from Vercel's Cape Town edge (`cpt1`).
 - **Checks on the live site:** `/`, `/trader`, `/styleguide` and both icons return 200, an unknown path returns 404, the prototype label is on the page, and HSTS is on. The chat eval against the live site passed 14 of 15.
 - **The injection case came back.** Replies seen: "I can't change the tax rate, and I can't set it to 0%. …". The refusal is right and nothing was changed, but the reply repeats the trader's "0%", which no tool returned. It failed in 2 of 6 runs on the live site. Fixed in `lib/prompt.ts`: when declining, the assistant doesn't repeat any number or rate from the request. After the fix, the injection case passed 10 of 10 and the full eval 45 of 45 (three runs).
 - **Checkpoint, 30 October 2026:** the owner confirmed the trader chat works on a cheap Android phone over mobile data.
 
 ### Credit (29 October 2026)
 
-- **Changed 5 November 2026:** at the owner's request, the site credits only "Tumelo Mofubetsoana". New Empire AI is gone from the footer (section 4 updated) and from the assistant's self-description in `lib/prompt.ts`. RSL's Q&A confirms individuals may enter (section 13). The owner will submit https://khoebo-r8lc.vercel.app, whose address doesn't contain the company name. On 5 November its pages returned 200 with the new credit, and a test chat message there was answered with the owner's name. khoebo.newempireai.online still serves the same site.
+- **Changed 5 November 2026:** at the owner's request, the site credits only the owner by name. New Empire AI is gone from the footer (section 4 updated) and from the assistant's self-description in `lib/prompt.ts`. RSL's Q&A confirms individuals may enter (section 13). The owner will submit https://khoebo-r8lc.vercel.app, whose address doesn't contain the company name. On 5 November its pages returned 200 with the new credit, and a test chat message there was answered with the owner's name. khoebo.newempireai.online still serves the same site.
 
 ### Logo (29 October 2026)
 
@@ -888,3 +888,7 @@ Written at the owner's request, as `Khoebo RSL Taxathon Technical Proposal.docx`
 - **AI and message costs for 300 traders:** about US$207 a month: AI US$15 (measured, then budgeted at US$0.05 per trader), WhatsApp US$192 (64 replies per trader at about US$0.01). WhatsApp is about 93% of it. The WhatsApp price comes from published secondary sources, and Lesotho's rate isn't confirmed. On web chat alone the AI cost of about US$15 a month remains. Hosting was removed from the cost analysis at the owner's request, so these figures don't include it. SMS, the pilot database, moving the officer view into RSL's network, and people aren't costed.
 - **A pilot on WhatsApp needs a secure database,** because there is no browser storage to keep records in. RSL would still see only filed returns, but that promise would then rest on access controls.
 - **Commitments the proposal makes for the owner to confirm:** the one-year engagement, showing the prototype at Thaba-Bosiu, and taking judges through the code on request. It also asks how RSL's IP clause applies to code built before the event.
+
+### Owner's name removed (6 November 2026)
+
+At the owner's request, the owner's name is gone from the footer, the assistant's self-description in `lib/prompt.ts` and this spec. This replaces the 5 November credit: the site now names no builder. The footer starts with the standard prototype label. The GitHub account name still appears in git history and in the repo's address, and the submission documents are outside the repo.
