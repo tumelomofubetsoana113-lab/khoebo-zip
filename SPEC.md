@@ -639,7 +639,7 @@ From RSL's Participant Q&A document (3 November 2026) and the Q&A session slides
 - **What to include:** the problem; a working prototype or service concept; how a taxpayer and an RSL officer each use it; an ordinary case, an exception and a human-review case; test results, the data needed and its sources; running costs; how it fits RSL's processes; and any policy changes or external agreements needed. Also a pilot definition: user group, test period, baseline, success measures, resources, RSL owner, and what can be tested now against what needs change later.
 - **Judging:** taxpayer and business value 25%, performance and evidence 20%, usability 15%, trust and compliance 15%, pilot potential 15%, innovation 10%.
 - **Design rules:** limited connectivity, language, how businesses keep records, mock data only, explainable and reviewable decisions, and AI only where it adds measurable value.
-- **Eligibility:** individuals may enter, though teams are encouraged. Entrants must be Basotho.
+- **Eligibility:** individuals may enter, though teams are encouraged, with up to 7 members. Entrants must be Basotho.
 - **No required technology or platform.**
 
 **Still open**
@@ -892,3 +892,7 @@ Written at the owner's request, as `Khoebo RSL Taxathon Technical Proposal.docx`
 ### Owner's name removed (6 November 2026)
 
 At the owner's request, the owner's name is gone from the footer, the assistant's self-description in `lib/prompt.ts` and this spec. This replaces the 5 November credit: the site now names no builder. The footer starts with the standard prototype label. The GitHub account name still appears in git history and in the repo's address, and the submission documents are outside the repo.
+
+### Team entry (6 November 2026)
+
+At the owner's request, the proposal is now submitted by a team of five: Tumelo Mofubetsoana, Teboho Mpholo, Thootse Khalala, Reabetsoe Khoarai and Mamoabi Makhetha, with Tumelo as the contact. It is written as "we", gives no individual roles, and reports only the tests already done. The owner asked for planned trader tests to stay out of it. This replaces the individual entry recorded on 5 November. This change covers the proposal only, not the site's credit or the concept note.
