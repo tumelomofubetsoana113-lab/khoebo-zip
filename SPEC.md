@@ -903,3 +903,7 @@ The proposal gained a cover page and details from a teammate's draft: traders wh
 
 - **Not built, and described as pilot work:** rand amounts, separate expenses, source labels and a Mobile Office referral. The app records every amount in maloti (`lib/tools.ts`) and has only sales and purchases (`lib/state.ts`).
 - **Kept from our version where the draft disagreed:** the simulation and test figures with their limits, the starting pilot targets, and the cost table without hosting. The draft left out the figures and targets and listed production hosting as uncosted.
+
+### Proposal wording simplified (6 November 2026)
+
+At the owner's request, the proposal's summary now opens with an at-a-glance table saying what Khoebo is, and its wording was simplified throughout. The figures didn't change. Terms RSL uses itself, such as baseline and Lekuka, stay, and so do the tool names in the technical design.
