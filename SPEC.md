@@ -896,3 +896,10 @@ At the owner's request, the owner's name is gone from the footer, the assistant'
 ### Team entry (6 November 2026)
 
 At the owner's request, the proposal is now submitted by a team of five: Tumelo Mofubetsoana, Teboho Mpholo, Thootse Khalala, Reabetsoe Khoarai and Mamoabi Makhetha, with Tumelo as the contact. It is written as "we", gives no individual roles, and reports only the tests already done. The owner asked for planned trader tests to stay out of it. This replaces the individual entry recorded on 5 November. This change covers the proposal only, not the site's credit or the concept note.
+
+### Teammate's draft merged into the proposal (6 November 2026)
+
+The proposal gained a cover page and details from a teammate's draft: traders who buy stock in South Africa, the Mobile Office, a limit on what a purchase can show, more safeguards, pilot measures, risks and questions for RSL.
+
+- **Not built, and described as pilot work:** rand amounts, separate expenses, source labels and a Mobile Office referral. The app records every amount in maloti (`lib/tools.ts`) and has only sales and purchases (`lib/state.ts`).
+- **Kept from our version where the draft disagreed:** the simulation and test figures with their limits, the starting pilot targets, and the cost table without hosting. The draft left out the figures and targets and listed production hosting as uncosted.
