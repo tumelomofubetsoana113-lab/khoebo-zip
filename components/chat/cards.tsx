@@ -1,7 +1,7 @@
 // Cards that render inside Khoebo's bubbles. Amounts arrive as numbers from
 // the tools and are only formatted here, never calculated.
 
-import { CheckCircle2, Circle, Info, ShieldCheck } from "lucide-react";
+import { CheckCircle2, Circle, ExternalLink, Info, ShieldCheck } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import type { ChatAction, UiBlock } from "@/lib/blocks";
@@ -223,7 +223,49 @@ function RegistrationCard({ block }: { block: Extract<UiBlock, { type: "registra
         ))}
       </ul>
       <p className="mt-2 font-semibold">{block.handoff}</p>
+      {block.links?.length ? (
+        <div className="mt-2 flex flex-wrap gap-2">
+          {block.links.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-flag-blue px-4 text-sm font-semibold text-surface hover:opacity-90"
+            >
+              {l.label}
+              <ExternalLink size={16} aria-hidden="true" />
+              <span className="sr-only">{t.opensNewTab}</span>
+            </a>
+          ))}
+        </div>
+      ) : null}
       {block.officerNote && <p className="mt-2 font-semibold text-green-text">{block.officerNote}</p>}
+    </CardFrame>
+  );
+}
+
+// What a taxpayer has to do, each with this trader's own status. The text comes
+// from the tool, already worked out; this card only lays it out.
+function ObligationsCard({ block }: { block: Extract<UiBlock, { type: "obligations_card" }> }) {
+  return (
+    <CardFrame title={t.obligationsTitle}>
+      <ol className="mt-2 space-y-2">
+        {block.items.map((item) => (
+          <li key={item.text} className="flex gap-2">
+            {item.done ? (
+              <CheckCircle2 size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-flag-green" />
+            ) : (
+              <Circle size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-flag-blue" />
+            )}
+            <span>
+              <span className="sr-only">{item.done ? t.obligationsDone : t.obligationsToDo}: </span>
+              {item.text}
+            </span>
+          </li>
+        ))}
+      </ol>
+      {block.note && <PlaceholderNote text={block.note} />}
     </CardFrame>
   );
 }
@@ -254,6 +296,8 @@ export function UiBlocks({ blocks, ...props }: ActionProps & { blocks: UiBlock[]
             return <PaymentCard key={i} block={block} {...props} />;
           case "reminder_card":
             return <ReminderCard key={i} block={block} {...props} />;
+          case "obligations_card":
+            return <ObligationsCard key={i} block={block} />;
           case "registration_card":
             return <RegistrationCard key={i} block={block} />;
           case "placeholder_note":

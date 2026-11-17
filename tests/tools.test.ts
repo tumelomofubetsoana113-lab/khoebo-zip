@@ -46,6 +46,7 @@ describe("tool definitions", () => {
       "confirm_return",
       "start_payment",
       "start_registration",
+      "show_obligations",
       "show_reminder",
       "read_receipt",
       "save_receipt",
@@ -306,10 +307,67 @@ describe("filing a return", () => {
 });
 
 describe("cards with no state change", () => {
-  it("shows the registration checklist", () => {
+  it("shows the registration checklist with RSL's own channels", () => {
     const out = runTool("start_registration", {}, setUp, ctx());
-    expect(out.ui?.[0]).toMatchObject({ type: "registration_card" });
-    expect(JSON.stringify(out.ui)).toContain("to be confirmed");
+    expect(out.ui?.[0]).toMatchObject({
+      type: "registration_card",
+      links: [
+        { label: "RSL e-Registration", href: "https://eservices.rsl.org.ls/ereg/public/" },
+        { label: "RSL app (Google Play)", href: "https://play.google.com/store/apps/details?id=com.org.rsl" },
+      ],
+    });
+    expect(out.ui?.[0]).not.toHaveProperty("officerNote");
+    expect(JSON.stringify(out)).not.toContain("to be confirmed");
+  });
+
+  it("says the officer can help when the trader was set up at a field visit", () => {
+    const field = { ...setUp, profile: { ...setUp.profile, registered: "no" as const, setUpAt: "field_visit" as const } };
+    const out = runTool("start_registration", {}, field, ctx());
+    expect(out.result.officer_present).toBe(true);
+    expect(out.ui?.[0]).toMatchObject({ officerNote: "The RSL officer with you can help you register now." });
+  });
+
+  it("lists what a taxpayer has to do, with this trader's status and due date", () => {
+    const out = runTool("show_obligations", {}, setUp, ctx());
+    expect(out.ui).toEqual([
+      {
+        type: "obligations_card",
+        items: [
+          { text: "Registered with RSL", done: true },
+          { text: "Keep a record of your sales: 4 entries so far", done: true },
+          { text: "File your return for 2026-Q4 by 20 January 2027", done: false },
+          { text: "Pay the estimated M27 by 20 January 2027", done: false },
+        ],
+        note: TAX.note,
+      },
+    ]);
+    const fresh = runTool("show_obligations", {}, { ...emptyState(), profile: { registered: "no", language: "en" } }, ctx());
+    expect(fresh.ui?.[0]).toMatchObject({
+      items: [
+        { text: "Register with RSL", done: false },
+        { text: "Keep a record of every sale", done: false },
+        { text: "File your return for 2026-Q4 by 20 January 2027", done: false },
+        { text: "Pay any tax you owe by 20 January 2027", done: false },
+      ],
+    });
+  });
+
+  it("marks a filed and paid period as done", () => {
+    const paid = {
+      ...setUp,
+      returns: [
+        { period: "2026-Q4", turnover: 1350, taxEstimate: 27, confirmedAt: "2026-10-29T08:00:00.000Z", reference: "MOCK-ABC123", paid: true },
+      ],
+    };
+    const out = runTool("show_obligations", {}, paid, ctx());
+    expect(out.ui?.[0]).toMatchObject({
+      items: [
+        expect.anything(),
+        expect.anything(),
+        { text: "Return for 2026-Q4 filed (reference MOCK-ABC123)", done: true },
+        { text: "Tax for 2026-Q4 paid", done: true },
+      ],
+    });
   });
 
   it("shows the reminder for the current filing period", () => {

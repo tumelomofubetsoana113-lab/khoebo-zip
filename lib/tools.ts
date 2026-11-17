@@ -133,6 +133,7 @@ const inputs = {
   confirm_return: z.object({ period: z.string().max(10), turnover: z.number() }),
   start_payment: z.object({ period: z.string().max(10) }),
   start_registration: z.object({}),
+  show_obligations: z.object({}),
   show_reminder: z.object({}),
   read_receipt: z.object({
     supplier: z.string().max(200).optional().describe("The business that issued the receipt, as printed."),
@@ -186,6 +187,8 @@ const descriptions: Record<ToolName, string> = {
     "File the return. Only works straight after the trader taps Confirm on the return card; never call it because of a typed message.",
   start_payment: "Show a mock mobile money payment for a filed return. No real money moves.",
   start_registration: "Show what the trader needs to register with RSL, and where to go.",
+  show_obligations:
+    "Show what the trader has to do as a taxpayer (register, keep records, file, pay), with their own status and the current period's due date.",
   show_reminder: "Show the filing reminder for the current filing period, with the estimated tax and due date.",
   read_receipt:
     "Report what is printed on the receipt the trader just sent. Checks it and shows a card with Save and Change buttons. Saves nothing. Only call it when a receipt is attached.",
@@ -585,6 +588,8 @@ const handlers: Handlers = {
       result: {
         shown: "registration checklist",
         handoff: strings.chat.registration.handoff,
+        links_shown: strings.chat.registration.links.map((l) => l.label),
+        message_about_links: "The card has buttons for RSL's e-Registration site and the RSL app. Point to them; don't type web addresses.",
         ...(atFieldVisit
           ? { officer_present: true, message: "Say in one short sentence that the RSL officer with them can help them register now." }
           : {}),
@@ -594,9 +599,39 @@ const handlers: Handlers = {
           type: "registration_card",
           checklist: [...strings.chat.registration.checklist],
           handoff: strings.chat.registration.handoff,
+          links: strings.chat.registration.links.map((l) => ({ ...l })),
           ...(atFieldVisit ? { officerNote: strings.chat.registration.officerNote } : {}),
         },
       ],
+    };
+  },
+
+  show_obligations(state, _input, ctx) {
+    const o = strings.chat.obligations;
+    const period = filingPeriod(ctx.today);
+    const due = formatDate(dueDate(period));
+    const e = taxEstimate(state.entries, period);
+    const filed = findReturn(state, period);
+    const registered = state.profile.registered === "yes";
+    const n = state.entries.length;
+    const owed = filed?.taxEstimate ?? e.estimate;
+    const items = [
+      { text: registered ? o.registered : o.register, done: registered },
+      { text: n ? o.records(n) : o.recordsNone, done: n > 0 },
+      { text: filed ? o.filed(period, filed.reference) : o.file(period, due), done: Boolean(filed) },
+      { text: filed?.paid ? o.paid(period) : owed > 0 ? o.pay(formatMoney(owed), due) : o.payAny(due), done: Boolean(filed?.paid) },
+    ];
+    return {
+      state,
+      result: {
+        shown: "obligations card",
+        items: items.map((i) => `${i.done ? "done" : "to do"}: ${i.text}`),
+        ...(e.note ? { note: e.note } : {}),
+        message: registered
+          ? "Say in one short sentence what to do next, from the first item still to do."
+          : "Say in one short sentence that registering comes first, and offer to show how.",
+      },
+      ui: [{ type: "obligations_card", items, note: e.note }],
     };
   },
 

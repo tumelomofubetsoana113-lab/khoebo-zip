@@ -62,7 +62,14 @@ export type UiBlock =
       note: string | null;
     }
   | { type: "payment_card"; period: string; amount: number; reference: string; note: string | null }
-  | { type: "registration_card"; checklist: string[]; handoff: string; officerNote?: string }
+  | {
+      type: "registration_card";
+      checklist: string[];
+      handoff: string;
+      links?: { label: string; href: string }[]; // missing in chats saved before 17 Nov 2026
+      officerNote?: string;
+    }
+  | { type: "obligations_card"; items: { text: string; done: boolean }[]; note: string | null }
   | { type: "reminder_card"; period: string; dueDate: string; taxEstimate: number; note: string | null }
   | { type: "placeholder_note"; text: string }
   | {

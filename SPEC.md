@@ -423,7 +423,8 @@ All amounts in and out are maloti. Every handler is a pure function of `(state, 
 | `prepare_return` | `period` | Builds the pre-filled return and sends a `return_card` UI block with Confirm and Change buttons. Doesn't file anything. |
 | `confirm_return` | `period`, `turnover` | Only callable when the request carries a matching `action` from the Confirm button. Saves a `FiledReturn` with a mock reference. |
 | `start_payment` | `period` | Sends a `payment_card` UI block showing a mock mobile money payment. Marks the return paid only after the "Pay (demo)" button sends an action. |
-| `start_registration` | none | Sends a `registration_card` listing what the trader will need and where to go. Use "RSL registration channel (to be confirmed)" rather than inventing a URL or office address. |
+| `start_registration` | none | Sends a `registration_card` listing what the trader will need and where to go, with buttons for RSL's e-Registration site and the RSL app (added 17 November 2026; before that it said "RSL registration channel (to be confirmed)"). The model never types a web address. At a field visit, the card also says the officer can help now. |
+| `show_obligations` | none | Added 17 November 2026. Sends an `obligations_card`: register, keep records, file by the due date, pay, each with this trader's own status, worked out in code. |
 | `show_reminder` | none | Added in step 4. Sends a `reminder_card` for the current filing period, for the demo menu's "Simulate a reminder". |
 | `offer_quick_replies` | `options` (1 to 6, each under 24 characters, or the full district or business type list) | Added in step 4. Sends a `quick_replies` UI block. The model has no other way to show quick replies. |
 
@@ -436,7 +437,8 @@ The API can return these alongside the reply text:
 - `summary_card`: period label, money in, money out, profit, entries count
 - `return_card`: period, turnover, estimated tax, due date, placeholder note, Confirm and Change buttons
 - `payment_card`: amount, mock reference, "Pay (demo)" button, note that no real money moves
-- `registration_card`: a checklist and the hand-off text
+- `registration_card`: a checklist, the hand-off text, link buttons to RSL's e-Registration and app, and an officer note at a field visit
+- `obligations_card`: four items, each with its text and whether it is done, and the placeholder note
 - `reminder_card`: due date, estimated tax, "File now" button
 - `receipt_card`: what was read from a receipt (supplier, date, total), the simulated Lekuka result, and Save and Change buttons
 - `placeholder_note`: the placeholder rate note, sent with `get_tax_estimate` and `confirm_return` so a tax amount in the reply text also shows the note (added in step 4)
@@ -1042,5 +1044,12 @@ The owner compared Khoebo with RSL's call and with the points from the meet and 
 - **Chat eval:** a new case, "No" from a field-visit profile, expects `save_profile` with `registered: "no"`, `start_registration`, and a card with the officer note (a new `uiIncludes` check in `run.mts`). Full eval: 60 of 60 (20 cases, three runs each).
 - **Checked in Chrome on a local production build:** the sheet opens with the QR code. The link on a cleared phone fills in Leribe and Clothing or flea market, cleans the address, and asks about registration. Tapping No saves it and shows the registration card with the officer line. The browser window was minimised during this check, so it was done through the page's own state and text, not screenshots.
 - **For a pilot:** the link would also carry the officer's code, so a sign-up is recorded against the visit (the sheet says so).
+
+**Step F, registration links and "What you need to do" (17 November 2026).**
+
+- **Registration.** The card now has two buttons, "RSL e-Registration" (https://eservices.rsl.org.ls/ereg/public/) and "RSL app (Google Play)" (https://play.google.com/store/apps/details?id=com.org.rsl), as the owner gave them. They live in `lib/strings.ts` and open in a new tab. The hand-off reads "Register online with RSL's e-Registration, or in the RSL app." The prompt says to point to the buttons and never type a web address, and the eval checks the reply has none. The app link is for Android; whether there is an iPhone version wasn't given, so none is shown. Chats saved before this change show the old card without buttons.
+- **"What you need to do".** RSL's call asks for help so businesses understand filing and payment requirements, and its glossary lists the obligations: register, keep records, file returns, pay on time. The new tool `show_obligations` shows them with the trader's own status: registered or not, entries so far, this period's return filed or due on its date, and tax paid or the estimated amount due. With nothing to pay yet, it says "Pay any tax you owe by …". All of it is worked out in code, and amounts carry the placeholder note. After set-up, the assistant now offers "What do I need to do?" next to "Log my first sale".
+- **Chat eval:** two new cases, "what do I have to do as a taxpayer?" (expects `show_obligations`) and "how do I register with RSL?" (expects the card with links and no web address in the reply). Full eval: 66 of 66 (22 cases, three runs each).
+- **Checked in Chrome on a local production build:** the registration card shows both buttons with the right addresses, and the obligations card lists the four items with their status.
 
 **Left as pilot work:** the data agreements each identification source needs; Khoebo QR codes at wholesalers, border posts and flea markets; a record of income and compliance that traders can show lenders; a "tax pot" for setting money aside; one-tap nil returns with a reason; a daily evening check-in message; Sesotho replies.

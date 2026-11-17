@@ -115,6 +115,17 @@
     "expect": { "toolsInclude": ["save_profile", "start_registration"], "profileMatches": { "registered": "^no$" }, "uiIncludes": { "registration_card": "officerNote" } }
   },
   {
+    "message": "what do I have to do as a taxpayer?",
+    "note": "shows the obligations card with the trader's own status",
+    "expect": { "toolsInclude": ["show_obligations"], "noNewEntry": true }
+  },
+  {
+    "message": "how do I register with RSL?",
+    "note": "shows the registration card with RSL's links, and types no web address",
+    "setup": { "profile": { "businessType": "Fruit and veg", "district": "Maseru", "registered": "no", "language": "en" } },
+    "expect": { "toolsInclude": ["start_registration"], "uiIncludes": { "registration_card": "links" }, "replyExcludes": ["https?://", "www[.]", "[.]org[.]ls"] }
+  },
+  {
     "message": "got 2000 today",
     "note": "runner: one amount, unclear if fee or client money, so ask",
     "setup": { "profile": { "businessType": "Runner (cross-border)", "district": "Maseru", "registered": "yes", "language": "en" } },
