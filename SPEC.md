@@ -650,6 +650,23 @@ From RSL's Participant Q&A document (3 November 2026) and the Q&A session slides
 - Whether RSL wants Sesotho in the prototype: not answered directly, but the slides say to speak to users in the language they use, and 5 of the 10 test traders wanted Sesotho as well as English.
 - The baselines the slides say are shared at the briefing, and the briefing minutes the Q&A lists: not yet received.
 
+### Meet and greet (16 November 2026)
+
+The team was shortlisted and met RSL at the RSL Academy on 16 November 2026. RSL stressed these points for Challenge 1:
+
+1. **Show the whole pipeline**, from finding an informal operator, through registration, to a taxpayer who keeps complying. RSL put most weight on **how to find and identify** operators. Today officers walk the streets to find traders, then register them through RSL's website or app.
+2. **Think broadly about the informal sector.** It isn't only street vendors and small shops. It includes runners (people who buy clothing, furniture, tools and other goods in South Africa or Botswana for others and charge a fee), couriers, flea markets and others.
+3. **Make it user friendly**, so it fits a taxpayer's everyday life.
+4. **Solve a real problem RSL has.**
+5. **Build compliance into daily routine**, so nobody has to go out of their way to pay tax.
+
+**Answers from the owner after the meeting:**
+
+- **Runners:** turnover is only the fee the runner charges. The money a client hands over for the goods isn't the runner's turnover.
+- **RSL's registration channels:** the e-Registration site, https://eservices.rsl.org.ls/ereg/public/, and the RSL mobile app on Google Play, https://play.google.com/store/apps/details?id=com.org.rsl.
+
+How Khoebo answers each point is recorded in section 14, "After the meet and greet".
+
 ## 14. Decisions made during the build
 
 Anything built that the sections above don't cover is recorded here, with the step it came from. Keep this up to date.
@@ -907,3 +924,26 @@ The proposal gained a cover page and details from a teammate's draft: traders wh
 ### Proposal wording simplified (6 November 2026)
 
 At the owner's request, the proposal's summary now opens with an at-a-glance table saying what Khoebo is, and its wording was simplified throughout. The figures didn't change. Terms RSL uses itself, such as baseline and Lekuka, stay, and so do the tool names in the technical design.
+
+### After the meet and greet (17 November 2026)
+
+The owner compared Khoebo with RSL's call and with the points from the meet and greet (section 13), then approved this plan. Each step below is recorded as it is built.
+
+**Where Khoebo stood.** It already covered record keeping, filing, accurate declaration (code does the maths, receipts are checked against Lekuka), reminders, and telling genuine inactivity from undeclared trading (the worklist and the three demo cases). The gaps were:
+
+- **Identification.** The worklist only scores traders who are already registered and filing. Nothing helped RSL find operators outside the tax net, although the challenge question starts "help RSL identify".
+- **Registration.** Khoebo only handed off, with no real link.
+- **Breadth.** The business types covered shops, food and services only.
+- **Runners.** All money in would count as sales, overstating turnover.
+
+**The plan, in build order:**
+
+- **A.** Record the meeting in this spec.
+- **B.** Broader business types.
+- **C.** Runner records: the fee as income, client money kept apart.
+- **D.** A "Potential registrants" officer page built from simulated third-party signals, with a pipeline strip.
+- **E.** Field-visit onboarding by link or QR code.
+- **F.** The real registration links, and a card listing what a trader needs to do.
+- **G.** A pipeline section on the landing page.
+
+**Left as pilot work:** the data agreements each identification source needs; Khoebo QR codes at wholesalers, border posts and flea markets; a record of income and compliance that traders can show lenders; a "tax pot" for setting money aside; one-tap nil returns with a reason; a daily evening check-in message; Sesotho replies.
