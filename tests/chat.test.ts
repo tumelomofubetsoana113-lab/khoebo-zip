@@ -4,6 +4,7 @@ import {
   buttonKey,
   CHAT_KEY,
   currentQuickReplies,
+  fieldVisitStart,
   greeting,
   loadChat,
   saveChat,
@@ -13,7 +14,9 @@ import { addDays, weekdayName } from "@/lib/dates";
 import { demoRunnerState, demoTraderState } from "@/lib/demo";
 import { summarize, summaryRange } from "@/lib/ledger";
 import { taxEstimate } from "@/lib/tax";
-import { TraderStateSchema } from "@/lib/state";
+import { emptyState, TraderStateSchema } from "@/lib/state";
+import { fieldVisitPath } from "@/lib/leads";
+import { strings } from "@/lib/strings";
 
 const AT = "2026-10-29T08:00:00.000Z";
 
@@ -172,5 +175,42 @@ describe("demo runner", () => {
   it("is the same every time for the same day", () => {
     expect(demoRunnerState(today)).toEqual(state);
     expect(new Set(state.entries.map((e) => e.id)).size).toBe(state.entries.length);
+  });
+});
+
+describe("field-visit link", () => {
+  const now = "2026-11-17T08:00:00.000Z";
+  const link = fieldVisitPath({ district: "Leribe", kind: "Flea market stall" });
+
+  it("builds a link with the chat's own business type", () => {
+    expect(link).toBe("/trader?via=field&district=Leribe&kind=Clothing+or+flea+market");
+  });
+
+  it("fills in district and business type on a phone that isn't set up, then asks about registration", () => {
+    const out = fieldVisitStart(link.slice(link.indexOf("?")), emptyState(), now)!;
+    expect(out.state.profile).toMatchObject({
+      district: "Leribe",
+      businessType: "Clothing or flea market",
+      setUpAt: "field_visit",
+      registered: null,
+    });
+    expect(out.state.onboardingDone).toBe(false);
+    expect(TraderStateSchema.safeParse(out.state).success).toBe(true);
+    expect(out.message.text).toMatch(/RSL officer shared this link.*Clothing or flea market in Leribe.*registered/);
+    expect(out.message.ui).toEqual([{ type: "quick_replies", options: ["Yes", "No", "Not sure"] }]);
+  });
+
+  it("never touches a phone that is already set up or has records", () => {
+    const search = link.slice(link.indexOf("?"));
+    expect(fieldVisitStart(search, demoTraderState("2026-11-17"), now)).toBeNull();
+    expect(fieldVisitStart("", emptyState(), now)).toBeNull();
+  });
+
+  it("ignores values that aren't on the chat's lists, and asks for the business type", () => {
+    const out = fieldVisitStart("?via=field&district=Gauteng&kind=Smuggler", emptyState(), now)!;
+    expect(out.state.profile.district).toBeUndefined();
+    expect(out.state.profile.businessType).toBeUndefined();
+    expect(out.state.profile.setUpAt).toBe("field_visit");
+    expect(out.message.ui?.[0]).toMatchObject({ type: "quick_replies", options: [...strings.onboarding.businessTypes] });
   });
 });

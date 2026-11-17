@@ -14,6 +14,7 @@ import {
   clearChat,
   currentQuickReplies,
   demoWelcome,
+  fieldVisitStart,
   greeting,
   loadChat,
   messageId,
@@ -118,11 +119,22 @@ function ReceiptPreview({ kind, file }: { kind: "photo" | "pdf"; file?: ReceiptA
 }
 
 function ChatSession() {
-  const [trader, setTrader] = useState<TraderState>(() => loadState());
+  // An officer's field-visit link fills in the set-up on a phone that isn't set up yet.
+  const [start] = useState(() => {
+    const saved = loadState();
+    return fieldVisitStart(window.location.search, saved, new Date().toISOString()) ?? { state: saved, message: null };
+  });
+  const [trader, setTrader] = useState<TraderState>(start.state);
   const [messages, setMessages] = useState<ChatMessage[]>(() => {
+    if (start.message) return [start.message];
     const saved = loadChat();
     return saved?.length ? saved : [greeting(new Date().toISOString())];
   });
+
+  // The link's job is done once the chat has started; a reload shouldn't apply it again.
+  useEffect(() => {
+    if (window.location.search) window.history.replaceState(null, "", window.location.pathname);
+  }, []);
   const [pending, setPending] = useState(false);
   const [voiceOpen, setVoiceOpen] = useState(false);
   const [receiptOpen, setReceiptOpen] = useState(false);

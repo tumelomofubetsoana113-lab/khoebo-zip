@@ -579,14 +579,22 @@ const handlers: Handlers = {
   },
 
   start_registration(state) {
+    const atFieldVisit = state.profile.setUpAt === "field_visit";
     return {
       state,
-      result: { shown: "registration checklist", handoff: strings.chat.registration.handoff },
+      result: {
+        shown: "registration checklist",
+        handoff: strings.chat.registration.handoff,
+        ...(atFieldVisit
+          ? { officer_present: true, message: "Say in one short sentence that the RSL officer with them can help them register now." }
+          : {}),
+      },
       ui: [
         {
           type: "registration_card",
           checklist: [...strings.chat.registration.checklist],
           handoff: strings.chat.registration.handoff,
+          ...(atFieldVisit ? { officerNote: strings.chat.registration.officerNote } : {}),
         },
       ],
     };

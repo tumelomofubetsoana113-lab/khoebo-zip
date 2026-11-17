@@ -62,7 +62,7 @@ export type UiBlock =
       note: string | null;
     }
   | { type: "payment_card"; period: string; amount: number; reference: string; note: string | null }
-  | { type: "registration_card"; checklist: string[]; handoff: string }
+  | { type: "registration_card"; checklist: string[]; handoff: string; officerNote?: string }
   | { type: "reminder_card"; period: string; dueDate: string; taxEstimate: number; note: string | null }
   | { type: "placeholder_note"; text: string }
   | {

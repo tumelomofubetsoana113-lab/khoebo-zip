@@ -223,6 +223,7 @@ function RegistrationCard({ block }: { block: Extract<UiBlock, { type: "registra
         ))}
       </ul>
       <p className="mt-2 font-semibold">{block.handoff}</p>
+      {block.officerNote && <p className="mt-2 font-semibold text-green-text">{block.officerNote}</p>}
     </CardFrame>
   );
 }

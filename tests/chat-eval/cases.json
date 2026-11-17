@@ -105,6 +105,16 @@
     }
   },
   {
+    "message": "No",
+    "note": "field visit: answering the registration question saves it and shows how to register, with the officer there to help",
+    "setup": {
+      "onboardingDone": false,
+      "entries": [],
+      "profile": { "businessType": "Clothing or flea market", "district": "Leribe", "registered": null, "language": "en", "setUpAt": "field_visit" }
+    },
+    "expect": { "toolsInclude": ["save_profile", "start_registration"], "profileMatches": { "registered": "^no$" }, "uiIncludes": { "registration_card": "officerNote" } }
+  },
+  {
     "message": "got 2000 today",
     "note": "runner: one amount, unclear if fee or client money, so ask",
     "setup": { "profile": { "businessType": "Runner (cross-border)", "district": "Maseru", "registered": "yes", "language": "en" } },

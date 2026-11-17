@@ -81,6 +81,22 @@ export function leadCounts(leads: Leads): Record<LeadKey, number> {
   return Object.fromEntries(LEAD_ACTIONS.map((a) => [LEAD_KEY[a], leads.counts[a]])) as Record<LeadKey, number>;
 }
 
+// ---- Field visits ----
+
+// A lead's kind as one of the chat's business types, where the names differ.
+const KIND_TO_BUSINESS_TYPE: Record<string, string> = { "Flea market stall": "Clothing or flea market" };
+
+// The link an officer shows at a field visit, as a QR code. Opening it on the
+// trader's phone starts Khoebo with their district and kind of business filled in.
+export function fieldVisitPath(lead: Pick<Lead, "district" | "kind">): string {
+  const params = new URLSearchParams({
+    via: "field",
+    district: lead.district,
+    kind: KIND_TO_BUSINESS_TYPE[lead.kind] ?? lead.kind,
+  });
+  return `/trader?${params.toString()}`;
+}
+
 // ---- Filters ----
 
 export type LeadQuery = { actions: LeadKey[]; district: string; kind: string };

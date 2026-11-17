@@ -47,6 +47,8 @@ export const TraderStateSchema = z.object({
     district: z.string().max(60).optional(),
     registered: z.enum(["yes", "no", "not_sure"]).nullable(),
     language: z.literal("en"),
+    // Set up from an RSL officer's field-visit link (added 17 Nov 2026).
+    setUpAt: z.literal("field_visit").optional(),
   }),
   entries: z.array(EntrySchema).max(5000),
   returns: z.array(FiledReturnSchema).max(100),

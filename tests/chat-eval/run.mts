@@ -35,12 +35,13 @@ type Expect = {
   replyExcludes?: string[];
   quickReplies?: string[]; // these options, in any order
   profileMatches?: Record<string, string>; // profile field -> pattern, after the reply
+  uiIncludes?: Record<string, string>; // block type -> a field on it that must be set
 };
 type Case = { message: string; note?: string; setup?: Partial<State>; expect: Expect };
 type ChatResponse = {
   reply: string;
   state: State;
-  ui: { type: string; options?: string[] }[];
+  ui: { type: string; options?: string[]; [field: string]: unknown }[];
   tools: { name: string; input: Record<string, unknown> }[];
 };
 
@@ -138,6 +139,9 @@ function check(c: Case, before: State, res: ChatResponse): string[] {
     const shown = res.ui.find((b) => b.type === "quick_replies")?.options ?? [];
     const same = shown.length === e.quickReplies.length && e.quickReplies.every((o) => shown.includes(o));
     if (!same) problems.push(`expected quick replies ${JSON.stringify(e.quickReplies)}, got ${JSON.stringify(shown)}`);
+  }
+  for (const [type, field] of Object.entries(e.uiIncludes ?? {})) {
+    if (!res.ui.some((b) => b.type === type && b[field])) problems.push(`expected a ${type} with ${field}`);
   }
   for (const [field, pattern] of Object.entries(e.profileMatches ?? {})) {
     const value = res.state.profile[field];

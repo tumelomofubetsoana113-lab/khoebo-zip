@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { LeadPill } from "@/components/ui/Pill";
 import { LEAD_KEY, type Lead } from "@/lib/leads";
 import { strings } from "@/lib/strings";
+import { FieldVisitButton } from "./FieldVisitButton";
 
 const t = strings.officer.leads.card;
 
@@ -34,6 +35,7 @@ export function LeadCard({ lead, children }: { lead: Lead; children?: ReactNode 
           <li key={r}>{r}</li>
         ))}
       </ol>
+      {lead.action === "FIELD VISIT" && <FieldVisitButton lead={lead} />}
       {children}
     </article>
   );

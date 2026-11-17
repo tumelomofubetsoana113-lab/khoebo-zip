@@ -54,6 +54,7 @@ export const strings = {
         "Your trading licence, if you have one",
       ],
       handoff: "Register through the RSL registration channel (to be confirmed).",
+      officerNote: "The RSL officer with you can help you register now.",
     },
     back: "Back to home",
     demo: "Demo",
@@ -74,6 +75,13 @@ export const strings = {
     demoLoaded:
       "Demo trader loaded: a fruit and vegetable seller in Maseru, registered with RSL, with four weeks of sales and purchases. Try asking how the week is going.",
     demoQuickReplies: ["How am I doing?", "How much tax do I owe?", "File my return"],
+    fieldVisit: {
+      greeting: (kind: string, district: string) =>
+        `Hi, I'm Khoebo. An RSL officer shared this link with you. I help you keep your sales records by message and file your tax return. I've noted your business as ${kind} in ${district}. Are you registered with RSL?`,
+      greetingPlain:
+        "Hi, I'm Khoebo. An RSL officer shared this link with you. I help you keep your sales records by message and file your tax return. What kind of business do you run?",
+      registeredReplies: ["Yes", "No", "Not sure"],
+    },
     demoRunnerLoaded:
       "Demo runner loaded: a runner in Maseru who buys goods in Bloemfontein for clients twice a week, registered with RSL. The client's money is kept apart, and only the fees count as income. Try asking how the week is going, or log a new order.",
     demoRunnerQuickReplies: ["How am I doing?", "How much tax do I owe?", "Log a client order"],
@@ -299,6 +307,15 @@ export const strings = {
         none: "No leads match these filters.",
         listed: (listed: number, matching: number) => `Listing ${listed} of ${matching}.`,
         showMore: (n: number) => `Show ${n} more`,
+      },
+      fieldVisit: {
+        button: "Sign them up on the spot",
+        title: "Field-visit sign-up",
+        intro:
+          "Ask the trader to scan this with their phone camera. Khoebo opens with their district and business filled in, then helps them register and log their first sale.",
+        qrLabel: (kind: string, district: string) => `QR code that sets up Khoebo for a ${kind} in ${district}`,
+        linkLabel: "Or open the link",
+        note: "In a pilot, the link would also carry the officer's code, so the visit is recorded.",
       },
       card: {
         activeMonths: (n: number) => `Trading signals in ${n} of 6 months`,

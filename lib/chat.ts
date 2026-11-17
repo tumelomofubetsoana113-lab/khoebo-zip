@@ -4,6 +4,7 @@
 import { z } from "zod";
 import { strings } from "./strings";
 import { ChatActionSchema, type ChatAction, type UiBlock } from "./blocks";
+import type { TraderState } from "./state";
 
 export type ChatMessage = {
   id: string;
@@ -51,6 +52,49 @@ export function greeting(now: string): ChatMessage {
     text: strings.chat.greeting,
     at: now,
     ui: [{ type: "quick_replies", options: [...strings.onboarding.businessTypes] }],
+  };
+}
+
+// Opening an officer's field-visit link (/trader?via=field&district=...&kind=...)
+// on a phone that isn't set up yet: the district and business type are filled
+// in, and the first question is whether they're registered. Values must be on
+// the chat's own lists. A phone that is already set up is left alone, so a
+// link can never overwrite someone's records.
+export function fieldVisitStart(
+  search: string,
+  state: TraderState,
+  now: string,
+): { state: TraderState; message: ChatMessage } | null {
+  const params = new URLSearchParams(search);
+  if (params.get("via") !== "field") return null;
+  if (state.onboardingDone || state.entries.length > 0) return null;
+
+  const district = params.get("district") ?? "";
+  const kind = params.get("kind") ?? "";
+  const districtOk = (strings.onboarding.districts as readonly string[]).includes(district);
+  const kindOk = (strings.onboarding.businessTypes as readonly string[]).includes(kind) && kind !== "Other";
+
+  const profile: TraderState["profile"] = {
+    ...state.profile,
+    ...(districtOk ? { district } : {}),
+    ...(kindOk ? { businessType: kind } : {}),
+    setUpAt: "field_visit",
+  };
+  const g = strings.chat.fieldVisit;
+  return {
+    state: { ...state, profile },
+    message: {
+      id: messageId(),
+      role: "assistant",
+      text: districtOk && kindOk ? g.greeting(kind, district) : g.greetingPlain,
+      at: now,
+      ui: [
+        {
+          type: "quick_replies",
+          options: districtOk && kindOk ? [...g.registeredReplies] : [...strings.onboarding.businessTypes],
+        },
+      ],
+    },
   };
 }
 
