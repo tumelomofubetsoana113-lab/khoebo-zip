@@ -1066,10 +1066,10 @@ The owner compared Khoebo with RSL's call and with the points from the meet and 
 
 **Presentation deck for 20 November (17 November 2026).** At the owner's request, a 16:9 PowerPoint deck for the competition day, `Khoebo RSL Taxathon Presentation.pptx` in the owner's Blueprint folder.
 
-- **Plan.** The owner chose slides plus a short live demo, with speaker notes giving a script and timing for each slide. There are 17 slides, about 16 minutes including a 3-minute demo, and 3 backup slides for questions (technical design, data needed, costs).
+- **Plan.** The owner chose slides plus a short live demo, with speaker notes giving a script and timing for each slide. There are 18 slides, about 16 minutes 45 seconds including a 3-minute demo, and 3 backup slides for questions (technical design, data needed, costs). Slide 4, "What is Khoebo?", was added the same day at the owner's request. It says in one sentence what Khoebo is, lists the three things it does for a trader (writes it down, adds it up, gets the return ready) and what it is for RSL officers, and shows a short example chat using the website's home-page lines.
 - **Running order:**
   1. RSL's problem, and the trader's side of it.
-  2. Khoebo in one picture.
+  2. What Khoebo is, in plain words, then Khoebo in one picture.
   3. The six steps (find, reach, register, keep records, file and pay, stay compliant), one or two slides each, every one with a "Why this way" note.
   4. The three cases.
   5. The demo running order.
