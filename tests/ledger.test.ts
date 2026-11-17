@@ -170,9 +170,25 @@ describe("summaries", () => {
       end: "2026-11-01",
       moneyIn: 1840,
       moneyOut: 900,
+      clientMoney: 0,
       profit: 940,
       entryCount: 4,
       daysWithNoEntries: 1, // Mon, Tue and Thu have entries; Wed doesn't; Fri to Sun haven't happened
+    });
+  });
+
+  it("keeps a runner's client money apart from money in, profit and turnover", () => {
+    const entries = [
+      entry("client_money", 4000, "2026-10-27"),
+      entry("sale", 400, "2026-10-27"),
+      entry("purchase", 280, "2026-10-27"),
+    ];
+    expect(summarize(entries, summaryRange("this_week", TODAY), TODAY)).toMatchObject({
+      moneyIn: 400,
+      moneyOut: 280,
+      clientMoney: 4000,
+      profit: 120,
+      entryCount: 3,
     });
   });
 

@@ -47,6 +47,7 @@ export type UiBlock =
       end: string;
       moneyIn: number;
       moneyOut: number;
+      clientMoney?: number; // a runner's client money, shown apart when above zero
       profit: number;
       entryCount: number;
     }

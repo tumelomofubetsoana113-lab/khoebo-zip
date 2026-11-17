@@ -7,12 +7,14 @@ export function SummaryCard({
   period,
   moneyIn,
   moneyOut,
+  clientMoney,
   profit,
   entries,
 }: {
   period: string;
   moneyIn: string;
   moneyOut: string;
+  clientMoney?: string; // a runner's client money, shown apart from income
   profit: string;
   entries?: number;
 }) {
@@ -35,6 +37,15 @@ export function SummaryCard({
           <dd className="font-bold text-green-text">{profit}</dd>
         </div>
       </dl>
+      {clientMoney && (
+        <div className="mt-2 border-t border-line pt-2">
+          <div className="flex justify-between gap-4">
+            <span>{t.clientMoney}</span>
+            <span className="font-semibold">{clientMoney}</span>
+          </div>
+          <p className="text-sm text-muted">{t.clientMoneyNote}</p>
+        </div>
+      )}
       {entries !== undefined && <p className="mt-2 text-sm text-muted">{t.entries(entries)}</p>}
     </div>
   );

@@ -8,10 +8,15 @@ const money = z.number().finite().nonnegative();
 
 export const EntrySchema = z.object({
   id: z.string().min(1).max(32),
-  kind: z.enum(["sale", "purchase"]),
+  // client_money: money a client hands a runner to buy goods for them. It
+  // isn't the runner's income: only their fee is a sale (RSL, 16 Nov 2026).
+  kind: z.enum(["sale", "purchase", "client_money"]),
   amount: money.positive(),
   date: isoDate,
   note: z.string().max(100).optional(),
+  // Set when the trader gave the amount in rand. The loti is pegged one to
+  // one to the rand, so the amount is the same in maloti.
+  currency: z.literal("rand").optional(),
   source: z.enum(["text", "voice", "button", "receipt"]),
   createdAt: z.iso.datetime(),
   // Only for entries saved from a receipt. The picture itself is never kept.

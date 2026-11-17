@@ -83,9 +83,12 @@ function EntryReceipt({ entry, ...props }: ActionProps & { entry: Extract<UiBloc
         <div className="min-w-0 flex-1">
           <p className="font-semibold text-green-text">{t.recorded}</p>
           <p>
-            {entry.kind === "sale" ? t.sale : t.purchase} {formatMoney(entry.amount)} · {formatDate(entry.date)}
+            {entry.kind === "sale" ? t.sale : entry.kind === "purchase" ? t.purchase : t.clientMoney}{" "}
+            {formatMoney(entry.amount)} · {formatDate(entry.date)}
           </p>
           {entry.note && <p className="text-sm text-muted">{entry.note}</p>}
+          {entry.kind === "client_money" && <p className="text-sm text-muted">{t.clientMoneyHint}</p>}
+          {entry.currency === "rand" && <p className="text-sm text-muted">{t.paidInRand}</p>}
           {entry.receipt?.lekuka === "verified" && <LekukaLine status="verified" />}
         </div>
       </div>
@@ -239,6 +242,7 @@ export function UiBlocks({ blocks, ...props }: ActionProps & { blocks: UiBlock[]
                 period={`${block.label} · ${formatDate(block.start)} to ${formatDate(block.end)}`}
                 moneyIn={formatMoney(block.moneyIn)}
                 moneyOut={formatMoney(block.moneyOut)}
+                clientMoney={block.clientMoney ? formatMoney(block.clientMoney) : undefined}
                 profit={formatMoney(block.profit)}
                 entries={block.entryCount}
               />

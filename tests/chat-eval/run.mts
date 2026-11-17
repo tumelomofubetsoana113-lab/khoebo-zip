@@ -9,7 +9,7 @@
 
 import { readFileSync } from "node:fs";
 
-type Entry = { id: string; kind: "sale" | "purchase"; amount: number; date: string; source: string; createdAt: string };
+type Entry = { id: string; kind: "sale" | "purchase" | "client_money"; amount: number; date: string; source: string; createdAt: string };
 type State = {
   version: 1;
   onboardingDone: boolean;
@@ -24,6 +24,8 @@ type Expect = {
   noTools?: boolean;
   toolInput?: Record<string, Record<string, unknown>>;
   newEntry?: { kind: string; amount: number; date: "today" | "yesterday" };
+  newEntries?: { kind: string; amount: number }[]; // exactly these, in any order, all dated today
+
   noNewEntry?: boolean;
   lastEntryAmount?: number;
   entryCountUnchanged?: boolean;
@@ -105,6 +107,12 @@ function check(c: Case, before: State, res: ChatResponse): string[] {
       added[0].amount === e.newEntry.amount &&
       added[0].date === date;
     if (!ok) problems.push(`expected one new ${e.newEntry.kind} of ${e.newEntry.amount} on ${date}, got ${JSON.stringify(added)}`);
+  }
+  if (e.newEntries) {
+    const ok =
+      added.length === e.newEntries.length &&
+      e.newEntries.every((want) => added.some((x) => x.kind === want.kind && x.amount === want.amount && x.date === TODAY));
+    if (!ok) problems.push(`expected new entries ${JSON.stringify(e.newEntries)} today, got ${JSON.stringify(added)}`);
   }
   if (e.noNewEntry && added.length) problems.push(`expected nothing recorded, got ${JSON.stringify(added)}`);
   if (e.lastEntryAmount !== undefined) {

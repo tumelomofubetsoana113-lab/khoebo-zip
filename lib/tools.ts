@@ -98,8 +98,19 @@ const inputs = {
     name: z.string().max(60).optional().describe("Only if the trader offers it."),
   }),
   record_entry: z.object({
-    kind: z.enum(["sale", "purchase"]),
-    amount: z.number().optional().describe("Total in maloti. Leave out if giving quantity and unit_price."),
+    kind: z
+      .enum(["sale", "purchase", "client_money"])
+      .describe(
+        "client_money: money a client gave a runner to buy goods for them. It isn't the runner's income; the runner's fee is a separate sale.",
+      ),
+    amount: z
+      .number()
+      .optional()
+      .describe("Total as the trader said it, in maloti or rand. Leave out if giving quantity and unit_price."),
+    currency: z
+      .enum(["maloti", "rand"])
+      .optional()
+      .describe('"rand" if the trader gave the amount in rand (R). Leave out for maloti.'),
     quantity: z.number().optional(),
     unit_price: z.number().optional().describe("Price of one item in maloti."),
     date: dateField.optional(),
@@ -164,7 +175,7 @@ const descriptions: Record<ToolName, string> = {
   save_profile:
     "Save the trader's business type, district, RSL registration status, or name. Call as soon as the trader gives any of these.",
   record_entry:
-    "Record one sale or purchase. Give either amount, or quantity and unit_price; the code works out the total. Returns the entry and the totals for the Monday-to-Sunday week the entry falls in, which may be last week.",
+    "Record one sale, purchase or amount of client money. Give either amount, or quantity and unit_price; the code works out the total. Amounts in rand are recorded at the same figure in maloti. Returns the entry and the totals for the Monday-to-Sunday week the entry falls in, which may be last week.",
   correct_entry: "Change the amount of one entry, or delete it.",
   get_summary: "Money in, money out, profit estimate, number of entries and days with no entries for a period.",
   get_tax_estimate:
@@ -204,6 +215,19 @@ function money(n: number) {
   return { amount: n, text: formatMoney(n) };
 }
 
+// "R4,000": the loti is pegged one to one to the rand, so the figure is the same.
+function formatRand(n: number): string {
+  return formatMoney(n).replace("M", "R");
+}
+
+const CLIENT_MONEY_NOTE =
+  "Client money is kept apart. It isn't income, profit or turnover, so it doesn't change the tax estimate. Only the runner's fee does.";
+
+// Client money only shows in results when there is some, so other traders never hear of it.
+function clientMoneyResult(clientMoney: number) {
+  return clientMoney > 0 ? { client_money: money(clientMoney), client_money_note: CLIENT_MONEY_NOTE } : {};
+}
+
 function entryResult(e: Entry) {
   return { id: e.id, kind: e.kind, amount: money(e.amount), date: e.date, date_text: formatDate(e.date), note: e.note };
 }
@@ -215,6 +239,7 @@ function summaryResult(s: Summary) {
     money_in: money(s.moneyIn),
     money_out: money(s.moneyOut),
     profit_estimate: money(s.profit),
+    ...clientMoneyResult(s.clientMoney),
     entries: s.entryCount,
     days_with_no_entries: s.daysWithNoEntries,
   };
@@ -233,6 +258,7 @@ function entryWeekTotals(state: TraderState, date: string, today: string) {
     money_in: money(s.moneyIn),
     money_out: money(s.moneyOut),
     profit_estimate: money(s.profit),
+    ...(s.clientMoney > 0 ? { client_money: money(s.clientMoney) } : {}),
   };
 }
 
@@ -344,19 +370,26 @@ const handlers: Handlers = {
       return fail(state, check.error, messages[check.error]);
     }
 
+    const inRand = input.currency === "rand";
     const entry: Entry = {
       id: ctx.newId(),
       kind: input.kind,
       amount: check.amount,
       date: check.date,
       ...(input.note ? { note: input.note.slice(0, 100) } : {}),
+      ...(inRand ? { currency: "rand" as const } : {}),
       source: ctx.source,
       createdAt: ctx.now,
     };
     const next = { ...state, entries: [...state.entries, entry] };
     return {
       state: next,
-      result: { recorded: entryResult(entry), week_of_entry: entryWeekTotals(next, entry.date, ctx.today) },
+      result: {
+        recorded: entryResult(entry),
+        ...(inRand ? { rand_note: strings.chat.cards.randAtPar(formatRand(entry.amount), formatMoney(entry.amount)) } : {}),
+        ...(entry.kind === "client_money" ? { client_money_note: CLIENT_MONEY_NOTE } : {}),
+        week_of_entry: entryWeekTotals(next, entry.date, ctx.today),
+      },
       ui: [{ type: "entry_receipt", entry }],
     };
   },
@@ -409,6 +442,7 @@ const handlers: Handlers = {
           end: s.end,
           moneyIn: s.moneyIn,
           moneyOut: s.moneyOut,
+          clientMoney: s.clientMoney,
           profit: s.profit,
           entryCount: s.entryCount,
         },

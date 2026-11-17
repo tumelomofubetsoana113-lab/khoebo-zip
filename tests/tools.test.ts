@@ -194,6 +194,7 @@ describe("get_summary", () => {
         end: "2026-11-01",
         moneyIn: 1350,
         moneyOut: 400,
+        clientMoney: 0,
         profit: 950,
         entryCount: 3,
       },
@@ -344,6 +345,58 @@ describe("cards with no state change", () => {
     ]);
     const mixed = [...types.slice(0, 6), "Maseru"];
     expect(runTool("offer_quick_replies", { options: mixed }, setUp, ctx()).isError).toBe(true);
+  });
+});
+
+describe("runners", () => {
+  const runner: TraderState = {
+    ...setUp,
+    profile: { ...setUp.profile, businessType: "Runner (cross-border)" },
+    entries: [],
+  };
+
+  it("records client money apart from the fee, so only the fee is turnover", () => {
+    let state = runTool(
+      "record_entry",
+      { kind: "client_money", amount: 4000, currency: "rand", note: "fridge" },
+      runner,
+      ctx(),
+    ).state;
+    const fee = runTool("record_entry", { kind: "sale", amount: 400, currency: "rand", note: "runner fee" }, state, ctx());
+    state = fee.state;
+    expect(TraderStateSchema.safeParse(state).success).toBe(true);
+    expect(state.entries.map((e) => [e.kind, e.amount, e.currency])).toEqual([
+      ["client_money", 4000, "rand"],
+      ["sale", 400, "rand"],
+    ]);
+    expect(fee.result.week_of_entry).toMatchObject({
+      money_in: { text: "M400" },
+      client_money: { text: "M4,000" },
+      profit_estimate: { text: "M400" },
+    });
+
+    const summary = runTool("get_summary", { period: "this_week" }, state, ctx());
+    expect(summary.result).toMatchObject({ money_in: { text: "M400" }, client_money: { text: "M4,000" } });
+    expect(summary.ui?.[0]).toMatchObject({ moneyIn: 400, clientMoney: 4000, profit: 400 });
+
+    const tax = runTool("get_tax_estimate", {}, state, ctx());
+    expect(tax.result).toMatchObject({ turnover: { text: "M400" } });
+  });
+
+  it("records rand at the same figure in maloti and says so", () => {
+    const out = runTool("record_entry", { kind: "sale", amount: 350, currency: "rand" }, runner, ctx());
+    expect(out.state.entries[0]).toMatchObject({ amount: 350, currency: "rand" });
+    expect(out.result.rand_note).toBe(
+      "R350 is recorded as M350, because the loti and the rand are worth the same.",
+    );
+    const maloti = runTool("record_entry", { kind: "sale", amount: 350 }, runner, ctx());
+    expect(maloti.state.entries[0].currency).toBeUndefined();
+    expect(maloti.result.rand_note).toBeUndefined();
+  });
+
+  it("doesn't mention client money to traders who have none", () => {
+    const out = runTool("get_summary", { period: "this_week" }, setUp, ctx());
+    expect(out.result.client_money).toBeUndefined();
   });
 });
 

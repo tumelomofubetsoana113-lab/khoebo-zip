@@ -10,8 +10,9 @@ import {
   type ChatMessage,
 } from "@/lib/chat";
 import { addDays, weekdayName } from "@/lib/dates";
-import { demoTraderState } from "@/lib/demo";
+import { demoRunnerState, demoTraderState } from "@/lib/demo";
 import { summarize, summaryRange } from "@/lib/ledger";
+import { taxEstimate } from "@/lib/tax";
 import { TraderStateSchema } from "@/lib/state";
 
 const AT = "2026-10-29T08:00:00.000Z";
@@ -132,6 +133,44 @@ describe("demo trader", () => {
 
   it("is the same every time for the same day", () => {
     expect(demoTraderState(today)).toEqual(state);
+    expect(new Set(state.entries.map((e) => e.id)).size).toBe(state.entries.length);
+  });
+});
+
+describe("demo runner", () => {
+  const today = "2026-10-29";
+  const state = demoRunnerState(today);
+
+  it("is a valid, set-up runner in Maseru", () => {
+    expect(TraderStateSchema.safeParse(state).success).toBe(true);
+    expect(state.profile).toMatchObject({ businessType: "Runner (cross-border)", district: "Maseru", registered: "yes" });
+  });
+
+  it("travels on Tuesdays and Fridays, with client money and a fee for every order", () => {
+    const days = new Set(state.entries.map((e) => weekdayName(e.date)));
+    expect(days).toEqual(new Set(["Tuesday", "Friday"]));
+    const client = state.entries.filter((e) => e.kind === "client_money");
+    const fees = state.entries.filter((e) => e.kind === "sale");
+    expect(client.length).toBe(fees.length);
+    expect(client.length).toBeGreaterThan(0);
+    expect(client.every((e) => e.currency === "rand")).toBe(true);
+  });
+
+  it("counts only the fees as turnover, and makes a profit every full week", () => {
+    const fees = state.entries.filter((e) => e.kind === "sale" && e.date >= "2026-10-01");
+    const feeTotal = fees.reduce((s, e) => s + e.amount, 0);
+    expect(taxEstimate(state.entries, "2026-Q4").turnover).toBe(feeTotal);
+    for (let i = 0; i < 14; i++) {
+      const day = addDays(today, i);
+      const demo = demoRunnerState(day);
+      const last = summarize(demo.entries, summaryRange("last_week", day), day);
+      expect(last.profit, `last week on ${day}`).toBeGreaterThan(0);
+      expect(last.clientMoney, `last week on ${day}`).toBeGreaterThan(last.moneyIn);
+    }
+  });
+
+  it("is the same every time for the same day", () => {
+    expect(demoRunnerState(today)).toEqual(state);
     expect(new Set(state.entries.map((e) => e.id)).size).toBe(state.entries.length);
   });
 });

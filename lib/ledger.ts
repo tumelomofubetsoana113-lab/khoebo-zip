@@ -113,8 +113,9 @@ export function summaryRange(period: SummaryPeriod, today: string): DateRange {
 }
 
 export type Summary = DateRange & {
-  moneyIn: number;
+  moneyIn: number; // sales only, so a runner's fees and not the client's money
   moneyOut: number;
+  clientMoney: number; // client money a runner handled: not income, not profit, not turnover
   profit: number; // an estimate: money in minus money out
   entryCount: number;
   daysWithNoEntries: number; // counted only up to today
@@ -122,10 +123,11 @@ export type Summary = DateRange & {
 
 export function summarize(entries: Entry[], range: DateRange, today: string): Summary {
   const inPeriod = entries.filter((e) => inRange(e.date, range));
-  const moneyIn = roundMoney(inPeriod.filter((e) => e.kind === "sale").reduce((s, e) => s + e.amount, 0));
-  const moneyOut = roundMoney(
-    inPeriod.filter((e) => e.kind === "purchase").reduce((s, e) => s + e.amount, 0),
-  );
+  const total = (kind: Entry["kind"]) =>
+    roundMoney(inPeriod.filter((e) => e.kind === kind).reduce((s, e) => s + e.amount, 0));
+  const moneyIn = total("sale");
+  const moneyOut = total("purchase");
+  const clientMoney = total("client_money");
 
   const lastDay = range.end < today ? range.end : today;
   const daysSoFar = lastDay < range.start ? 0 : daysBetween(range.start, lastDay) + 1;
@@ -135,6 +137,7 @@ export function summarize(entries: Entry[], range: DateRange, today: string): Su
     ...range,
     moneyIn,
     moneyOut,
+    clientMoney,
     profit: roundMoney(moneyIn - moneyOut),
     entryCount: inPeriod.length,
     daysWithNoEntries: daysSoFar - daysWithEntries,

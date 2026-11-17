@@ -54,13 +54,19 @@ export function greeting(now: string): ChatMessage {
   };
 }
 
-export function demoWelcome(now: string): ChatMessage {
+export function demoWelcome(now: string, who: "trader" | "runner" = "trader"): ChatMessage {
+  const runner = who === "runner";
   return {
     id: messageId(),
     role: "assistant",
-    text: strings.chat.demoLoaded,
+    text: runner ? strings.chat.demoRunnerLoaded : strings.chat.demoLoaded,
     at: now,
-    ui: [{ type: "quick_replies", options: [...strings.chat.demoQuickReplies] }],
+    ui: [
+      {
+        type: "quick_replies",
+        options: [...(runner ? strings.chat.demoRunnerQuickReplies : strings.chat.demoQuickReplies)],
+      },
+    ],
   };
 }
 

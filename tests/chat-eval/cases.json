@@ -92,5 +92,22 @@
     "note": "onboarding: a courier is saved as Courier or delivery",
     "setup": { "onboardingDone": false, "profile": { "registered": null, "language": "en" } },
     "expect": { "toolsInclude": ["save_profile"], "profileMatches": { "businessType": "Courier" } }
+  },
+  {
+    "message": "client gave me R4000 for a fridge from Bloemfontein, my fee is R400",
+    "note": "runner: client money and the fee are recorded apart, rand at par",
+    "setup": { "profile": { "businessType": "Runner (cross-border)", "district": "Maseru", "registered": "yes", "language": "en" } },
+    "expect": {
+      "newEntries": [
+        { "kind": "client_money", "amount": 4000 },
+        { "kind": "sale", "amount": 400 }
+      ]
+    }
+  },
+  {
+    "message": "got 2000 today",
+    "note": "runner: one amount, unclear if fee or client money, so ask",
+    "setup": { "profile": { "businessType": "Runner (cross-border)", "district": "Maseru", "registered": "yes", "language": "en" } },
+    "expect": { "noNewEntry": true }
   }
 ]

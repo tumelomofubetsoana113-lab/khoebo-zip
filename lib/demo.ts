@@ -88,3 +88,83 @@ export function demoTraderState(today: string): TraderState {
     messageCount: 0,
   };
 }
+
+// The demo runner: a registered runner in Maseru who goes to Bloemfontein
+// every Tuesday and Friday to buy goods for clients. Each order is the client's
+// money for the goods (client_money, not income) and the runner's fee (a sale,
+// the only turnover). The taxi fare is a purchase. Same "today", same records.
+
+const orders = [
+  "fridge",
+  "school uniforms",
+  "building tools",
+  "bedroom suite",
+  "stove",
+  "baby clothes",
+  "car parts",
+  "TV stand",
+];
+
+export function demoRunnerState(today: string): TraderState {
+  const rand = random(Number(today.replaceAll("-", "")) + 1);
+  const entries: Entry[] = [];
+  const start = addDays(today, -(DAYS - 1));
+
+  for (let i = 0; i < DAYS; i++) {
+    const date = addDays(start, i);
+    const day = weekdayName(date);
+    if (day !== "Tuesday" && day !== "Friday") continue;
+    const stamp = (time: string) => `${date}T${time}:00.000Z`;
+
+    entries.push({
+      id: `demo-${date}-fare`,
+      kind: "purchase",
+      amount: 280,
+      date,
+      note: "taxi to Bloemfontein and back",
+      source: "text",
+      createdAt: stamp("04:00"),
+    });
+
+    const clients = 2 + Math.floor(rand() * 3); // 2 to 4 orders a trip
+    for (let c = 0; c < clients; c++) {
+      const item = orders[Math.floor(rand() * orders.length)];
+      const goods = tens(600 + rand() * 4400);
+      // The fee is about 10% of the goods, at least M100.
+      const fee = Math.max(100, tens(goods * 0.1));
+      entries.push({
+        id: `demo-${date}-c${c}`,
+        kind: "client_money",
+        amount: goods,
+        date,
+        note: `for a client's ${item}`,
+        currency: "rand",
+        source: "text",
+        createdAt: stamp(`0${5 + c}:00`),
+      });
+      entries.push({
+        id: `demo-${date}-f${c}`,
+        kind: "sale",
+        amount: fee,
+        date,
+        note: `runner fee, ${item}`,
+        source: "text",
+        createdAt: stamp(`0${5 + c}:30`),
+      });
+    }
+  }
+
+  return {
+    version: 1,
+    onboardingDone: true,
+    profile: {
+      businessType: "Runner (cross-border)",
+      district: "Maseru",
+      registered: "yes",
+      language: "en",
+    },
+    entries,
+    returns: [],
+    messageCount: 0,
+  };
+}

@@ -30,6 +30,8 @@ export const strings = {
       moneyIn: "Money in",
       moneyOut: "Money out",
       profit: "Profit",
+      clientMoney: "Client money handled",
+      clientMoneyNote: "Not your income, so it isn't in your profit or tax.",
       entries: (n: number) => `${n} ${n === 1 ? "entry" : "entries"}`,
     },
     periods: {
@@ -66,6 +68,9 @@ export const strings = {
     demoLoaded:
       "Demo trader loaded: a fruit and vegetable seller in Maseru, registered with RSL, with four weeks of sales and purchases. Try asking how the week is going.",
     demoQuickReplies: ["How am I doing?", "How much tax do I owe?", "File my return"],
+    demoRunnerLoaded:
+      "Demo runner loaded: a runner in Maseru who buys goods in Bloemfontein for clients twice a week, registered with RSL. The client's money is kept apart, and only the fees count as income. Try asking how the week is going, or log a new order.",
+    demoRunnerQuickReplies: ["How am I doing?", "How much tax do I owe?", "Log a client order"],
     receipt: {
       open: "Send a receipt",
       title: "Send a receipt",
@@ -109,6 +114,8 @@ export const strings = {
       title: "Demo",
       loadTrader: "Load demo trader",
       loadTraderHint: "Fruit and vegetable seller in Maseru, four weeks of records",
+      loadRunner: "Load demo runner",
+      loadRunnerHint: "Buys goods in South Africa for clients: only the fee is income",
       weekSummary: "Show this week's summary",
       weekSummaryMessage: "how am I doing this week?",
       reminder: "Simulate a reminder",
@@ -130,6 +137,11 @@ export const strings = {
       recorded: "Recorded",
       sale: "Sale",
       purchase: "Purchase",
+      clientMoney: "Client money",
+      clientMoneyHint: "Not your income. Only your fee counts.",
+      paidInRand: "Given in rand (R1 = M1)",
+      randAtPar: (rand: string, maloti: string) =>
+        `${rand} is recorded as ${maloti}, because the loti and the rand are worth the same.`,
       undo: "Undo",
       undone: "Undone",
       returnTitle: (period: string) => `Tax return ${period}`,
