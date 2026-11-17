@@ -6,17 +6,19 @@ import { MobileMenu } from "./MobileMenu";
 const t = strings.landing.nav;
 
 const links = [
+  { href: "#pipeline", label: t.pipeline },
   { href: "#how-it-works", label: t.howItWorks },
   { href: "#for-officers", label: t.forOfficers },
   { href: "#results", label: t.results },
 ];
 
-// Anchor links on desktop. On phones the links sit in a three-line menu, and
+// Anchor links from 1024px up (four links overflow the bar at 768px). Below
+// that, and on phones, the links sit in a three-line menu, and
 // the button stays in the bar beside it.
 export function Header() {
   return (
     <SiteHeader>
-      <nav aria-label={t.label} className="hidden md:block">
+      <nav aria-label={t.label} className="hidden lg:block">
         <ul className="flex items-center gap-1">
           {links.map((link) => (
             <li key={link.href}>

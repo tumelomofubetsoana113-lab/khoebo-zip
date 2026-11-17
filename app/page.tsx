@@ -4,6 +4,7 @@ import { ForOfficers } from "@/components/landing/ForOfficers";
 import { Header } from "@/components/landing/Header";
 import { Hero } from "@/components/landing/Hero";
 import { HowItWorks } from "@/components/landing/HowItWorks";
+import { Pipeline } from "@/components/landing/Pipeline";
 import { Problem } from "@/components/landing/Problem";
 import { Results } from "@/components/landing/Results";
 import { SiteFooter } from "@/components/ui/SiteFooter";
@@ -16,6 +17,7 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <Problem />
+        <Pipeline />
         <HowItWorks />
         <ForOfficers />
         <BuiltForLesotho />

@@ -182,8 +182,8 @@ This is the first thing judges see. It should look finished and calm, with plent
 
 **1. Header** (sticky, floating: a white rounded bar with a `line` border and a soft shadow, inset from the page edges)
 - Left: "Khoebo" wordmark and the prototype pill.
-- Right on desktop: anchor links "How it works", "For officers", "Results", plus a small primary button "Try the chat".
-- On phones and tablets (below 768px): wordmark, the "Try the chat" button and a three-line menu button. The menu opens a rounded panel under the header with the three anchor links, and closes on a link tap, Escape, or a tap outside it. Below 640px the prototype pill sits on its own row under the wordmark, inside the header.
+- Right on desktop: anchor links "The pipeline" (added 17 November 2026), "How it works", "For officers", "Results", plus a small primary button "Try the chat". The links show from 1024px up; four of them overflow the bar at 768px.
+- Below 1024px (this was 768px until the fourth link was added): wordmark, the "Try the chat" button and a three-line menu button. The menu opens a rounded panel under the header with the three anchor links, and closes on a link tap, Escape, or a tap outside it. Below 640px the prototype pill sits on its own row under the wordmark, inside the header.
 
 **2. Hero**
 - Two columns on desktop (text left, phone right). Stacked on mobile, phone below text.
@@ -201,6 +201,12 @@ This is the first thing judges see. It should look finished and calm, with plent
 
 **3. The problem** (one short band on `page` background, centred, max width about 640px)
 - "A nil return doesn't always mean someone is hiding income. Many traders are seasonal, or have closed, or just never kept records. Khoebo helps traders keep those records, and helps RSL tell the difference."
+
+**3a. From the street to the tax net** (id `pipeline`, white background, added 17 November 2026)
+- Heading "From the street to the tax net", and a lead saying Khoebo covers every step with the least effort for the trader and for RSL.
+- Six steps in a grid (three across on desktop, two on tablet, stacked on mobile). Each has an icon, a title, who does it in `green-text`, and one sentence: Find (RSL officer), Reach (Khoebo and the officer), Register (trader, with RSL), Keep records (trader, in Khoebo), File and pay (trader, in Khoebo), Stay compliant (RSL officer).
+- Under the steps, who it's for: street and market sellers, spaza shops, hair salons, repairers, flea market and online sellers, couriers, and runners. Then a link, "See both officer lists", to `/officer/leads`.
+- A `line` border under it, since "How it works" is also white.
 
 **4. How it works for traders** (id `how-it-works`)
 - Heading: "How it works for traders"
@@ -1051,5 +1057,7 @@ The owner compared Khoebo with RSL's call and with the points from the meet and 
 - **"What you need to do".** RSL's call asks for help so businesses understand filing and payment requirements, and its glossary lists the obligations: register, keep records, file returns, pay on time. The new tool `show_obligations` shows them with the trader's own status: registered or not, entries so far, this period's return filed or due on its date, and tax paid or the estimated amount due. With nothing to pay yet, it says "Pay any tax you owe by …". All of it is worked out in code, and amounts carry the placeholder note. After set-up, the assistant now offers "What do I need to do?" next to "Log my first sale".
 - **Chat eval:** two new cases, "what do I have to do as a taxpayer?" (expects `show_obligations`) and "how do I register with RSL?" (expects the card with links and no web address in the reply). Full eval: 66 of 66 (22 cases, three runs each).
 - **Checked in Chrome on a local production build:** the registration card shows both buttons with the right addresses, and the obligations card lists the four items with their status.
+
+**Step G, pipeline on the landing page (17 November 2026).** `components/landing/Pipeline.tsx` sits between the problem band and "How it works" (section 5.1, 3a), with "The pipeline" as the first header link. A fourth link made the header 864px wide at 768px, so the desktop links now show from 1024px and the menu below that. Checked in 360, 768, 1024 and 1280px frames on `/`, and at 768px on `/officer` and `/officer/leads`: no horizontal scroll.
 
 **Left as pilot work:** the data agreements each identification source needs; Khoebo QR codes at wholesalers, border posts and flea markets; a record of income and compliance that traders can show lenders; a "tax pot" for setting money aside; one-tap nil returns with a reason; a daily evening check-in message; Sesotho replies.

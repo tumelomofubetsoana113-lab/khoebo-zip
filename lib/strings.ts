@@ -453,6 +453,7 @@ export const strings = {
   landing: {
     nav: {
       label: "Main",
+      pipeline: "The pipeline",
       howItWorks: "How it works",
       forOfficers: "For officers",
       results: "Results",
@@ -482,6 +483,46 @@ export const strings = {
     },
     problem:
       "A nil return doesn't always mean someone is hiding income. Many traders are seasonal, or have closed, or just never kept records. Khoebo helps traders keep those records, and helps RSL tell the difference.",
+    // Added 17 November 2026: RSL asked to see the whole pipeline, from finding
+    // an informal operator to a taxpayer who keeps complying.
+    pipeline: {
+      heading: "From the street to the tax net",
+      lead: "Khoebo covers every step, from finding informal operators to keeping them compliant, with the least effort for the trader and for RSL.",
+      who: "For street and market sellers, spaza shops, hair salons, repairers, flea market and online sellers, couriers, and runners who buy goods in South Africa or Botswana for clients.",
+      steps: [
+        {
+          title: "Find",
+          by: "RSL officer",
+          body: "Leads from data RSL holds or can agree to get: supplier e-invoices, mobile money, licence lists, border declarations and courier volumes.",
+        },
+        {
+          title: "Reach",
+          by: "Khoebo and the officer",
+          body: "A friendly message first. A field visit only when there's no phone or no answer, with a QR code to sign up on the spot.",
+        },
+        {
+          title: "Register",
+          by: "Trader, with RSL",
+          body: "Khoebo lists what to bring and links to RSL's e-Registration and the RSL app.",
+        },
+        {
+          title: "Keep records",
+          by: "Trader, in Khoebo",
+          body: "Sales by message, voice note or receipt photo, as part of the day. A runner's fee is kept apart from clients' money.",
+        },
+        {
+          title: "File and pay",
+          by: "Trader, in Khoebo",
+          body: "A reminder before the due date and a return filled in from the records. Payment by mobile money in a pilot.",
+        },
+        {
+          title: "Stay compliant",
+          by: "RSL officer",
+          body: "The worklist tells quiet months from undeclared trading, so honest traders are left alone.",
+        },
+      ],
+      link: "See both officer lists",
+    },
     howItWorks: {
       heading: "How it works for traders",
       steps: [
