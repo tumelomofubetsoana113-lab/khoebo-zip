@@ -338,7 +338,7 @@ Every **Field visit** card has a "Sign them up on the spot" button. It opens a s
 The page has:
 
 - **A title and notes:** "Potential registrants", the subline, the sign-in note, and a note on where leads come from. Every source needs a data agreement, and none exists yet.
-- **"Tested on simulated data":** three figures read from `data/leads.json`: fewer field visits than visiting every lead, the share of visits that reach someone trading unregistered, and the share of such operators reached.
+- **"Tested on simulated data":** three figures read from `data/leads.json`: fewer field visits than visiting every lead, the share of visits that reach someone trading unregistered, and the share of such operators reached. The note under them is centred, like the landing page's results note (owner's request, 17 November 2026).
 - **Four summary cards,** one per lead action. Each has a pill, a count, a share and one line of explanation, and tapping a card filters the list. The pills use the colours of the worklist action that means the same kind of thing: Field visit amber, Possible match blue, Invite to register grey, Not enough evidence green.
 - **Four demo leads,** one per action: a runner (invite), a flea market stall with no phone (visit), a courier whose phone matches a registered taxpayer (match), and mobile money from two payers (not enough evidence).
 - **Filters:** action chips, district and kind of business, kept in the URL.

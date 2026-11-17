@@ -31,7 +31,7 @@ export function LeadResults({ runs }: { runs: Leads["thirtyRuns"] }) {
           </li>
         ))}
       </ul>
-      <p className="mt-3 text-sm text-muted">{t.note(30, Math.round(runs.leads.mean))}</p>
+      <p className="mt-3 text-center text-sm text-muted">{t.note(30, Math.round(runs.leads.mean))}</p>
     </section>
   );
 }
