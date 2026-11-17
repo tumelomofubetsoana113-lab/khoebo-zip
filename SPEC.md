@@ -207,6 +207,7 @@ This is the first thing judges see. It should look finished and calm, with plent
 - Six steps in a grid (three across on desktop, two on tablet, stacked on mobile). Each has an icon, a title, who does it in `green-text`, and one sentence: Find (RSL officer), Reach (Khoebo and the officer), Register (trader, with RSL), Keep records (trader, in Khoebo), File and pay (trader, in Khoebo), Stay compliant (RSL officer).
 - Under the steps, who it's for: street and market sellers, spaza shops, hair salons, repairers, flea market and online sellers, couriers, and runners. Then a link, "See both officer lists", to `/officer/leads`.
 - A `line` border under it, since "How it works" is also white.
+- The step cards lift 6px with a soft blue shadow on hover, like the "How it works" cards, and don't move when the visitor prefers reduced motion (added 17 November 2026 at the owner's request).
 
 **4. How it works for traders** (id `how-it-works`)
 - Heading: "How it works for traders"

@@ -16,7 +16,10 @@ export function Pipeline() {
         <p className="mt-3 max-w-3xl text-lg text-muted">{t.lead}</p>
         <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {t.steps.map((step, i) => (
-            <li key={step.title} className="flex gap-4 rounded-card border border-line bg-page p-5">
+            <li
+              key={step.title}
+              className="flex gap-4 rounded-card border border-line bg-page p-5 transition duration-200 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-flag-blue/25 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+            >
               <IconCircle icon={icons[i]} />
               <div>
                 <h3 className="text-lg font-semibold">
