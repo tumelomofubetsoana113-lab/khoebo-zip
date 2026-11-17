@@ -18,6 +18,12 @@ export const strings = {
     checkin: "Automated check-in",
     none: "No action",
   },
+  leadActions: {
+    visit: "Field visit",
+    invite: "Invite to register",
+    match: "Possible match",
+    unclear: "Not enough evidence",
+  },
   common: {
     close: "Close",
     cancel: "Cancel",
@@ -218,6 +224,89 @@ export const strings = {
     registered: { yes: "Yes", no: "No", not_sure: "Not sure" },
   },
   officer: {
+    tabs: {
+      label: "Officer lists",
+      traders: "Registered traders",
+      leads: "Potential registrants",
+    },
+    pipeline: {
+      heading: "From the street to the tax net",
+      note: "Simulated figures, from the two officer lists.",
+      find: {
+        title: "Find",
+        value: (n: number) => `${n} found`,
+        detail: (leads: number) => `from ${leads} leads in third-party data`,
+      },
+      reach: {
+        title: "Reach",
+        value: (invites: number, visits: number) => `${invites} invites · ${visits} visits`,
+        detail: "A message first. A visit when there's no phone or no answer.",
+      },
+      register: {
+        title: "Register",
+        value: "RSL e-Registration or the RSL app",
+        detail: "Khoebo links to RSL's own channels and lists what to bring.",
+      },
+      record: {
+        title: "Keep records and file",
+        value: (n: number) => `${n} registered traders`,
+        detail: "Sales by message, and a pre-filled return.",
+      },
+      check: {
+        title: "Check and follow up",
+        value: (n: number) => `${n} to act on`,
+        detail: (inLine: number) => `${inLine} in line with the evidence`,
+      },
+    },
+    leads: {
+      metaTitle: "Potential registrants",
+      title: "Potential registrants",
+      subline: (simulated: number, demos: number, window: string) =>
+        `Simulated data · ${simulated} operators outside the tax net and ${demos} demo leads · ${window}`,
+      sourcesNote:
+        "Leads come from signals RSL could get through data agreements: supplier e-invoices with no tax number, mobile money merchant payments, licence and market stall lists, border declarations and courier volumes. None of these links exist yet.",
+      summaryLabel: "Leads by action",
+      summaryShare: (pct: number) => `${pct}% of leads`,
+      summaryFilter: (action: string) => `Show only ${action}`,
+      explain: {
+        visit: "Trading evidence, and no phone number or no answer to an invite.",
+        invite: "Trading evidence and a phone number: a friendly message with a Khoebo link.",
+        match: "May already be registered. An officer checks before anyone is contacted.",
+        unclear: "One weak signal, family money, or a business that stopped. No contact.",
+      },
+      demoHeading: "Demo leads",
+      results: {
+        heading: "Tested on simulated data",
+        fewerVisits: (pct: number) => `${pct}% fewer field visits`,
+        fewerVisitsLabel: (visits: number, all: number) => `${visits} visits instead of ${all} to every lead`,
+        precision: (pct: number) => `${pct}% of field visits`,
+        precisionLabel: (base: number) =>
+          `reach someone trading and not registered, against ${base}% when visiting every lead`,
+        reached: (pct: number) => `${pct}% reached`,
+        reachedLabel: "of operators trading outside the tax net get an invite or a visit",
+        note: (populations: number, leads: number) =>
+          `Average of ${populations} simulated populations of ${leads} leads. Operators who leave no trace in any of these sources can't be found this way, so street sweeps still matter.`,
+      },
+      filters: {
+        heading: "Filters",
+        action: "Action",
+        district: "District",
+        allDistricts: "All districts",
+        kind: "Kind of business",
+        allKinds: "All kinds",
+        clear: "Clear filters",
+        showing: (shown: number, total: number) => `Showing ${shown} of ${total} leads`,
+        none: "No leads match these filters.",
+        listed: (listed: number, matching: number) => `Listing ${listed} of ${matching}.`,
+        showMore: (n: number) => `Show ${n} more`,
+      },
+      card: {
+        activeMonths: (n: number) => `Trading signals in ${n} of 6 months`,
+        phone: "Phone number on record",
+        noPhone: "No phone number on record",
+        why: "Why this action",
+      },
+    },
     metaTitle: "Officer worklist",
     title: "Officer worklist",
     subline: (simulated: number, demos: number, window: string) =>

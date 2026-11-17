@@ -1,0 +1,3410 @@
+{
+ "generatedAt": "2026-11-17",
+ "window": [
+  "2026-05",
+  "2026-06",
+  "2026-07",
+  "2026-08",
+  "2026-09",
+  "2026-10"
+ ],
+ "simulated": 200,
+ "counts": {
+  "FIELD VISIT": 31,
+  "INVITE TO REGISTER": 75,
+  "POSSIBLE MATCH": 14,
+  "NOT ENOUGH EVIDENCE": 84
+ },
+ "pinned": [
+  "LEAD-RUNNER",
+  "LEAD-FLEA",
+  "LEAD-COURIER",
+  "LEAD-FAMILY"
+ ],
+ "leads": [
+  {
+   "id": "LEAD-0028",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Butha-Buthe",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "655 parcels through a courier partner from May to Oct 2026.",
+    "Trading signals in 6 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "courier"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0029",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Mafeteng",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Mobile money merchant payments: M41,510 from up to 31 different payers a month.",
+    "408 parcels through a courier partner from May to Oct 2026.",
+    "Trading signals in 6 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 6,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0035",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Leribe",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M19,420 of stock bought in 6 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0038",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Leribe",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M19,290 of stock bought in 6 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0047",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Mokhotlong",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M20,330 of stock bought in 6 of 6 months.",
+    "Trading signals in 6 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0050",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Butha-Buthe",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "756 parcels through a courier partner from May to Oct 2026.",
+    "Trading signals in 6 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "courier"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0065",
+   "label": null,
+   "kind": "Street food",
+   "district": "Maseru",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M16,920 of stock bought in 6 of 6 months.",
+    "Trading signals in 6 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0076",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Mobile money merchant payments: M33,620 from up to 40 different payers a month.",
+    "Goods declared at the border on 26 trips, worth M82,560. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0083",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Goods declared at the border on 37 trips, worth M130,720. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0094",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Mokhotlong",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Mobile money merchant payments: M31,870 from up to 39 different payers a month.",
+    "Goods declared at the border on 22 trips, worth M109,370. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0115",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Butha-Buthe",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M20,070 of stock bought in 6 of 6 months.",
+    "Trading signals in 6 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0125",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Leribe",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M20,750 of stock bought in 6 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0148",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Mobile money merchant payments: M33,350 from up to 33 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0165",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Leribe",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M16,050 of stock bought in 6 of 6 months.",
+    "Mobile money merchant payments: M24,810 from up to 37 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0170",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Goods declared at the border on 21 trips, worth M67,560. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0192",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Goods declared at the border on 26 trips, worth M83,670. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0195",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Qacha's Nek",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Mobile money merchant payments: M30,180 from up to 40 different payers a month.",
+    "Trading signals in 6 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0199",
+   "label": null,
+   "kind": "Street food",
+   "district": "Leribe",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M28,430 of stock bought in 6 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0006",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Mafeteng",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M13,640 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0016",
+   "label": null,
+   "kind": "Street food",
+   "district": "Maseru",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Mobile money merchant payments: M28,330 from up to 27 different payers a month.",
+    "Trading signals in 5 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0022",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Mobile money merchant payments: M22,940 from up to 33 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0025",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Quthing",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M13,370 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0046",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Mafeteng",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M17,840 of stock bought in 5 of 6 months.",
+    "Mobile money merchant payments: M26,220 from up to 38 different payers a month.",
+    "Trading signals in 5 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0051",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Leribe",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M17,750 of stock bought in 5 of 6 months.",
+    "Mobile money merchant payments: M28,450 from up to 21 different payers a month.",
+    "Trading signals in 5 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0128",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Mafeteng",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M20,320 of stock bought in 5 of 6 months.",
+    "Trading signals in 5 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0166",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Qacha's Nek",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Mobile money merchant payments: M32,810 from up to 38 different payers a month.",
+    "Goods declared at the border on 21 trips, worth M88,540. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 5 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 5,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0190",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Leribe",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Mobile money merchant payments: M17,090 from up to 40 different payers a month.",
+    "Trading signals in 5 of 6 months. An invitation sent earlier had no answer, so an officer visits."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0193",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Mokhotlong",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M24,320 of stock bought in 5 of 6 months.",
+    "Trading signals in 5 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": false
+  },
+  {
+   "id": "LEAD-FLEA",
+   "label": "Flea market clothing stall, Leribe",
+   "kind": "Flea market stall",
+   "district": "Leribe",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M12,400 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0039",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Berea",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Mobile money merchant payments: M17,310 from up to 25 different payers a month.",
+    "Goods declared at the border on 18 trips, worth M65,140. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 4 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 4,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0143",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Berea",
+   "action": "FIELD VISIT",
+   "reasons": [
+    "Mobile money merchant payments: M20,040 from up to 21 different payers a month.",
+    "Trading signals in 4 of 6 months, and no phone number on record, so an officer visits. Khoebo's field-visit link sets them up on the spot."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 4,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0001",
+   "label": null,
+   "kind": "Street food",
+   "district": "Butha-Buthe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M23,440 of stock bought in 6 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0002",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Berea",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M24,160 from up to 38 different payers a month.",
+    "Goods declared at the border on 30 trips, worth M87,600. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0005",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Berea",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M34,420 from up to 38 different payers a month.",
+    "Goods declared at the border on 33 trips, worth M113,180. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0015",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Berea",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M31,700 from up to 38 different payers a month.",
+    "Goods declared at the border on 26 trips, worth M117,050. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0023",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Quthing",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M31,150 from up to 38 different payers a month.",
+    "456 parcels through a courier partner from May to Oct 2026.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0031",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Qacha's Nek",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M24,070 of stock bought in 6 of 6 months.",
+    "Mobile money merchant payments: M26,880 from up to 40 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0034",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Mafeteng",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M40,260 from up to 39 different payers a month.",
+    "Goods declared at the border on 27 trips, worth M113,560. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0040",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Qacha's Nek",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M35,770 from up to 36 different payers a month.",
+    "589 parcels through a courier partner from May to Oct 2026.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0041",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M23,740 from up to 39 different payers a month.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0043",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Berea",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M22,940 of stock bought in 6 of 6 months.",
+    "Mobile money merchant payments: M34,450 from up to 30 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0045",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Mafeteng",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M34,330 from up to 33 different payers a month.",
+    "409 parcels through a courier partner from May to Oct 2026.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0054",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Thaba-Tseka",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M35,630 from up to 36 different payers a month.",
+    "Goods declared at the border on 20 trips, worth M57,880. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0067",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Berea",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M20,980 of stock bought in 6 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0068",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Leribe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M35,820 from up to 34 different payers a month.",
+    "Goods declared at the border on 27 trips, worth M96,380. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0080",
+   "label": null,
+   "kind": "Street food",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M30,790 from up to 39 different payers a month.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0087",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Mafeteng",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M20,480 of stock bought in 6 of 6 months.",
+    "Mobile money merchant payments: M35,190 from up to 36 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0092",
+   "label": null,
+   "kind": "Street food",
+   "district": "Mokhotlong",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M17,740 of stock bought in 6 of 6 months.",
+    "Mobile money merchant payments: M24,420 from up to 32 different payers a month.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0098",
+   "label": null,
+   "kind": "Street food",
+   "district": "Thaba-Tseka",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M25,400 of stock bought in 6 of 6 months.",
+    "Mobile money merchant payments: M24,800 from up to 32 different payers a month.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0113",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Butha-Buthe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M29,380 from up to 36 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0130",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M39,300 from up to 37 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0131",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Leribe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M20,610 of stock bought in 6 of 6 months.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0139",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M20,220 of stock bought in 6 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0140",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Mohale's Hoek",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M12,920 of stock bought in 6 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0153",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Leribe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M30,360 from up to 38 different payers a month.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0162",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Mohale's Hoek",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M19,800 of stock bought in 6 of 6 months.",
+    "Mobile money merchant payments: M40,710 from up to 39 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0167",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M22,040 from up to 40 different payers a month.",
+    "Goods declared at the border on 28 trips, worth M83,870. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0173",
+   "label": null,
+   "kind": "Street food",
+   "district": "Leribe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M16,390 of stock bought in 6 of 6 months.",
+    "Mobile money merchant payments: M27,330 from up to 37 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0181",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Berea",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M39,130 from up to 35 different payers a month.",
+    "529 parcels through a courier partner from May to Oct 2026.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0185",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M36,160 from up to 33 different payers a month.",
+    "426 parcels through a courier partner from May to Oct 2026.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-RUNNER",
+   "label": "Runner, Maseru (goods from Bloemfontein)",
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M29,700 from up to 19 different payers a month.",
+    "Goods declared at the border on 24 trips, worth M63,000. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 6 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0021",
+   "label": null,
+   "kind": "Street food",
+   "district": "Mokhotlong",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M14,910 of stock bought in 5 of 6 months.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0024",
+   "label": null,
+   "kind": "Street food",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M22,990 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0030",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Butha-Buthe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M17,110 from up to 34 different payers a month.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0033",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Mafeteng",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M19,660 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0058",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M20,740 of stock bought in 5 of 6 months.",
+    "Mobile money merchant payments: M25,350 from up to 35 different payers a month.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0060",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Thaba-Tseka",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M32,900 from up to 40 different payers a month.",
+    "399 parcels through a courier partner from May to Oct 2026.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0061",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Mokhotlong",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M16,320 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0062",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M13,600 of stock bought in 5 of 6 months.",
+    "Mobile money merchant payments: M23,720 from up to 20 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0063",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M17,300 of stock bought in 5 of 6 months.",
+    "Mobile money merchant payments: M23,930 from up to 38 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0072",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Leribe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M31,480 from up to 32 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0074",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Butha-Buthe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M27,430 from up to 32 different payers a month.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0077",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Leribe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M14,320 of stock bought in 5 of 6 months.",
+    "Mobile money merchant payments: M27,790 from up to 32 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0079",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M18,240 of stock bought in 5 of 6 months.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0100",
+   "label": null,
+   "kind": "Street food",
+   "district": "Berea",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M14,700 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0101",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Leribe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M16,760 of stock bought in 5 of 6 months.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0120",
+   "label": null,
+   "kind": "Street food",
+   "district": "Mafeteng",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M21,890 from up to 38 different payers a month.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0132",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Butha-Buthe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M13,270 of stock bought in 5 of 6 months.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0134",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Leribe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M18,570 of stock bought in 5 of 6 months.",
+    "Mobile money merchant payments: M21,920 from up to 34 different payers a month.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0137",
+   "label": null,
+   "kind": "Street food",
+   "district": "Mohale's Hoek",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M17,100 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0142",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Thaba-Tseka",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M18,050 of stock bought in 5 of 6 months.",
+    "Mobile money merchant payments: M23,450 from up to 31 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0149",
+   "label": null,
+   "kind": "Street food",
+   "district": "Thaba-Tseka",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M19,260 from up to 40 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0155",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Qacha's Nek",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M17,610 of stock bought in 5 of 6 months.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0159",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Mafeteng",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M25,610 from up to 34 different payers a month.",
+    "Goods declared at the border on 17 trips, worth M77,580. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0171",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Butha-Buthe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M29,980 from up to 32 different payers a month.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0177",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Mohale's Hoek",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M27,240 from up to 36 different payers a month.",
+    "Goods declared at the border on 24 trips, worth M105,550. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0179",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Butha-Buthe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M15,660 of stock bought in 5 of 6 months.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0180",
+   "label": null,
+   "kind": "Street food",
+   "district": "Leribe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M34,800 from up to 34 different payers a month.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0183",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Berea",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M26,090 from up to 33 different payers a month.",
+    "436 parcels through a courier partner from May to Oct 2026.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0186",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M14,150 of stock bought in 5 of 6 months.",
+    "Mobile money merchant payments: M22,990 from up to 39 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 5 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0009",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M29,080 from up to 32 different payers a month.",
+    "Goods declared at the border on 11 trips, worth M49,300. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0013",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M25,350 from up to 39 different payers a month.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0019",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Mafeteng",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M13,450 of stock bought in 4 of 6 months.",
+    "Mobile money merchant payments: M24,330 from up to 36 different payers a month.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0064",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Leribe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M19,650 from up to 21 different payers a month.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0069",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M24,970 from up to 27 different payers a month.",
+    "490 parcels through a courier partner from May to Oct 2026.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0104",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M16,780 of stock bought in 4 of 6 months.",
+    "Mobile money merchant payments: M19,060 from up to 40 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0122",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Mokhotlong",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M18,070 of stock bought in 4 of 6 months.",
+    "Mobile money merchant payments: M19,420 from up to 36 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0129",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M18,520 of stock bought in 4 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0133",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Leribe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M9,030 of stock bought in 4 of 6 months.",
+    "Mobile money merchant payments: M24,400 from up to 32 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0150",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M10,490 of stock bought in 4 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0157",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Mohale's Hoek",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M19,570 from up to 35 different payers a month.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0191",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M15,300 of stock bought in 4 of 6 months.",
+    "Mobile money merchant payments: M19,840 from up to 38 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 4 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0044",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Quthing",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Goods declared at the border on 10 trips, worth M34,890. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 3 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "border"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0090",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Berea",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M12,210 of stock bought in 3 of 6 months.",
+    "Mobile money merchant payments: M17,970 from up to 33 different payers a month.",
+    "Trading signals in 3 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0108",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Mobile money merchant payments: M16,260 from up to 37 different payers a month.",
+    "Goods declared at the border on 15 trips, worth M87,350. For a runner most of this is clients' money; only the fee is turnover.",
+    "Trading signals in 3 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0127",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Butha-Buthe",
+   "action": "INVITE TO REGISTER",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M12,410 of stock bought in 3 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "Trading signals in 3 of 6 months. Send a friendly message with a Khoebo link that explains registration and helps them start keeping records."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0078",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M12,230 of stock bought in 6 of 6 months.",
+    "Mobile money merchant payments: M24,180 from up to 31 different payers a month.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0088",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Leribe",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Mobile money merchant payments: M31,770 from up to 38 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0091",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Quthing",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Mobile money merchant payments: M30,050 from up to 38 different payers a month.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0121",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Berea",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Mobile money merchant payments: M27,960 from up to 38 different payers a month.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-COURIER",
+   "label": "Courier, Berea",
+   "kind": "Courier or delivery",
+   "district": "Berea",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Mobile money merchant payments: M22,800 from up to 22 different payers a month.",
+    "435 parcels through a courier partner from May to Oct 2026.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 6,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0110",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Qacha's Nek",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M16,900 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0144",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Butha-Buthe",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Mobile money merchant payments: M25,180 from up to 39 different payers a month.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0158",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Berea",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Mobile money merchant payments: M34,480 from up to 36 different payers a month.",
+    "527 parcels through a courier partner from May to Oct 2026.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0184",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Leribe",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M26,990 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0187",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Berea",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M17,250 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0200",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Leribe",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M19,960 of stock bought in 5 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 5,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0018",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Mokhotlong",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Mobile money merchant payments: M9,670 from up to 37 different payers a month.",
+    "358 parcels through a courier partner from May to Oct 2026.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0066",
+   "label": null,
+   "kind": "Street food",
+   "district": "Qacha's Nek",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M7,380 of stock bought in 3 of 6 months.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0071",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Mohale's Hoek",
+   "action": "POSSIBLE MATCH",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "The phone number matches a registered taxpayer. An officer checks the record before anyone is contacted, so nobody is asked to register twice."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0152",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M29,550 from up to 36 different payers a month.",
+    "299 parcels through a courier partner from May to Oct 2026.",
+    "No trading signal since Aug: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0161",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Quthing",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M15,970 of stock bought in 4 of 6 months.",
+    "Mobile money merchant payments: M20,490 from up to 40 different payers a month.",
+    "No trading signal since Aug: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 4,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0056",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Mohale's Hoek",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Goods declared at the border on 18 trips, worth M59,540. For a runner most of this is clients' money; only the fee is turnover.",
+    "No trading signal since Jul: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "border"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0082",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M16,720 from up to 37 different payers a month.",
+    "232 parcels through a courier partner from May to Oct 2026.",
+    "No trading signal since Jul: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0089",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Butha-Buthe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M10,750 from up to 35 different payers a month.",
+    "No trading signal since Jul: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0106",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Goods declared at the border on 10 trips, worth M44,590. For a runner most of this is clients' money; only the fee is turnover.",
+    "No trading signal since Jul: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "border"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0116",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Butha-Buthe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M15,020 from up to 37 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No trading signal since Jul: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0119",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Mokhotlong",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M11,180 from up to 35 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No trading signal since Jul: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0145",
+   "label": null,
+   "kind": "Street food",
+   "district": "Butha-Buthe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M6,590 of stock bought in 3 of 6 months.",
+    "No trading signal since Jul: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0175",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M16,300 from up to 16 different payers a month.",
+    "No trading signal since Jul: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0178",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Mohale's Hoek",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M11,300 from up to 19 different payers a month.",
+    "121 parcels through a courier partner from May to Oct 2026.",
+    "No trading signal since Jul: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0182",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Butha-Buthe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M9,530 of stock bought in 3 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No trading signal since Jul: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 3,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0032",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M8,290 from up to 27 different payers a month.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 2,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0055",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Mohale's Hoek",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M12,030 from up to 34 different payers a month.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 2,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0057",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M17,250 from up to 34 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 2,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0070",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M5,670 of stock bought in 2 of 6 months.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 2,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0103",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Mohale's Hoek",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M8,390 from up to 28 different payers a month.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 2,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0107",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Butha-Buthe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M9,610 from up to 37 different payers a month.",
+    "Goods declared at the border on 8 trips, worth M18,820. For a runner most of this is clients' money; only the fee is turnover.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 2,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0109",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Goods declared at the border on 5 trips, worth M18,130. For a runner most of this is clients' money; only the fee is turnover.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "border"
+   ],
+   "activeMonths": 2,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0111",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M9,100 from up to 22 different payers a month.",
+    "210 parcels through a courier partner from May to Oct 2026.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo",
+    "courier"
+   ],
+   "activeMonths": 2,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0123",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Mafeteng",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M8,040 of stock bought in 2 of 6 months.",
+    "Mobile money merchant payments: M14,120 from up to 25 different payers a month.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 2,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0156",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Mohale's Hoek",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M3,650 from up to 16 different payers a month.",
+    "Goods declared at the border on 9 trips, worth M35,600. For a runner most of this is clients' money; only the fee is turnover.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo",
+    "border"
+   ],
+   "activeMonths": 2,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0176",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M6,580 of stock bought in 2 of 6 months.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 2,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0188",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M6,210 of stock bought in 2 of 6 months.",
+    "Mobile money merchant payments: M7,510 from up to 33 different payers a month.",
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No trading signal since Jun: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 2,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0012",
+   "label": null,
+   "kind": "Street food",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M4,100 of stock bought in 1 of 6 months.",
+    "No trading signal since May: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 1,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0026",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M3,570 of stock bought in 1 of 6 months.",
+    "Mobile money merchant payments: M6,450 from up to 17 different payers a month.",
+    "No trading signal since May: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "einvoice",
+    "momo"
+   ],
+   "activeMonths": 1,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0117",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M1,040 of stock bought in 1 of 6 months.",
+    "No trading signal since May: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 1,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0118",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Leribe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M4,990 from up to 17 different payers a month.",
+    "No trading signal since May: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 1,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0146",
+   "label": null,
+   "kind": "Street food",
+   "district": "Leribe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Supplier e-invoices with no tax number: M2,050 of stock bought in 1 of 6 months.",
+    "No trading signal since May: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "einvoice"
+   ],
+   "activeMonths": 1,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0151",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Mohale's Hoek",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M8,440 from up to 17 different payers a month.",
+    "Goods declared at the border on 2 trips: could be personal shopping.",
+    "No trading signal since May: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 1,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0169",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Mohale's Hoek",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money merchant payments: M5,630 from up to 33 different payers a month.",
+    "No trading signal since May: the business may have stopped. No contact."
+   ],
+   "sources": [
+    "momo"
+   ],
+   "activeMonths": 1,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0003",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Mafeteng",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money inflows of M7,770, but from only 3 payers: this looks like family support, not customers.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0004",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Butha-Buthe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0007",
+   "label": null,
+   "kind": "Street food",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0008",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0010",
+   "label": null,
+   "kind": "Street food",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0011",
+   "label": null,
+   "kind": "Street food",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0014",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money inflows of M10,650, but from only 3 payers: this looks like family support, not customers.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0017",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Qacha's Nek",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money inflows of M14,130, but from only 3 payers: this looks like family support, not customers.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0020",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Leribe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0027",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Quthing",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0036",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0037",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0042",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Goods declared at the border on 1 trip: could be personal shopping.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0048",
+   "label": null,
+   "kind": "Street food",
+   "district": "Mafeteng",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0049",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money inflows of M11,010, but from only 3 payers: this looks like family support, not customers.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0052",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Leribe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0053",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Quthing",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0059",
+   "label": null,
+   "kind": "Online seller",
+   "district": "Butha-Buthe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money inflows of M11,250, but from only 3 payers: this looks like family support, not customers.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0073",
+   "label": null,
+   "kind": "Street food",
+   "district": "Butha-Buthe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0075",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0081",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Leribe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money inflows of M15,000, but from only 3 payers: this looks like family support, not customers.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0084",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Butha-Buthe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0085",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0086",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0093",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Leribe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Goods declared at the border on 2 trips: could be personal shopping.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0095",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Qacha's Nek",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0096",
+   "label": null,
+   "kind": "Street food",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Goods declared at the border on 2 trips: could be personal shopping.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0097",
+   "label": null,
+   "kind": "Street food",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0099",
+   "label": null,
+   "kind": "Street food",
+   "district": "Butha-Buthe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0102",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Quthing",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0105",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0112",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Mohale's Hoek",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0114",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0124",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Mokhotlong",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Goods declared at the border on 2 trips: could be personal shopping.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0126",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Mafeteng",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0135",
+   "label": null,
+   "kind": "Spaza / general dealer",
+   "district": "Leribe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Goods declared at the border on 2 trips: could be personal shopping.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0136",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Leribe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0138",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Mafeteng",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0141",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Thaba-Tseka",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0147",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money inflows of M13,230, but from only 3 payers: this looks like family support, not customers.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0154",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Berea",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Goods declared at the border on 2 trips: could be personal shopping.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0160",
+   "label": null,
+   "kind": "Courier or delivery",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0163",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0164",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0168",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money inflows of M9,300, but from only 3 payers: this looks like family support, not customers.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0172",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0174",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Mohale's Hoek",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0189",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0194",
+   "label": null,
+   "kind": "Street food",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  },
+  {
+   "id": "LEAD-0196",
+   "label": null,
+   "kind": "Runner (cross-border)",
+   "district": "Maseru",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money inflows of M7,400, but from only 3 payers: this looks like family support, not customers.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0197",
+   "label": null,
+   "kind": "Flea market stall",
+   "district": "Mafeteng",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Goods declared at the border on 1 trip: could be personal shopping.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-0198",
+   "label": null,
+   "kind": "Hair or beauty",
+   "district": "Leribe",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Listed on a trading licence or market stall register with no tax number.",
+    "No signal that shows regular trading. A listing on its own is weak evidence, since licences are often not cancelled when a business stops. No contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": false
+  },
+  {
+   "id": "LEAD-FAMILY",
+   "label": "Mobile money only, Mafeteng",
+   "kind": "Hair or beauty",
+   "district": "Mafeteng",
+   "action": "NOT ENOUGH EVIDENCE",
+   "reasons": [
+    "Mobile money inflows of M15,000, but from only 2 payers: this looks like family support, not customers.",
+    "No signal that shows regular trading, so no contact."
+   ],
+   "sources": [],
+   "activeMonths": 0,
+   "phone": true
+  }
+ ],
+ "thirtyRuns": {
+  "leads": {
+   "mean": 200,
+   "min": 200,
+   "max": 200
+  },
+  "active_unregistered": {
+   "mean": 110.7,
+   "min": 97,
+   "max": 125
+  },
+  "visits": {
+   "mean": 30.2667,
+   "min": 20,
+   "max": 40
+  },
+  "invites": {
+   "mean": 72.4667,
+   "min": 57,
+   "max": 86
+  },
+  "visit_precision": {
+   "mean": 0.9019,
+   "min": 0.7857,
+   "max": 1.0
+  },
+  "contact_precision": {
+   "mean": 0.9394,
+   "min": 0.8889,
+   "max": 0.9725
+  },
+  "reached": {
+   "mean": 0.8723,
+   "min": 0.7984,
+   "max": 0.9292
+  },
+  "registered_contacted": {
+   "mean": 6.2,
+   "min": 3,
+   "max": 10
+  },
+  "baseline_visits": {
+   "mean": 200,
+   "min": 200,
+   "max": 200
+  },
+  "baseline_precision": {
+   "mean": 0.5535,
+   "min": 0.485,
+   "max": 0.625
+  }
+ }
+}

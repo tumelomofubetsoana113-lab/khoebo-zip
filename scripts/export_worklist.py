@@ -6,8 +6,12 @@ Writes the two JSON files the app reads (run with `npm run data`):
                          and per-month figures
   data/test_results.json the landing page figures: the worklist against
                          following up every nil return, over 30 populations
+  data/leads.json        potential registrants: 200 simulated operators outside
+                         the tax net (seed 11) plus four demo leads, with
+                         actions, reasons, and the rules scored over 30
+                         populations (added 17 November 2026)
 
-Fails loudly if a demo trader lands on the wrong action, or if any hidden_*
+Fails loudly if a demo trader or demo lead lands on the wrong action, or if any hidden_*
 field would reach the app. Uses only the Python standard library.
 """
 import json
@@ -18,6 +22,7 @@ from pathlib import Path
 
 from demo_cases import DEMO_TRADERS, demo_records
 from evaluate import thirty_runs
+from leads import LEAD_ACTIONS, assess_lead, demo_leads, simulate_leads, thirty_lead_runs
 from simulate import simulate
 from worklist import WINDOW, assess
 
@@ -128,6 +133,48 @@ def build_test_results():
     }
 
 
+def lead_entry(lead, label=None):
+    res = assess_lead(lead)
+    return {
+        "id": lead["lead_id"],
+        "label": label,
+        "kind": lead["kind"],
+        "district": lead["district"],
+        "action": res["action"],
+        "reasons": res["reasons"],
+        "sources": res["sources"],
+        "activeMonths": res["active_months"],
+        "phone": res["phone"],
+    }
+
+
+def build_leads():
+    simulated = simulate_leads(seed=11)
+    out = [lead_entry(l) for l in simulated]
+    for d in demo_leads():
+        entry = lead_entry(d, d["label"])
+        if entry["action"] != d["expected"]:
+            fail(f"{d['lead_id']} landed on {entry['action']}, expected {d['expected']}. "
+                 f"Reasons: {entry['reasons']}")
+        out.append(entry)
+
+    order = {a: i for i, a in enumerate(LEAD_ACTIONS)}
+    out.sort(key=lambda l: (order[l["action"]], -l["activeMonths"], l["id"]))
+    counts = Counter(l["action"] for l in out)
+    runs = thirty_lead_runs()
+    keep = ["leads", "active_unregistered", "visits", "invites", "visit_precision", "contact_precision",
+            "reached", "registered_contacted", "baseline_visits", "baseline_precision"]
+    return {
+        "generatedAt": date.today().isoformat(),
+        "window": WINDOW,
+        "simulated": len(simulated),
+        "counts": {a: counts.get(a, 0) for a in LEAD_ACTIONS},
+        "pinned": [d["lead_id"] for d in demo_leads()],
+        "leads": out,
+        "thirtyRuns": {k: runs[k] for k in keep},
+    }
+
+
 def write(path, data):
     leaks = hidden_keys(data)
     if leaks:
@@ -141,6 +188,8 @@ if __name__ == "__main__":
     write(DATA / "worklist.json", worklist)
     results = build_test_results()
     write(DATA / "test_results.json", results)
+    leads = build_leads()
+    write(DATA / "leads.json", leads)
 
     print(f"worklist.json: {len(worklist['traders'])} traders, {worklist['counts']}")
     for tid in worklist["pinned"]:
@@ -150,3 +199,7 @@ if __name__ == "__main__":
     print(f"test_results.json: officer cases {runs['worklist_officer']['visits']['mean']} "
           f"vs all-nil {runs['baseline_a_all_nil']['visits']['mean']}, "
           f"follow-up precision {runs['worklist_followup_only']['precision']['mean']}")
+    lr = leads["thirtyRuns"]
+    print(f"leads.json: {len(leads['leads'])} leads, {leads['counts']}")
+    print(f"  field visits {lr['visits']['mean']} vs {lr['baseline_visits']['mean']}, "
+          f"visit precision {lr['visit_precision']['mean']}, reached {lr['reached']['mean']}")

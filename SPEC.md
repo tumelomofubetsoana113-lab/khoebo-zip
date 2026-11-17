@@ -59,13 +59,15 @@ app/
   trader/page.tsx       chat
   officer/page.tsx      worklist
   officer/[id]/page.tsx trader detail
+  officer/leads/page.tsx potential registrants (added 17 Nov 2026)
   api/chat/route.ts     the only place the API key is used
 components/
   landing/              one file per landing section, plus PhoneFrame (hero phone) and IconCircle
   chat/                 ChatShell, MessageBubble, SummaryCard, QuickReplies, cards, Composer, VoiceSheet, VoiceBubble,
                         TypingIndicator, DemoMenu, ReceiptSheet
   officer/              SummaryStrip, Filters, WorklistTable, EvidenceChart, OverridePanel,
-                        Worklist (strip, filters and table, synced with the URL), DemoCases, OfficerHeader
+                        Worklist (strip, filters and table, synced with the URL), DemoCases, OfficerHeader,
+                        OfficerTabs, PipelineStrip, Leads, LeadCard, LeadResults
   ui/                   Button, Card, Pill (includes ActionPill and PrototypePill), Sheet, ConfirmDialog,
                         SiteHeader (with Wordmark), SiteFooter, Logo
 lib/
@@ -83,6 +85,8 @@ lib/
   strings.ts            all UI text, keyed, English only for now
   worklist.ts           worklist types, zod schema, filters, sorting (safe in the browser)
   worklist-data.ts      loads and checks data/worklist.json (server only)
+  leads.ts              potential registrants: types, zod schema, filters, pipeline figures (safe in the browser)
+  leads-data.ts         loads and checks data/leads.json (server only)
   decisions.ts          officer decisions: checks and localStorage
   prompt.ts             the system prompt
 public/samples/receipts/ three made-up receipts for the chat's sample list
@@ -92,6 +96,7 @@ config/
 data/
   worklist.json         generated, committed
   test_results.json     generated, committed
+  leads.json            generated, committed
   receipt_eval.json     written by the receipt eval, committed
 scripts/
   simulate.py           from khoebo_test_kit
@@ -99,6 +104,7 @@ scripts/
   evaluate.py           from khoebo_test_kit
   export_worklist.py    new, writes the two JSON files
   demo_cases.py         new, the three named demo traders
+  leads.py              potential registrants: simulation, rules and scoring
   make_sample_receipts.py draws the made-up receipts (needs Pillow and Windows fonts)
 tests/
   ledger.test.ts        also covers lib/dates.ts
@@ -108,6 +114,7 @@ tests/
   chat.test.ts          also covers lib/demo.ts
   tools.test.ts
   worklist.test.ts      the worklist file, the three demo cases, filters
+  leads.test.ts         the leads file, the four demo leads, filters, pipeline and results figures
   decisions.test.ts
   chat-eval/            cases.json (sample messages and expected tool calls, section 12) and run.mts
   receipts.test.ts      the Lekuka check, read_receipt, save_receipt, receipt files
@@ -304,6 +311,27 @@ Each card shows the action pill, two lines of reasons, and a "View" link.
 
 **Table columns**: Trader ID · Sector · District · Action · Declared (6 months) · Evidence minimum · Months with evidence · Nil returns. Default sort: action order (follow-up, review, check-in, none), then the biggest gap between evidence and declared. Amounts as "M74,430". Each row links to the detail page. The list shows 50 traders at a time, with a "Show 50 more" button; changing a filter starts again from the first 50.
 
+### 5.3a Potential registrants (`/officer/leads`, added 17 November 2026)
+
+The identification side, which RSL asked for at the meet and greet. Both officer pages open with tabs ("Registered traders" and "Potential registrants") and a pipeline strip, "From the street to the tax net". The strip has five stages, each with figures worked out from the two simulated lists:
+
+1. Find
+2. Reach
+3. Register (RSL e-Registration or the RSL app)
+4. Keep records and file
+5. Check and follow up
+
+Stages with a list behind them link to it, already filtered.
+
+The page has:
+
+- **A title and notes:** "Potential registrants", the subline, the sign-in note, and a note on where leads come from. Every source needs a data agreement, and none exists yet.
+- **"Tested on simulated data":** three figures read from `data/leads.json`: fewer field visits than visiting every lead, the share of visits that reach someone trading unregistered, and the share of such operators reached.
+- **Four summary cards,** one per lead action. Each has a pill, a count, a share and one line of explanation, and tapping a card filters the list. The pills use the colours of the worklist action that means the same kind of thing: Field visit amber, Possible match blue, Invite to register grey, Not enough evidence green.
+- **Four demo leads,** one per action: a runner (invite), a flea market stall with no phone (visit), a courier whose phone matches a registered taxpayer (match), and mobile money from two payers (not enough evidence).
+- **Filters:** action chips, district and kind of business, kept in the URL.
+- **The list:** lead cards, 50 at a time. Each card shows the kind, district, months with trading signals, whether a phone number is on record, and the numbered reasons. The reasons are the whole case, so there is no detail page.
+
 ### 5.4 Trader detail (`/officer/[id]`)
 
 - Back link "All traders".
@@ -497,6 +525,25 @@ Changes to the Python files:
 - `worklist.py`: return `reasons` as a list instead of one joined string, and include the per-month figures. Keep `evaluate.py` working.
 - The export must never include any `hidden_` field. Add a check that fails if one appears.
 
+**Potential registrants (added 17 November 2026).** `npm run data` also writes `data/leads.json` from `scripts/leads.py`:
+
+- **The leads.** 200 simulated operators that RSL's records show as not registered (seed 11), plus four demo leads. Each has a kind of business, a district and six months of signals:
+  - supplier e-invoices with no tax number
+  - mobile money merchant payments, with the number of payers
+  - a licence or market stall listing
+  - border declarations, with trips and value
+  - courier parcels
+  - whether a phone number is on record
+  - whether an earlier invitation went unanswered
+  - whether the phone matches a registered taxpayer
+- **Hidden situations,** for scoring only: trading unregistered 55%, registered under another name 12%, personal money 18%, stopped 15%.
+- **Rules,** in `assess_lead()`, with reasons:
+  - Weak signals don't count: mobile money from fewer than 5 payers (family support), fewer than 3 border trips (personal shopping), or a listing alone (licences aren't cancelled).
+  - A phone match is a **Possible match**.
+  - Fewer than 3 months with a strong signal, or none in the last two months, is **Not enough evidence**.
+  - Otherwise, a lead with a phone number and no earlier invitation is an **Invite to register**. Any other lead is a **Field visit**.
+- **Scoring.** `thirty_lead_runs()` scores 30 populations against the hidden truth and against visiting every lead. The file keeps only the averages, minimums and maximums. The export fails if a demo lead lands on the wrong action or a `hidden_` key appears.
+
 ## 9. Deployment
 
 1. Create the GitHub repo `khoebo` under the owner's account and push.
@@ -630,7 +677,7 @@ A script, `npm run eval:chat`, sends each message to the running API with a know
 - Chat works with Chrome DevTools throttled to "Slow 4G"
 - Lighthouse mobile: performance and accessibility 90 or above on `/` and `/trader`
 - The API key doesn't appear anywhere in the browser bundle (search the built `.next` output)
-- No `hidden_` field in `data/worklist.json`
+- No `hidden_` field in `data/worklist.json` or `data/leads.json`
 - Every tax amount on screen shows the placeholder note while `TAX.placeholder` is true
 
 ## 13. RSL's answers and open items
@@ -968,5 +1015,17 @@ The owner compared Khoebo with RSL's call and with the points from the meet and 
 - **Demo runner** (`demoRunnerState` in `lib/demo.ts`, "Load demo runner" in the demo menu): 28 days ending today, trips to Bloemfontein every Tuesday and Friday with a M280 taxi fare, and 2 to 4 orders a trip. Each order is client money of M600 to M5,000 in rand and a fee of about 10% (at least M100). Every full week makes a profit, and client money is always larger than fees. Tests in `tests/chat.test.ts`.
 - **Not covered:** a receipt a runner photographs for a client's goods is still saved as a purchase. The trader can tap Change. Telling client purchases apart on receipts is pilot work.
 - **Chat eval:** two new runner cases, checked with a new `newEntries` expectation in `run.mts`. Result: 57 of 57 (19 cases, three runs each). The first run showed 54 of 57, because an old server was still on port 3000 and the eval hit the old build. After restarting it, all passed.
+
+**Step D, potential registrants (17 November 2026).** Built as described in sections 5.3a and 8.
+
+- **Results over 30 simulated populations of 200 leads:**
+  - 30.3 field visits on average, against 200 to visit every lead: 85% fewer.
+  - 90% of visits reach someone trading unregistered (79% to 100%), against 55% when visiting every lead.
+  - 87% of operators trading unregistered get an invite or a visit (80% to 93%).
+  - 94% of all contacts (invites and visits) are right.
+  - The cost: about 6 already-registered operators a population are still contacted, because their phone didn't match (the invitation should say to ignore it if already registered). About 13% of active operators are missed, because their signals are thin.
+- **Limits, stated plainly:** these are made-up operators with made-up signals, so the figures show the rules behave sensibly, not how they'd do on real data. Operators who leave no trace in any source can't be found this way, so street sweeps still matter. Every source needs a data agreement: RSL's own Lekuka and customs data, and mobile money operators, licensing authorities, councils and courier companies outside RSL.
+- **Border values for runners** are mostly clients' money, and a reason says so. They show activity, not turnover.
+- **Checked on a local production build:** the leads page and the worklist with tabs and the pipeline strip on desktop. A filter link (`?action=visit,invite`) shows 106 of 204. No horizontal scroll at 360px on `/`, `/trader`, `/officer` and `/officer/leads`, measured in a 360px frame.
 
 **Left as pilot work:** the data agreements each identification source needs; Khoebo QR codes at wholesalers, border posts and flea markets; a record of income and compliance that traders can show lenders; a "tax pot" for setting money aside; one-tap nil returns with a reason; a daily evening check-in message; Sesotho replies.

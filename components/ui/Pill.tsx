@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { LEAD_TONE, type LeadKey } from "@/lib/leads";
 import { strings, type ActionKey } from "@/lib/strings";
 
 type Tone = ActionKey | "neutral" | "prototype";
@@ -33,6 +34,11 @@ export function Pill({
 // An officer action always shows its written label, so colour is never the only signal.
 export function ActionPill({ action }: { action: ActionKey }) {
   return <Pill tone={action}>{strings.actions[action]}</Pill>;
+}
+
+// A potential registrant's action, in the colours of the matching worklist action.
+export function LeadPill({ action }: { action: LeadKey }) {
+  return <Pill tone={LEAD_TONE[action]}>{strings.leadActions[action]}</Pill>;
 }
 
 export function PrototypePill({ className = "" }: { className?: string }) {
