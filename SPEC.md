@@ -1061,4 +1061,35 @@ The owner compared Khoebo with RSL's call and with the points from the meet and 
 
 **Step G, pipeline on the landing page (17 November 2026).** `components/landing/Pipeline.tsx` sits between the problem band and "How it works" (section 5.1, 3a), with "The pipeline" as the first header link. A fourth link made the header 864px wide at 768px, so the desktop links now show from 1024px and the menu below that. Checked in 360, 768, 1024 and 1280px frames on `/`, and at 768px on `/officer` and `/officer/leads`: no horizontal scroll.
 
+**Proposal and concept note updated (17 November 2026).** At the owner's request, both documents in the owner's Blueprint folder now cover steps B to G. The versions they replace are kept beside them as "… Technical Proposal (submitted 6 Nov).docx" and "… Concept Note (5 Nov version).docx". The edits were made in each file's own XML, so the existing formatting, figures and links are unchanged. Both files pass the docx skill's validation, and both were rendered through Word and checked page by page.
+
+- **Technical proposal (22 pages).** The cover says it was updated after the meet and greet. A new section before the summary, "What we added after the meet and greet", has a table of RSL's points and Khoebo's answers. The summary, the criteria table and section 2 now cover identification, and the call's four areas are all marked as worked on. Section 3 gains:
+  - field-visit set-up
+  - registration links
+  - "Know what to do"
+  - rand at par and runners
+  - "Finding operators outside the tax net", with the leads action table and two new figures: Figure 4, the leads page overview, and Figure 5, the demo leads, both screenshots of the live site.
+
+  The old Figures 4 and 5 are renumbered 6 and 7. Section 5 adds the leads test against visiting every lead, with errors, misses and limits, and the 22-message chat test (66 runs) with the fault it found. Sections 6, 7, 9, 11, 12 and 13 gain:
+  - the new data sources
+  - the process row for finding operators
+  - the agreements needed
+  - pilot rows
+  - two success measures
+  - three risks
+  - one question
+
+  It still writes as "we" and reports only tests already done.
+- **Concept note (10 pages).** It stays in the owner's voice and is dated 17 November. It gains:
+  - two summary paragraphs
+  - "What RSL asked for at the meet and greet"
+  - the runner and "Know what to do" steps
+  - updated Join and Register steps
+  - "For officers: finding operators outside the tax net", with the action table
+  - new data rows and policy bullets
+  - the leads test result
+  - the updated chat test
+  - pilot changes
+  - the progress list: proposal submitted, meet and greet done, presentation still to do
+
 **Left as pilot work:** the data agreements each identification source needs; Khoebo QR codes at wholesalers, border posts and flea markets; a record of income and compliance that traders can show lenders; a "tax pot" for setting money aside; one-tap nil returns with a reason; a daily evening check-in message; Sesotho replies.
