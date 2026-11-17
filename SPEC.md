@@ -1064,6 +1064,22 @@ The owner compared Khoebo with RSL's call and with the points from the meet and 
 
 **Bug fixed: the assistant doubted its own earlier figures (17 November 2026).** Found while taking screenshots for the presentation. A runner asked "How am I doing?", then logged a new order, and the reply added "my last message gave wrong figures without checking the records", although every figure was right. The cause: each request sends earlier replies as text only, without the tool results behind them, and the prompt said every number must come from a tool result in this conversation, so the model took its own earlier figures as unchecked. The prompt now says earlier replies quoted tool results at the time, should be trusted, and are never called wrong unless the trader says so, and that totals grow because new entries were recorded. The chat eval can now send earlier turns (`history`) and give set-up entries the date "today". A new case repeats the screenshot's conversation. After the fix: 5 of 5 on that case, and the full eval 69 of 69 (23 cases, three runs each) on a local production build.
 
+**Presentation deck for 20 November (17 November 2026).** At the owner's request, a 16:9 PowerPoint deck for the competition day, `Khoebo RSL Taxathon Presentation.pptx` in the owner's Blueprint folder.
+
+- **Plan.** The owner chose slides plus a short live demo, with speaker notes giving a script and timing for each slide. There are 17 slides, about 16 minutes including a 3-minute demo, and 3 backup slides for questions (technical design, data needed, costs).
+- **Running order:**
+  1. RSL's problem, and the trader's side of it.
+  2. Khoebo in one picture.
+  3. The six steps (find, reach, register, keep records, file and pay, stay compliant), one or two slides each, every one with a "Why this way" note.
+  4. The three cases.
+  5. The demo running order.
+  6. Test results, trust, the pilot, and thank you.
+- **Look.** White background, black text, flag blue and green, the Khoebo logo, Arial, and the app's lucide icons. A six-step tracker across the top of each function slide shows where the talk is on the path. Every slide carries the prototype footer (rule 5).
+- **Images.** Screenshots are the proposal's figures, plus new ones of the live site taken with `playwright-core` driving the installed Chrome: the runner summary and order, the field-visit sign-up with the registration card, "What you need to do", the return card and the QR sheet. A QR code to the live site is on the demo and thank-you slides.
+- **Figures** come from the test results recorded in this spec and in `data/`.
+- **Checks.** Built with `pptxgenjs` as a structured deck (theme, layouts, sections, notes). It passes the pptx skill's validation, was rendered through PowerPoint and checked slide by slide, and its text was checked with the human-writing checker.
+- **Generator.** `build-deck.js` and the screenshot scripts are in the session scratchpad, not the repo.
+
 **Proposal and concept note updated (17 November 2026).** At the owner's request, both documents in the owner's Blueprint folder now cover steps B to G. The versions they replace are kept beside them as "… Technical Proposal (submitted 6 Nov).docx" and "… Concept Note (5 Nov version).docx". The edits were made in each file's own XML, so the existing formatting, figures and links are unchanged. Both files pass the docx skill's validation, and both were rendered through Word and checked page by page.
 
 - **Technical proposal (22 pages).** The cover says it was updated after the meet and greet. A new section before the summary, "What we added after the meet and greet", has a table of RSL's points and Khoebo's answers. The summary, the criteria table and section 2 now cover identification, and the call's four areas are all marked as worked on. Section 3 gains:
