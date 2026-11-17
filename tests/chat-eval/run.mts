@@ -37,7 +37,14 @@ type Expect = {
   profileMatches?: Record<string, string>; // profile field -> pattern, after the reply
   uiIncludes?: Record<string, string>; // block type -> a field on it that must be set
 };
-type Case = { message: string; note?: string; setup?: Partial<State>; expect: Expect };
+type Case = {
+  message: string;
+  note?: string;
+  setup?: Partial<State>;
+  // Earlier turns to send before the message, as the browser does (text only).
+  history?: { role: "user" | "assistant"; content: string }[];
+  expect: Expect;
+};
 type ChatResponse = {
   reply: string;
   state: State;
@@ -154,10 +161,14 @@ function check(c: Case, before: State, res: ChatResponse): string[] {
 
 async function run(c: Case): Promise<{ problems: string[]; res?: ChatResponse }> {
   const state = { ...baseState(), ...c.setup };
+  // A case's own entries may use "today" as their date.
+  state.entries = state.entries.map((e) =>
+    e.date === "today" ? { ...e, date: TODAY, createdAt: e.createdAt.replace(/^today-?/, TODAY) } : e,
+  );
   const response = await fetch(`${BASE_URL}/api/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ messages: [{ role: "user", content: c.message }], state }),
+    body: JSON.stringify({ messages: [...(c.history ?? []), { role: "user", content: c.message }], state }),
   });
   if (!response.ok) return { problems: [`HTTP ${response.status}: ${await response.text()}`] };
   const res = (await response.json()) as ChatResponse;

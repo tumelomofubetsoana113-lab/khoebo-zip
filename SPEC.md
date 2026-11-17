@@ -673,6 +673,7 @@ A script, `npm run eval:chat`, sends each message to the running API with a know
 | "I buy clothes and furniture in South Africa for people and charge them a fee" (not set up) | `save_profile` with business type Runner (cross-border) |
 | "I deliver parcels around Maseru" (not set up) | `save_profile` with business type Courier or delivery |
 | "client gave me R4000 for a fridge from Bloemfontein, my fee is R400" (a runner) | two `record_entry` calls: `client_money` 4000 and `sale` 400 |
+| "client gave me R2000 for school uniforms, my fee is R200" (a runner, after an earlier summary in the history) | two `record_entry` calls, and the reply never calls the earlier summary wrong |
 | "got 2000 today" (a runner) | asks whether it is their fee or the client's money; nothing recorded |
 
 ### Receipt eval (`tests/receipt-eval/`)
@@ -1060,6 +1061,8 @@ The owner compared Khoebo with RSL's call and with the points from the meet and 
 - **Checked in Chrome on a local production build:** the registration card shows both buttons with the right addresses, and the obligations card lists the four items with their status.
 
 **Step G, pipeline on the landing page (17 November 2026).** `components/landing/Pipeline.tsx` sits between the problem band and "How it works" (section 5.1, 3a), with "The pipeline" as the first header link. A fourth link made the header 864px wide at 768px, so the desktop links now show from 1024px and the menu below that. Checked in 360, 768, 1024 and 1280px frames on `/`, and at 768px on `/officer` and `/officer/leads`: no horizontal scroll.
+
+**Bug fixed: the assistant doubted its own earlier figures (17 November 2026).** Found while taking screenshots for the presentation. A runner asked "How am I doing?", then logged a new order, and the reply added "my last message gave wrong figures without checking the records", although every figure was right. The cause: each request sends earlier replies as text only, without the tool results behind them, and the prompt said every number must come from a tool result in this conversation, so the model took its own earlier figures as unchecked. The prompt now says earlier replies quoted tool results at the time, should be trusted, and are never called wrong unless the trader says so, and that totals grow because new entries were recorded. The chat eval can now send earlier turns (`history`) and give set-up entries the date "today". A new case repeats the screenshot's conversation. After the fix: 5 of 5 on that case, and the full eval 69 of 69 (23 cases, three runs each) on a local production build.
 
 **Proposal and concept note updated (17 November 2026).** At the owner's request, both documents in the owner's Blueprint folder now cover steps B to G. The versions they replace are kept beside them as "… Technical Proposal (submitted 6 Nov).docx" and "… Concept Note (5 Nov version).docx". The edits were made in each file's own XML, so the existing formatting, figures and links are unchanged. Both files pass the docx skill's validation, and both were rendered through Word and checked page by page.
 

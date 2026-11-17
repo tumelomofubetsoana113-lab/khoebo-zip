@@ -126,6 +126,29 @@
     "expect": { "toolsInclude": ["start_registration"], "uiIncludes": { "registration_card": "links" }, "replyExcludes": ["https?://", "www[.]", "[.]org[.]ls"] }
   },
   {
+    "message": "client gave me R2000 for school uniforms, my fee is R200",
+    "note": "runner, after an earlier summary: records both and doesn't call the earlier reply wrong",
+    "setup": {
+      "profile": { "businessType": "Runner (cross-border)", "district": "Maseru", "registered": "yes", "language": "en" },
+      "entries": [
+        { "id": "r1", "kind": "purchase", "amount": 280, "date": "today", "source": "text", "createdAt": "today-T04:00:00.000Z", "note": "taxi to Bloemfontein and back" },
+        { "id": "r2", "kind": "client_money", "amount": 7470, "date": "today", "source": "text", "createdAt": "today-T05:00:00.000Z", "note": "clients' orders" },
+        { "id": "r3", "kind": "sale", "amount": 740, "date": "today", "source": "text", "createdAt": "today-T05:30:00.000Z", "note": "runner fees" }
+      ]
+    },
+    "history": [
+      { "role": "user", "content": "How am I doing?" },
+      { "role": "assistant", "content": "This week so far you have M740 in fees and M280 in costs, so your profit estimate is M460. Client money of M7,470 is kept apart because it isn't yours, so it isn't counted in your profit or tax." }
+    ],
+    "expect": {
+      "newEntries": [
+        { "kind": "client_money", "amount": 2000 },
+        { "kind": "sale", "amount": 200 }
+      ],
+      "replyExcludes": ["wrong", "\\bcorrect", "mistake", "apologi", "sorry"]
+    }
+  },
+  {
     "message": "got 2000 today",
     "note": "runner: one amount, unclear if fee or client money, so ask",
     "setup": { "profile": { "businessType": "Runner (cross-border)", "district": "Maseru", "registered": "yes", "language": "en" } },
