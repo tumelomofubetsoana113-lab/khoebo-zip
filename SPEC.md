@@ -188,6 +188,7 @@ This is the first thing judges see. It should look finished and calm, with plent
 **2. Hero**
 - Two columns on desktop (text left, phone right). Stacked on mobile, phone below text.
 - The phone stands on a rounded panel holding a photo of green mountains (`public/landing/maloti.jpg`).
+- The preview has plain text tabs for "Trader chat" and "Officer worklist". The second uses the simulated worklist example and adds no functionality beyond switching the illustration.
 - Eyebrow, small `muted` caps: "For informal traders and RSL officers"
 - Headline: "Keep your business records in a chat. File your tax return in a minute."
 - Subline: "Khoebo helps traders in Lesotho log sales by message, see what their business earns each week, and file a pre-filled return. RSL officers get a short list of who to follow up, with the reasons written out."
@@ -204,14 +205,14 @@ This is the first thing judges see. It should look finished and calm, with plent
 
 **3a. From the street to the tax net** (id `pipeline`, white background, added 17 November 2026)
 - Heading "From the street to the tax net", and a lead saying Khoebo covers every step with the least effort for the trader and for RSL.
-- Six steps in a grid (three across on desktop, two on tablet, stacked on mobile). Each has an icon, a title, who does it in `green-text`, and one sentence: Find (RSL officer), Reach (Khoebo and the officer), Register (trader, with RSL), Keep records (trader, in Khoebo), File and pay (trader, in Khoebo), Stay compliant (RSL officer).
+- Six steps in a grid (three across on desktop, two on tablet, stacked on mobile), separated by thin dividers rather than individual cards. Each has a small icon, a title, who does it in `green-text`, and one sentence: Find (RSL officer), Reach (Khoebo and the officer), Register (trader, with RSL), Keep records (trader, in Khoebo), File and pay (trader, in Khoebo), Stay compliant (RSL officer).
 - Under the steps, who it's for: street and market sellers, spaza shops, hair salons, repairers, flea market and online sellers, couriers, and runners. Then a link, "See both officer lists", to `/officer/leads`.
 - A `line` border under it, since "How it works" is also white.
-- The step cards lift 6px with a soft blue shadow on hover, like the "How it works" cards, and don't move when the visitor prefers reduced motion (added 17 November 2026 at the owner's request).
+- The steps use no lift or shadow interaction; links remain visibly interactive.
 
 **4. How it works for traders** (id `how-it-works`)
 - Heading: "How it works for traders"
-- Four cards in a row on desktop, two by two on tablet, stacked on mobile. Each card is `flag-blue` with white text and lifts slightly on hover, and has a lucide icon in a white circle, a short title and one sentence.
+- Four steps in a row on desktop, two by two on tablet, stacked on mobile. Thin dividers separate each step, with a small lucide icon, number, title and one sentence. Use neutral surfaces and reserve flag colours for small accents.
   1. MessageSquare — "Log a sale" — "Send a short message or voice note, like 'sold 350 today'."
   2. BarChart3 — "See your week" — "Get money in, money out and profit every Sunday."
   3. BellRing — "Get a reminder" — "A message before each due date, with your estimated tax."
@@ -225,11 +226,11 @@ This is the first thing judges see. It should look finished and calm, with plent
   - Human review: "Some evidence, but thin or mixed. An officer checks before any visit."
   - Automated check-in: "Nil returns and no sign of trading. A friendly message asks if the business is still running."
   - No action: "Declarations match the evidence, or nil months match months with no activity."
-- Below: a mock reason card copied from a real worklist line, styled like the officer detail page.
+- Below: a plain evidence panel copied from a real worklist line, styled like the officer detail page and separated with thin dividers rather than a rounded card.
 
 **6. Built for Lesotho** (on `page` background)
 - Heading: "Built for Lesotho"
-- Four items in a grid, icon plus title plus one sentence:
+- Four items in a grid, separated by thin dividers, with a small icon, title and one sentence:
   - Smartphone — "Ready for WhatsApp" — "The prototype runs in the browser. In a pilot, the same assistant runs on WhatsApp, with SMS for basic phones."
   - Wifi — "Light on data" — "Small pages and short messages that work on a weak connection."
   - Languages — "English, with Sesotho next" — "It already understands common Sesotho phrases. Full Sesotho replies come with the pilot."
@@ -237,14 +238,14 @@ This is the first thing judges see. It should look finished and calm, with plent
 
 **7. Results** (id `results`, white background)
 - Heading: "Tested on simulated data"
-- Three large figures with a one-line label each:
+- Three large figures with a one-line label each, arranged in columns separated by thin dividers:
   - "38% fewer officer cases" — "than following up every nil return"
   - "96% of field visits" — "reached a trader who really was under-declaring"
   - "48 found" — "undeclared traders per 300, close to the 49 found by following up every nil return"
 - Read every figure from `data/test_results.json`. Never type them into the page.
 - Small centred note under them in `muted`: "Average of 30 simulated populations of 300 traders. No real taxpayer data was used. The next step is testing on masked RSL data."
 
-**8. Closing band** (a rounded `flag-blue` card inset from the page edges, white text)
+**8. Closing band** (a quiet `page`-background section with a thin divider and dark text)
 - "See it for yourself."
 - Buttons: white "Try the trader chat", and outlined white "Open the officer view".
 
@@ -1112,3 +1113,7 @@ The owner compared Khoebo with RSL's call and with the points from the meet and 
   - the progress list: proposal submitted, meet and greet done, presentation still to do
 
 **Left as pilot work:** the data agreements each identification source needs; Khoebo QR codes at wholesalers, border posts and flea markets; a record of income and compliance that traders can show lenders; a "tax pot" for setting money aside; one-tap nil returns with a reason; a daily evening check-in message; Sesotho replies.
+
+**Landing interface polish (17 November 2026).** At the owner's request, the landing page's visual hierarchy and card treatments were refined without changing its section order, copy, links, figures, or application workflows. The hero now switches between the existing trader chat illustration and the existing simulated officer worklist example; this is presentation-only state and adds no business logic or data. The new interface labels remain in `lib/strings.ts`, and the existing theme palette is unchanged.
+
+**Landing visual direction (17 November 2026).** After reviewing the first colour adjustment, the owner requested a plain editorial style rather than a card-heavy or AI-template look. The landing page uses typography, whitespace and thin dividers for structure; the officer actions keep their accessible text labels and status colours. The hero preview uses simple tabs to switch between the existing trader and officer examples. No theme token values, copy, figures, routes, or application workflows changed.
