@@ -78,9 +78,21 @@ const periodField = z
       : 'Filing period like "2026-10". Leave out for the current filing period.',
   );
 
+// The two questions whose answers are a fixed list longer than 6.
+const LONG_LISTS: readonly (readonly string[])[] = [strings.onboarding.districts, strings.onboarding.businessTypes];
+const LONG_LIST_MAX = Math.max(...LONG_LISTS.map((l) => l.length));
+
+function isLongListAllowed(options: string[]): boolean {
+  return LONG_LISTS.some((list) => options.every((o) => list.includes(o)));
+}
+
 const inputs = {
   save_profile: z.object({
-    business_type: z.string().max(60).optional(),
+    business_type: z
+      .string()
+      .max(60)
+      .optional()
+      .describe("One of the listed business types, or the trader's own words if none fits."),
     district: z.enum(strings.onboarding.districts).optional(),
     registered: z.enum(["yes", "no", "not_sure"]).optional().describe("Registered with RSL?"),
     name: z.string().max(60).optional().describe("Only if the trader offers it."),
@@ -135,17 +147,14 @@ const inputs = {
   }),
   save_receipt: z.object({ receipt_id: z.string().max(32) }),
   offer_quick_replies: z.object({
-    // Up to 6 options, or all ten districts for the district question.
+    // Up to 6 options, or the full district or business type list for those questions.
     options: z
       .array(z.string().min(1).max(23))
       .min(1)
-      .max(strings.onboarding.districts.length)
-      .refine(
-        (options) =>
-          options.length <= 6 ||
-          options.every((o) => (strings.onboarding.districts as readonly string[]).includes(o)),
-        { message: "At most 6 options, unless every option is a district." },
-      ),
+      .max(LONG_LIST_MAX)
+      .refine((options) => options.length <= 6 || isLongListAllowed(options), {
+        message: "At most 6 options, unless every option is a district, or every option is a business type.",
+      }),
   }),
 };
 
@@ -172,7 +181,7 @@ const descriptions: Record<ToolName, string> = {
   save_receipt:
     "Save the receipt as a purchase. Only works straight after the trader taps Save on the receipt card; never call it because of a typed message.",
   offer_quick_replies:
-    "Show up to 6 short tap-to-reply options (under 24 characters each) under your message, or all ten districts when asking for the district. Use whenever you ask a question with a few likely answers.",
+    "Show up to 6 short tap-to-reply options (under 24 characters each) under your message, or the full list when asking for the district or the business type. Use whenever you ask a question with a few likely answers.",
 };
 
 function toInputSchema(schema: z.ZodType): Anthropic.Tool.InputSchema {

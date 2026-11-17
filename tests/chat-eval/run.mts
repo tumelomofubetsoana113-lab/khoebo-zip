@@ -32,6 +32,7 @@ type Expect = {
   replyMatches?: string[];
   replyExcludes?: string[];
   quickReplies?: string[]; // these options, in any order
+  profileMatches?: Record<string, string>; // profile field -> pattern, after the reply
 };
 type Case = { message: string; note?: string; setup?: Partial<State>; expect: Expect };
 type ChatResponse = {
@@ -129,6 +130,12 @@ function check(c: Case, before: State, res: ChatResponse): string[] {
     const shown = res.ui.find((b) => b.type === "quick_replies")?.options ?? [];
     const same = shown.length === e.quickReplies.length && e.quickReplies.every((o) => shown.includes(o));
     if (!same) problems.push(`expected quick replies ${JSON.stringify(e.quickReplies)}, got ${JSON.stringify(shown)}`);
+  }
+  for (const [field, pattern] of Object.entries(e.profileMatches ?? {})) {
+    const value = res.state.profile[field];
+    if (typeof value !== "string" || !new RegExp(pattern, "i").test(value)) {
+      problems.push(`expected profile.${field} to match /${pattern}/, got ${JSON.stringify(value)}`);
+    }
   }
   return problems;
 }

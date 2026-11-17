@@ -176,13 +176,19 @@ export const strings = {
     },
   },
   onboarding: {
+    // Broad on purpose: RSL asked on 16 November 2026 for runners, couriers,
+    // flea markets and online sellers as well as street vendors. Each under
+    // 24 characters, as quick replies need.
     businessTypes: [
       "Fruit and veg",
       "Spaza / general dealer",
       "Street food",
-      "Hair salon",
-      "Clothing",
-      "Phone repair",
+      "Clothing or flea market",
+      "Hair or beauty",
+      "Repairs or services",
+      "Runner (cross-border)",
+      "Courier or delivery",
+      "Online seller",
       "Other",
     ],
     districts: [

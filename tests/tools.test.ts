@@ -334,6 +334,17 @@ describe("cards with no state change", () => {
     const mixed = [...districts.slice(0, 6), "Other"];
     expect(runTool("offer_quick_replies", { options: mixed }, setUp, ctx()).isError).toBe(true);
   });
+
+  it("allows the full business type list, including runners and couriers", () => {
+    const types = [...strings.onboarding.businessTypes];
+    expect(types).toEqual(expect.arrayContaining(["Runner (cross-border)", "Courier or delivery", "Online seller", "Other"]));
+    expect(types.every((t) => t.length < 24)).toBe(true);
+    expect(runTool("offer_quick_replies", { options: types }, setUp, ctx()).ui).toEqual([
+      { type: "quick_replies", options: types },
+    ]);
+    const mixed = [...types.slice(0, 6), "Maseru"];
+    expect(runTool("offer_quick_replies", { options: mixed }, setUp, ctx()).isError).toBe(true);
+  });
 });
 
 describe("describeAction", () => {
