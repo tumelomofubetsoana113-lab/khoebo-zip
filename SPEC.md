@@ -735,6 +735,18 @@ The team was shortlisted and met RSL at the RSL Academy on 16 November 2026. RSL
 
 How Khoebo answers each point is recorded in section 14, "After the meet and greet".
 
+**Anonymised data for the event (18 November 2026).** RSL said it will give teams anonymised data to use during the event, and asked each team to email the data it needs. The owner asked for a request that suits Khoebo, written for the team contact to send to taxathon@rsl.org.ls. It asks for these, most important first:
+
+1. Filed returns for November 2025 to October 2026, per anonymised taxpayer and period: sector, district, filed, on time, declared turnover and tax paid.
+2. Lekuka purchases for those taxpayers: monthly totals from invoices carrying the buyer's TIN.
+3. Results of past follow-ups and field visits, the real answer key for testing the worklist.
+4. Lekuka invoices where the buyer had no TIN: monthly totals per anonymised buyer, the district, and a yes or no for whether a phone number or name was captured.
+5. If RSL holds them: licence status, customs declarations by individuals, and registrations from street drives.
+
+The files should be CSV or Excel with direct identifiers removed and the same anonymised number across files, with a note on each column. The request also asks for the Simplified Business Tax rates and due dates, and for when and in what format the data will arrive.
+
+The email commits the team to use the data only for the Taxathon on the team's own laptops, to keep it out of the public prototype and every AI service, and to delete it after the event. So RSL's data must never be sent to Claude or the chat API: the worklist and leads rules run in Python on a laptop.
+
 ## 14. Decisions made during the build
 
 Anything built that the sections above don't cover is recorded here, with the step it came from. Keep this up to date.
