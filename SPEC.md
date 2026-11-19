@@ -248,7 +248,7 @@ The design follows the owner's mockup of 19 November 2026 (see section 14), with
 - Buttons: primary "Try the trader chat →", and a dark outlined "Open the officer view".
 
 **10. Footer** (shared by every page with a site header)
-- Left: the Khoebo mark and name. Right: the footer text from section 4.
+- The Khoebo mark and name, with the footer text from section 4 centred under it (centred at the owner's request, 19 November 2026).
 
 Landing checkpoint: Lighthouse performance and accessibility both 90 or above on mobile, no horizontal scroll at 360px, all figures read from JSON.
 
