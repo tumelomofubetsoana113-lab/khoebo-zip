@@ -175,8 +175,8 @@ Every status pill shows its written label. Colour is never the only signal.
 - No flag stripe: the tricolour stripe that ran along the top and bottom of every page was removed on 31 October 2026 (see section 14).
 - No mokorotlo emblem, no RSL logo, no WhatsApp name, logo or green.
 - The wordmark is the word "Khoebo" in bold white on the charcoal header, with "Records and tax assistant" under it from 640px up and the Khoebo mark to its left (added 29 October 2026, see section 14): a white chat bubble holding three rising bars on a circle. Since 19 November 2026 the drawing is unchanged and only its colours changed: the circle and the first two bars are `brand-bright`, the tallest bar `charcoal` (they were `flag-blue`, with the last bar `flag-green`).
-- A small pill reading "RSL Taxathon 2026" sits in every page header (`EventPill`).
-- Footer text on every page: "Built for the RSL Taxathon 2026. Not an official RSL service. All data shown is simulated."
+- No event pill in the headers, and the app doesn't mention the RSL Taxathon (since 19 November 2026; see section 14).
+- Footer text on every page: "© Khoebo 2026", and nothing else.
 - The word "prototype" isn't used anywhere in the app (since 19 November 2026; see section 14). "Demo" marks what is simulated, such as payments and voice notes.
 
 ### Accessibility
@@ -195,11 +195,11 @@ This is the first thing judges see. It should look finished and calm, with plent
 The design follows the owner's mockup of 19 November 2026 (see section 14), with the pipeline, officer, Lesotho and results sections kept and restyled to match. Sections use a small orange caps eyebrow over a bold heading (`SectionHeading`).
 
 **1. Header** (sticky and floating: a rounded `charcoal` bar inset from the page edges, shared with the officer pages)
-- Left: the Khoebo mark, "Khoebo" in white and "Records and tax assistant" (from 640px), and the event pill.
+- Left: the Khoebo mark, "Khoebo" in white and "Records and tax assistant" (from 640px).
 - Middle from 1024px: the anchor links "How it works", "The pipeline" and "For officers" in a rounded group ("Results" went with its section on 19 November 2026).
 - The bar, the link group and the "Try the chat" button are fully rounded (`pill` on the button), as the white floating header was before 19 November 2026. Below 640px the bar has 24px corners, since it is two rows high.
 - Right: "Officer view" (from 1280px) and the primary button "Try the chat →".
-- Below 1024px: the button and a three-line menu button. The menu opens a rounded white panel with the four anchor links and "Officer view", and closes on a link tap, Escape, or a tap outside it. Below 640px the event pill sits on its own row under the wordmark, inside the header.
+- Below 1024px: the button and a three-line menu button. The menu opens a rounded white panel with the four anchor links and "Officer view", and closes on a link tap, Escape, or a tap outside it.
 
 **2. Hero** (on `page`)
 - Two columns on desktop (text left, example chat right). Stacked on mobile.
@@ -261,7 +261,7 @@ A full-height chat that feels like a messaging app, centred in a 420px column on
 **Header** (`brand`, white text)
 - Back arrow to `/`, a round avatar with the letter K, "Khoebo" and a subline "Records and tax assistant".
 - Right: a "Demo" button that opens the demo menu.
-- The event pill sits in a thin strip under the header.
+- Nothing sits between the header and the messages (the event strip went on 19 November 2026).
 
 **Messages**
 - Trader bubbles on the right in `brand` with white text. Assistant bubbles on the left in white with `ink` text and a `line` border.
@@ -307,7 +307,7 @@ A full-height chat that feels like a messaging app, centred in a 420px column on
 
 **Statements and records** (`/trader/statement?period=...`, added 19 November 2026)
 - A trader asks in the chat ("get my statement", "my records for October", "something to show the bank") and the `get_statement` tool shows a `statement_card` with "Open statement" and "Download spreadsheet".
-- The page shows one month (`period=2026-10`, or `this_month`, `last_month`) or every record (`period=all`), with a month picker. It has: the Khoebo mark and event pill, the trader's business, district, registration and the date made, totals (money in, money out, profit estimate, client money when there is some, entries, days with no entries), a month-by-month table for more than one month, any filed returns that overlap the period (with the mock reference and the placeholder note), every entry (date, kind, note, amount, rand, Lekuka result), and a footer saying it is made from the trader's own records, not checked by RSL and not an official RSL document.
+- The page shows one month (`period=2026-10`, or `this_month`, `last_month`) or every record (`period=all`), with a month picker. It has: the Khoebo mark, the trader's business, district, registration and the date made, totals (money in, money out, profit estimate, client money when there is some, entries, days with no entries), a month-by-month table for more than one month, any filed returns that overlap the period (with the mock reference and the placeholder note), every entry (date, kind, note, amount, rand, Lekuka result), and a footer saying it is made from the trader's own records, not checked by RSL and not an official RSL document.
 - The Khoebo mark sits behind the statement as a faint watermark (added 19 November 2026). On screen it is centred on the statement; when printed it is fixed, so it repeats in the middle of every page.
 - **No statement while a return is due** (added 19 November 2026). A return is due once its filing period has ended. If any finished filing period the statement's records fall in has no filed return (for each business, with several), there is nothing to save or print: the page shows "File your return first", lists each return with its dates and due date, and links back to the chat. In the chat, `get_statement` returns `return_not_filed` with a "File now" reminder card for each return. The card's "Download spreadsheet" checks again when tapped and opens the page instead. A period still running never blocks a statement.
 - "Save as PDF or print" opens the browser's print window, which prints only the statement. "Download spreadsheet" saves a CSV file (`khoebo-statement-2026-10.csv`, or `khoebo-records-<date>.csv` for all records).
@@ -481,7 +481,7 @@ The API can return these alongside the reply text:
 
 Claude Code writes the actual prompt. It must cover:
 
-- **Who it is:** Khoebo, a prototype records and tax assistant for informal traders in Lesotho, built for the RSL Taxathon. It is not RSL staff and doesn't speak for RSL.
+- **Who it is:** Khoebo, a records and tax assistant for informal traders in Lesotho, its own service separate from RSL. It is not RSL staff and doesn't speak for RSL.
 - **Tone:** friendly and plain, like a helpful neighbour who knows tax. At most three short sentences per message. One question at a time. No lectures, no threats, no mention of penalties unless the trader asks.
 - **Numbers:** always call a tool to record or calculate. Never do arithmetic in the reply. Only quote numbers that a tool returned. Format money as "M1,840".
 - **Understanding messages:** accept short and messy input ("350", "sold 350", "M3 50", "3 bags oranges 120 each"). Understand common Sesotho words: *ke rekisitse* (I sold), *ke rekile* (I bought), *kajeno* (today), *maobane* (yesterday), *chelete* (money). Reply only in English for now, with no Sesotho words or greetings added, until a Sesotho speaker has checked the replies.
@@ -846,7 +846,7 @@ Anything built that the sections above don't cover is recorded here, with the st
 
 - **Loading.** `ChatShell` renders a static frame (header, prototype strip, footer text) on the server and during hydration, then mounts the live chat in the browser, reading localStorage in the state initialisers. This avoids a hydration mismatch.
 - **Storage.** The chat is saved in localStorage under `khoebo.chat.v1` (last 200 messages, with their UI blocks and which buttons were tapped), next to the trader's state under `khoebo.trader.v1`. A message still "sending" when the page closed loads as "Not sent. Tap to retry". Reset clears both.
-- **Footer text.** The chat has no room for a page footer, so the footer text from section 4 sits in small `muted` type at the top of the message list.
+- **Footer text.** The chat has no page footer. Until 19 November 2026 the footer notice sat at the top of the message list; now that it is only the copyright line, the chat leaves it out.
 - **First visit.** The greeting is shown without calling the API, with the business types as quick replies. The model handles the rest of onboarding.
 - **Button taps** show as a small trader bubble with the button's label ("Confirm", "Pay (demo)") and go to the API as an action, not text. Each card button can be tapped once; afterwards it shows what happened ("Confirmed", "Paid (demo)", "Undone"). Confirm also hides the card's Change button.
 - **Simulate a reminder** posts no trader bubble. If it fails, a "Simulate a reminder" bubble appears so it can be retried.
@@ -1233,3 +1233,11 @@ At the owner's request:
 - **Tests.** Five new: three for `returnsToFile()`, one for `get_statement` refusing with a File now card, and one for businesses. One test changed so that last month's statement first has its return filed. 205 pass.
 - **Chat eval.** A new case, "can I get my statement for September?" with an unfiled 2026-Q3, expects `get_statement`, a reminder card and no statement card. Full eval on a local production build: 93 of 93 (31 cases, three runs each).
 - **Checked in headless Chrome on a local production build:** September's statement with a September sale shows "File your return first" with no save, print or statement; this month's statement still has its buttons; the officer page shows the new pill colours. No page shows the word "prototype", the landing page has no results section, and there were no console errors.
+
+### Khoebo stands as its own product (19 November 2026)
+
+At the owner's request ("consider this official, it's Khoebo"):
+
+- **Copyright only.** The footer on every page, the statement's footer and the spreadsheet's second line now read only "© Khoebo 2026". "Built for the RSL Taxathon 2026. Not an official RSL service. All data shown is simulated." is gone. The chat no longer shows a notice above the messages.
+- **No "RSL Taxathon".** The header pill (`EventPill`) is gone from the landing, officer, chat and statement headers, and the page title is now "Khoebo · Records and tax assistant". The system prompt now says Khoebo is its own service, separate from RSL, and still isn't RSL staff. Code comments and the Python docstrings were reworded. CLAUDE.md's rule 5 was rewritten to match. This spec and CLAUDE.md's opening line still describe the competition, since they are the team's working notes, not the app.
+- **Kept on purpose.** Khoebo still never claims to be RSL: the statement still says it isn't an official RSL document, and the chat still says it doesn't speak for RSL. The officer pages still say "Simulated data" above their lists, since the figures are simulated.

@@ -10,7 +10,6 @@ import Link from "next/link";
 import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { Button, ButtonLink } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
-import { EventPill } from "@/components/ui/Pill";
 import { BusinessRows } from "@/components/chat/BusinessRows";
 import { businessIdOf, businessList, hasSeveralBusinesses } from "@/lib/businesses";
 import { formatDate, todayISO } from "@/lib/dates";
@@ -225,7 +224,6 @@ function StatementView() {
               <p className="text-sm text-muted">{strings.chat.subtitle}</p>
             </div>
           </div>
-          <EventPill />
         </header>
 
         <h1 className="mt-6 text-2xl font-bold">{st.isMonth ? t.monthTitle : t.allTitle}</h1>

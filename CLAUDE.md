@@ -19,7 +19,7 @@ Next.js (App Router) with TypeScript, Tailwind CSS, the Anthropic TypeScript SDK
 2. **The API key stays on the server.** `ANTHROPIC_API_KEY` is read only in `app/api/chat/route.ts`. It is never sent to the browser, logged or committed.
 3. **No real trader data is stored.** No database, no analytics, and message content is never logged. Server logs may record counts and errors only.
 4. **The officer side never sees hidden simulation columns.** Anything starting with `hidden_` exists for scoring only. The export script drops it before the app sees the data.
-5. **It says what it is.** Every page shows the "RSL Taxathon 2026" label, and the footer says "Built for the RSL Taxathon 2026. Not an official RSL service. All data shown is simulated." Don't use the word "prototype" in the app (the owner's decision, 19 November 2026). Never use RSL's logo, WhatsApp's name or logo, or the mokorotlo emblem from the flag.
+5. **It's Khoebo.** The footer says only "© Khoebo 2026". The app doesn't use the words "prototype" or "RSL Taxathon" (the owner's decisions, 19 November 2026), and it never claims to be RSL. Never use RSL's logo, WhatsApp's name or logo, or the mokorotlo emblem from the flag.
 6. **Placeholder tax rates are labelled.** Until RSL confirms the Simplified Business Tax rates, every estimate shows a note that it uses a placeholder rate.
 7. **Use only the palette in `SPEC.md`.** Colours come from the Tailwind theme tokens, never from hex values typed into components.
 

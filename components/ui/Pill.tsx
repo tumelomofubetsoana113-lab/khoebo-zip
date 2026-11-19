@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { LEAD_TONE, type LeadKey } from "@/lib/leads";
 import { strings, type ActionKey } from "@/lib/strings";
 
-type Tone = ActionKey | "neutral" | "event";
+type Tone = ActionKey | "neutral";
 
 const toneClasses: Record<Tone, string> = {
   followup: "bg-status-followup-bg text-status-followup",
@@ -10,7 +10,6 @@ const toneClasses: Record<Tone, string> = {
   checkin: "bg-status-checkin-bg text-status-checkin",
   none: "bg-status-none-bg text-status-none",
   neutral: "bg-page text-muted border border-line",
-  event: "bg-brand-soft text-brand",
 };
 
 export function Pill({
@@ -39,13 +38,4 @@ export function ActionPill({ action }: { action: ActionKey }) {
 // A potential registrant's action, in the colours of the matching worklist action.
 export function LeadPill({ action }: { action: LeadKey }) {
   return <Pill tone={LEAD_TONE[action]}>{strings.leadActions[action]}</Pill>;
-}
-
-// "RSL Taxathon 2026", in every page header.
-export function EventPill({ className = "" }: { className?: string }) {
-  return (
-    <Pill tone="event" className={className}>
-      {strings.brand.eventPill}
-    </Pill>
-  );
 }

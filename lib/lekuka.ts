@@ -1,5 +1,5 @@
 // A stand-in for RSL's Lekuka invoice check. Nothing here contacts RSL: live
-// taxpayer systems aren't available to Taxathon teams, so a pilot would need an
+// taxpayer systems aren't open to Khoebo yet, so a pilot would need an
 // agreement with RSL before this could call the real service.
 //
 // It takes only what's printed on the invoice. No trader details reach it, so

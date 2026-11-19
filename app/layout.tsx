@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: `${strings.brand.name} · ${strings.brand.eventLabel}`,
+    default: `${strings.brand.name} · ${strings.chat.subtitle}`,
     template: `%s · ${strings.brand.name}`,
   },
   description: strings.brand.description,

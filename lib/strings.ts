@@ -4,13 +4,12 @@
 export const strings = {
   brand: {
     name: "Khoebo",
-    eventPill: "RSL Taxathon 2026",
-    eventLabel: "Built for the RSL Taxathon 2026",
     description:
       "A records and tax assistant for informal traders in Lesotho, with an officer worklist for RSL.",
   },
   footer: {
-    text: "Built for the RSL Taxathon 2026. Not an official RSL service. All data shown is simulated.",
+    // The only notice in the footer (the owner's decision, 19 November 2026).
+    text: "© Khoebo 2026",
   },
   actions: {
     followup: "Officer follow-up",

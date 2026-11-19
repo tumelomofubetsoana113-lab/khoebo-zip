@@ -135,7 +135,7 @@ describe("statementCsv", () => {
     const csv = statementCsv(buildStatement(trader, "2026-10", TODAY));
     const lines = csv.trimEnd().split("\r\n");
     expect(lines[0]).toBe("Khoebo business records");
-    expect(lines[1]).toContain("Built for the RSL Taxathon 2026");
+    expect(lines[1]).toBe("© Khoebo 2026");
     expect(csv).toContain("Trader,Palesa");
     expect(csv).toContain("Money in (sales),770.50");
     expect(csv).toContain("Profit (estimate),-129.50");

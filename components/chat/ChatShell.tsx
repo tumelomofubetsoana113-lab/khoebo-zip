@@ -6,7 +6,6 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ChatResponse } from "@/app/api/chat/route";
 import { Logo } from "@/components/ui/Logo";
-import { EventPill } from "@/components/ui/Pill";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import type { ChatAction } from "@/lib/blocks";
 import {
@@ -83,9 +82,6 @@ function ChatHeader({ onDemo }: { onDemo?: () => void }) {
           {t.demo}
         </button>
       </header>
-      <div className="flex justify-center border-b border-line bg-surface py-1">
-        <EventPill />
-      </div>
     </>
   );
 }
@@ -97,9 +93,7 @@ function ChatFrame() {
   return (
     <div className={frameClass}>
       <ChatHeader />
-      <div className="flex-1 px-3 py-4">
-        <p className="mx-auto max-w-xs text-center text-xs text-muted">{strings.footer.text}</p>
-      </div>
+      <div className="flex-1" />
     </div>
   );
 }
@@ -308,7 +302,6 @@ function ChatSession() {
 
       <main className="flex min-h-0 flex-1 flex-col">
         <div className="flex-1 overflow-y-auto px-3 py-4">
-          <p className="mx-auto mb-4 max-w-xs text-center text-xs text-muted">{strings.footer.text}</p>
           <div role="log" aria-live="polite" aria-label={t.messages} className="space-y-3">
             {messages.map((m) => (
               <div key={m.id}>

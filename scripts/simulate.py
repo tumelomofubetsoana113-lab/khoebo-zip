@@ -1,5 +1,5 @@
 """
-Mock data generator for the RSL Taxathon 2026 entry (Challenge 1: informal sector).
+Mock data generator for Khoebo (informal sector compliance).
 
 Every record is synthetic. No real taxpayer data is used.
 
