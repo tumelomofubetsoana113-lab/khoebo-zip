@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { strings } from "@/lib/strings";
 import { Logo } from "./Logo";
-import { PrototypePill } from "./Pill";
+import { EventPill } from "./Pill";
 
 export function Wordmark() {
   return (
@@ -19,7 +19,7 @@ export function Wordmark() {
 // Floating rounded header shared by the landing and officer pages, inset from
 // the page edges, in charcoal since the RSL colours (19 Nov 2026).
 // Page-specific links and buttons go in `children` on the right.
-// On phones the prototype pill drops to its own row, so the wordmark and the
+// On phones the event pill drops to its own row, so the wordmark and the
 // buttons share the first row; from 640px up it sits beside the wordmark.
 export function SiteHeader({ children, nav }: { children?: ReactNode; nav?: ReactNode }) {
   return (
@@ -27,7 +27,7 @@ export function SiteHeader({ children, nav }: { children?: ReactNode; nav?: Reac
       <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-x-2 rounded-3xl bg-charcoal px-3 py-2 text-surface shadow-lg shadow-ink/15 sm:flex-nowrap sm:gap-x-3 sm:rounded-full sm:pl-5 sm:pr-2">
         <Wordmark />
         <div className="order-last basis-full pb-1 sm:order-none sm:basis-auto sm:pb-0">
-          <PrototypePill />
+          <EventPill />
         </div>
         {nav && <div className="mx-auto hidden lg:block">{nav}</div>}
         {children && (

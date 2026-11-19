@@ -1,7 +1,7 @@
 import { strings } from "@/lib/strings";
 import { Logo } from "./Logo";
 
-// The Khoebo mark and name, with the prototype notice (rule 5) centred under it.
+// The Khoebo mark and name, with the notice (rule 5) centred under it.
 export function SiteFooter() {
   return (
     <footer className="mt-auto border-t border-line bg-page">

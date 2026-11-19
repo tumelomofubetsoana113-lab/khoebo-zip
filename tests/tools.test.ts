@@ -409,12 +409,31 @@ describe("cards with no state change", () => {
     ]);
   });
 
-  it("makes a statement for last month or all records", () => {
-    expect(runTool("get_statement", { period: "last_month" }, setUp, ctx()).result).toMatchObject({
+  it("refuses a statement while a return it covers is due, with a File now card", () => {
+    // September is in 2026-Q3, which has ended and isn't filed.
+    const out = runTool("get_statement", { period: "last_month" }, setUp, ctx());
+    expect(out.result).toMatchObject({
+      status: "return_not_filed",
+      returns_to_file: [{ period: "2026-Q3", due_date: "20 October 2026" }],
+    });
+    expect(out.ui).toEqual([
+      { type: "reminder_card", period: "2026-Q3", dueDate: "2026-10-20", taxEstimate: 180, note: TAX.note },
+    ]);
+    expect(runTool("get_statement", { period: "all" }, setUp, ctx()).result).toMatchObject({ status: "return_not_filed" });
+    // October is in 2026-Q4, still running, so its statement is fine.
+    expect(runTool("get_statement", {}, setUp, ctx()).result).not.toHaveProperty("status");
+  });
+
+  it("makes a statement for last month or all records once the return is filed", () => {
+    const filedQ3: TraderState = {
+      ...setUp,
+      returns: [{ period: "2026-Q3", turnover: 9000, taxEstimate: 180, confirmedAt: "2026-10-05T08:00:00.000Z", reference: "MOCK-Q3", paid: true }],
+    };
+    expect(runTool("get_statement", { period: "last_month" }, filedQ3, ctx()).result).toMatchObject({
       statement: "September 2026",
       money_in: { amount: 9000 },
     });
-    expect(runTool("get_statement", { period: "all" }, setUp, ctx()).result).toMatchObject({
+    expect(runTool("get_statement", { period: "all" }, filedQ3, ctx()).result).toMatchObject({
       statement: "All records",
       from: "15 September 2026",
       to: "29 October 2026",

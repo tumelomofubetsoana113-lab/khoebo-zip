@@ -3,7 +3,15 @@
 
 import { todayISO } from "@/lib/dates";
 import { loadState } from "@/lib/state";
-import { buildStatement, statementCsv, statementFileName, type Statement, type StatementKey } from "@/lib/statement";
+import {
+  buildStatement,
+  returnsToFile,
+  statementCsv,
+  statementFileName,
+  statementPath,
+  type Statement,
+  type StatementKey,
+} from "@/lib/statement";
 
 export function downloadStatement(st: Statement): void {
   // The byte order mark tells Excel the file is UTF-8.
@@ -19,6 +27,14 @@ export function downloadStatement(st: Statement): void {
 }
 
 // From a chat card: the records as they are now, not as they were when the card was shown.
+// While a return it covers is due and not filed, it opens the statement page,
+// which says so, instead of downloading.
 export function downloadSavedStatement(key: StatementKey, businessId?: string): void {
-  downloadStatement(buildStatement(loadState(), key, todayISO(), businessId));
+  const state = loadState();
+  const today = todayISO();
+  if (returnsToFile(state, key, today, businessId).length > 0) {
+    window.location.assign(statementPath(key, businessId));
+    return;
+  }
+  downloadStatement(buildStatement(state, key, today, businessId));
 }

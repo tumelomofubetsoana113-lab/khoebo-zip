@@ -227,5 +227,21 @@
       ]
     },
     "expect": { "toolsInclude": ["prepare_return"], "uiIncludes": { "return_card": "businessName" }, "noNewReturn": true }
+  },
+  {
+    "message": "can I get my statement for September?",
+    "note": "the 2026-Q3 return is due and not filed: no statement, a File now card instead",
+    "setup": {
+      "entries": [
+        { "id": "s1", "kind": "sale", "amount": 500, "date": "2026-09-25", "source": "text", "createdAt": "2026-09-25T09:00:00.000Z" },
+        { "id": "s2", "kind": "sale", "amount": 350, "date": "today", "source": "text", "createdAt": "today-T07:00:00.000Z" }
+      ]
+    },
+    "expect": {
+      "toolsInclude": ["get_statement"],
+      "uiIncludes": { "reminder_card": "period" },
+      "uiExcludes": ["statement_card"],
+      "noNewReturn": true
+    }
   }
 ]

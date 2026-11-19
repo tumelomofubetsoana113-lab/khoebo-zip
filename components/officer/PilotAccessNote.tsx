@@ -1,7 +1,7 @@
 import { Lock } from "lucide-react";
 import { strings } from "@/lib/strings";
 
-// The officer pages are open in the prototype because all data is simulated.
+// The officer pages are open in this demo because all data is simulated.
 // This says plainly that a pilot would put them behind RSL sign-in.
 export function PilotAccessNote({ className = "" }: { className?: string }) {
   return (

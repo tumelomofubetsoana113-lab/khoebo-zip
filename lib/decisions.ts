@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// Officer decisions on the trader detail page. In the prototype they live in
+// Officer decisions on the trader detail page. In this demo they live in
 // the officer's browser (localStorage); in a pilot they go to RSL's case system.
 
 export const DECISIONS = ["agree_followup", "agree_review", "change_checkin", "change_none", "escalate"] as const;

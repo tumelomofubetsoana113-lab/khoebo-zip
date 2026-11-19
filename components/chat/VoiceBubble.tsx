@@ -1,6 +1,6 @@
 import { Play } from "lucide-react";
 
-// A fixed waveform shape: voice notes are simulated in this prototype.
+// A fixed waveform shape: voice notes are simulated in this demo.
 const BARS = [6, 12, 18, 10, 22, 14, 8, 16, 20, 12, 6, 14, 18, 10, 6, 12, 16, 8];
 
 export function Waveform() {

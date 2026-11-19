@@ -1,5 +1,5 @@
 """
-Explainable officer worklist for the RSL Taxathon prototype (Challenge 1).
+Explainable officer worklist for the RSL Taxathon 2026 entry (Challenge 1).
 
 Uses only data RSL could hold or obtain (filed returns, supplier e-invoices that
 carry the trader's TIN, mobile money merchant receipts, licence status). It never

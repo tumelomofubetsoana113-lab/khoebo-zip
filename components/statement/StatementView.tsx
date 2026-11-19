@@ -5,12 +5,12 @@
 // never leave the phone. The trader prints it or saves it as a PDF with the
 // browser's own print window, or downloads a spreadsheet.
 
-import { ArrowLeft, Download, Info, Printer } from "lucide-react";
+import { ArrowLeft, ArrowRight, Download, FileWarning, Info, Printer } from "lucide-react";
 import Link from "next/link";
 import { useState, useSyncExternalStore, type ReactNode } from "react";
-import { Button } from "@/components/ui/Button";
+import { Button, ButtonLink } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
-import { PrototypePill } from "@/components/ui/Pill";
+import { EventPill } from "@/components/ui/Pill";
 import { BusinessRows } from "@/components/chat/BusinessRows";
 import { businessIdOf, businessList, hasSeveralBusinesses } from "@/lib/businesses";
 import { formatDate, todayISO } from "@/lib/dates";
@@ -20,11 +20,13 @@ import {
   buildStatement,
   monthTitle,
   resolveStatementPeriod,
+  returnsToFile,
   statementMonths,
   statementPath,
   type StatementKey,
 } from "@/lib/statement";
 import { strings } from "@/lib/strings";
+import { periodRange } from "@/lib/tax";
 import { downloadStatement } from "./download";
 
 const t = strings.chat.statement;
@@ -105,6 +107,10 @@ function StatementView() {
   });
 
   const st = buildStatement(trader, key, today, business || undefined);
+  // While a return the statement covers is due and not filed, there is
+  // nothing to save or print: the page says which return to file instead.
+  const toFile = returnsToFile(trader, key, today, business || undefined);
+  const blocked = toFile.length > 0;
   const months = statementMonths(trader.entries, today);
   const p = trader.profile;
   const sm = st.summary;
@@ -157,6 +163,7 @@ function StatementView() {
               </select>
             </label>
           )}
+          {!blocked && (
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={() => window.print()}>
               <Printer size={16} aria-hidden="true" />
@@ -167,14 +174,40 @@ function StatementView() {
               {t.download}
             </Button>
           </div>
+          )}
         </div>
-        <p className="flex gap-1.5 text-sm text-muted">
-          <Info size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
-          {t.printHint}
-        </p>
+        {!blocked && (
+          <p className="flex gap-1.5 text-sm text-muted">
+            <Info size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
+            {t.printHint}
+          </p>
+        )}
       </div>
 
-      {/* The statement itself. */}
+      {blocked ? (
+        <section className="rounded-card border border-status-followup/40 bg-status-followup-bg p-5 sm:p-8">
+          <h1 className="flex items-center gap-2 text-xl font-bold">
+            <FileWarning size={24} aria-hidden="true" className="shrink-0 text-status-followup" />
+            {t.blockedTitle}
+          </h1>
+          <p className="mt-2">{t.blockedIntro}</p>
+          <ul className="mt-3 list-disc space-y-1 pl-5 font-semibold">
+            {toFile.map((r) => {
+              const range = periodRange(r.period);
+              return (
+                <li key={`${r.period}-${r.businessId}`}>
+                  {r.businessName ? `${r.businessName}: ` : ""}
+                  {t.blockedItem(r.period, formatDate(range.start), formatDate(range.end), formatDate(r.dueDate))}
+                </li>
+              );
+            })}
+          </ul>
+          <ButtonLink href="/trader" className="mt-5">
+            {t.fileInChat}
+            <ArrowRight size={18} aria-hidden="true" />
+          </ButtonLink>
+        </section>
+      ) : (
       <article className="relative isolate overflow-hidden rounded-card border border-line bg-surface p-4 sm:p-8 print:overflow-visible print:rounded-none print:border-0 print:p-0">
         {/* The Khoebo mark as a faint watermark. On screen it sits behind the
             statement; when printed it is fixed, so it repeats on every page. */}
@@ -192,7 +225,7 @@ function StatementView() {
               <p className="text-sm text-muted">{strings.chat.subtitle}</p>
             </div>
           </div>
-          <PrototypePill />
+          <EventPill />
         </header>
 
         <h1 className="mt-6 text-2xl font-bold">{st.isMonth ? t.monthTitle : t.allTitle}</h1>
@@ -318,6 +351,7 @@ function StatementView() {
           <p className="mt-1">{strings.footer.text}</p>
         </footer>
       </article>
+      )}
     </div>
   );
 }

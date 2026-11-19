@@ -11,7 +11,6 @@ const links = [
   { href: "#how-it-works", label: t.howItWorks },
   { href: "#pipeline", label: t.pipeline },
   { href: "#for-officers", label: t.forOfficers },
-  { href: "#results", label: t.results },
 ];
 
 // The anchor links sit in a rounded group in the middle of the bar from

@@ -25,14 +25,16 @@
   --color-muted: #6d6d70;
   --color-line: #dee2e6;
 
-  --color-status-followup: #856404;
-  --color-status-followup-bg: #fff3cd;
-  --color-status-review: #0c5460;
-  --color-status-review-bg: #d1ecf1;
-  --color-status-checkin: #383d41;
-  --color-status-checkin-bg: #e2e3e5;
-  --color-status-none: #155724;
-  --color-status-none-bg: #d4edda;
+  /* The four officer actions, each a tint of a site colour: RSL orange,
+     yellow, grey and green. Every pair passes WCAG AA. */
+  --color-status-followup: #b74006;
+  --color-status-followup-bg: #feeae0;
+  --color-status-review: #232733;
+  --color-status-review-bg: #fdeac1;
+  --color-status-checkin: #232733;
+  --color-status-checkin-bg: #e9ecef;
+  --color-status-none: #1d7831;
+  --color-status-none-bg: #e1f3e5;
 
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     sans-serif;
@@ -72,7 +74,7 @@ body {
 }
 
 /* Printing a statement (or saving it as a PDF): white paper, sensible margins,
-   and colours kept, so the prototype label still shows. */
+   and colours kept, so the event label and footer notice still show. */
 @media print {
   @page {
     margin: 15mm;

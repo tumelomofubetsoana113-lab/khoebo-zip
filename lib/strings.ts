@@ -4,13 +4,13 @@
 export const strings = {
   brand: {
     name: "Khoebo",
-    prototypePill: "Prototype · RSL Taxathon 2026",
-    prototypeLabel: "Prototype for the RSL Taxathon 2026",
+    eventPill: "RSL Taxathon 2026",
+    eventLabel: "Built for the RSL Taxathon 2026",
     description:
-      "A prototype records and tax assistant for informal traders in Lesotho, with an officer worklist for RSL.",
+      "A records and tax assistant for informal traders in Lesotho, with an officer worklist for RSL.",
   },
   footer: {
-    text: "Prototype for the RSL Taxathon 2026. Not an official RSL service. All data shown is simulated.",
+    text: "Built for the RSL Taxathon 2026. Not an official RSL service. All data shown is simulated.",
   },
   actions: {
     followup: "Officer follow-up",
@@ -105,6 +105,12 @@ export const strings = {
       print: "Save as PDF or print",
       printHint: "To keep a PDF, choose \"Save as PDF\" in the print window.",
       backToChat: "Back to chat",
+      // Shown instead of the statement while a return it covers is due (19 Nov 2026).
+      blockedTitle: "File your return first",
+      blockedIntro: "This statement covers a filing period whose return isn't filed yet. File it in the chat, then come back to save or print the statement.",
+      blockedItem: (period: string, from: string, to: string, due: string) =>
+        `Return ${period} (${from} to ${to}), due ${due}`,
+      fileInChat: "File it in the chat",
       trader: "Trader",
       business: "Business",
       district: "District",
@@ -193,7 +199,7 @@ export const strings = {
       choose: "Choose a photo or PDF",
       preparing: "Getting your file ready…",
       privacy:
-        "Prototype: the picture goes to Khoebo's AI provider to be read, and Khoebo doesn't save it. Please use a sample, or a receipt you're happy to share.",
+        "Demo: the picture goes to Khoebo's AI provider to be read, and Khoebo doesn't save it. Please use a sample, or a receipt you're happy to share.",
       samplesHeading: "Or try a sample receipt",
       samples: [
         { src: "/samples/receipts/lekuka-verified.jpg", title: "Wholesaler receipt with a Lekuka code", hint: "The simulated check passes" },
@@ -211,7 +217,7 @@ export const strings = {
       },
     },
     voice: {
-      title: "Voice notes (simulated in this prototype)",
+      title: "Voice notes (simulated in this demo)",
       intro: "Tap a note to send it. In a pilot, Khoebo would transcribe real voice notes.",
       play: "Send voice note",
       samples: [
@@ -542,7 +548,6 @@ export const strings = {
       pipeline: "The pipeline",
       howItWorks: "How it works",
       forOfficers: "For officers",
-      results: "Results",
       officerView: "Officer view",
       tryChat: "Try the chat",
       openMenu: "Open menu",
@@ -657,7 +662,7 @@ export const strings = {
         {
           title: "File in a minute",
           body: "Your return is filled in from your records. You check it and tap Confirm.",
-          footer: "Mock filing in this prototype",
+          footer: "Mock filing in this demo",
         },
       ],
     },
@@ -697,7 +702,7 @@ export const strings = {
       items: [
         {
           title: "Ready for messaging apps",
-          body: "The prototype runs in the browser. In a pilot, the same assistant runs in a messaging app, with SMS for basic phones.",
+          body: "Khoebo runs in the browser today. In a pilot, the same assistant runs in a messaging app, with SMS for basic phones.",
         },
         { title: "Light on data", body: "Small pages and short messages that work on a weak connection." },
         {
@@ -709,20 +714,6 @@ export const strings = {
           body: "RSL sees the return a trader files, not their daily sales.",
         },
       ],
-    },
-    results: {
-      eyebrow: "Evidence",
-      heading: "Tested on simulated data",
-      fewerCases: (pct: number) => `${pct}% fewer officer cases`,
-      fewerCasesLabel: "than following up every nil return",
-      precision: (pct: number) => `${pct}% of field visits`,
-      precisionLabel: "reached a trader who really was under-declaring",
-      found: (n: number) => `${n} found`,
-      foundLabel: (population: number, baseline: number) =>
-        `undeclared traders per ${population}, close to the ${baseline} found by following up every nil return`,
-      note: (population: number) =>
-        `Average of 30 simulated populations of ${population} traders. No real taxpayer data was used. The next step is testing on masked RSL data.`,
-      stubNote: "Placeholder figures until the simulation results are added.",
     },
     closing: {
       heading: "See it for yourself.",

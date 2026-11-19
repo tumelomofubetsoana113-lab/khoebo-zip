@@ -7,10 +7,10 @@ import { TAX } from "@/config/tax";
 import { daysInMonth, formatDate, ymd, type DateRange } from "./dates";
 import { roundMoney, summarize, type Summary } from "./ledger";
 import type { BusinessTotals } from "./blocks";
-import { businessIdOf, businessList, entriesFor, hasSeveralBusinesses } from "./businesses";
+import { businessIdOf, businessList, entriesFor, findBusinessReturn, hasSeveralBusinesses } from "./businesses";
 import type { Entry, FiledReturn, TraderState } from "./state";
 import { strings } from "./strings";
-import { periodRange } from "./tax";
+import { dueDate, periodFor, periodRange } from "./tax";
 
 const s = strings.chat.statement;
 
@@ -179,6 +179,35 @@ export function buildStatement(state: TraderState, key: StatementKey, today: str
     ...(byBusiness ? { byBusiness } : {}),
     ...(names ? { businessNames: names } : {}),
   };
+}
+
+// ---------------------------------------------------------------------------
+// Returns that must be filed before a statement can be exported (added 19 Nov
+// 2026). A return is due once its filing period has ended. Every finished
+// period the statement's records fall in must have its return filed, for each
+// business in the statement. A period still running doesn't stop a statement.
+
+export type ReturnToFile = { period: string; dueDate: string; businessId: string; businessName?: string };
+
+export function returnsToFile(state: TraderState, key: StatementKey, today: string, businessId?: string): ReturnToFile[] {
+  const several = hasSeveralBusinesses(state);
+  const businesses = businessList(state).filter((b) => !several || !businessId || b.id === businessId);
+  const source = several && businessId ? entriesFor(state.entries, businessId) : state.entries;
+  const range = statementRange(key, source, today);
+  const due: ReturnToFile[] = [];
+  for (const b of businesses) {
+    const periods = new Set(
+      entriesFor(state.entries, b.id)
+        .filter((e) => e.date >= range.start && e.date <= range.end)
+        .map((e) => periodFor(e.date)),
+    );
+    for (const period of [...periods].sort()) {
+      if (periodRange(period).end >= today) continue; // still running, so not due yet
+      if (findBusinessReturn(state, period, b.id)) continue;
+      due.push({ period, dueDate: dueDate(period), businessId: b.id, ...(several ? { businessName: b.name } : {}) });
+    }
+  }
+  return due;
 }
 
 function nextMonth(key: string): string {

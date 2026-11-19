@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ChatResponse } from "@/app/api/chat/route";
 import { Logo } from "@/components/ui/Logo";
-import { PrototypePill } from "@/components/ui/Pill";
+import { EventPill } from "@/components/ui/Pill";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import type { ChatAction } from "@/lib/blocks";
 import {
@@ -84,7 +84,7 @@ function ChatHeader({ onDemo }: { onDemo?: () => void }) {
         </button>
       </header>
       <div className="flex justify-center border-b border-line bg-surface py-1">
-        <PrototypePill />
+        <EventPill />
       </div>
     </>
   );

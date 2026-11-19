@@ -18,7 +18,7 @@ export function QuickReplies({
           type="button"
           disabled={disabled}
           onClick={() => onPick(option)}
-          className="min-h-10 rounded-full border border-brand bg-surface px-4 text-base font-medium text-brand hover:bg-status-review-bg disabled:opacity-50"
+          className="min-h-10 rounded-full border border-brand bg-surface px-4 text-base font-medium text-brand hover:bg-brand-soft disabled:opacity-50"
         >
           {option}
         </button>

@@ -4,7 +4,7 @@ import { buttonKey } from "@/lib/chat";
 import { demoMultiState } from "@/lib/demo";
 import { contextBlock } from "@/lib/prompt";
 import { emptyState, TraderStateSchema, type Entry, type TraderState } from "@/lib/state";
-import { buildStatement, statementCsv, statementPath } from "@/lib/statement";
+import { buildStatement, returnsToFile, statementCsv, statementPath } from "@/lib/statement";
 import { describeAction, runTool, type ChatAction, type ToolContext } from "@/lib/tools";
 
 const TODAY = "2026-10-29"; // Thursday; current filing period 2026-Q4
@@ -296,5 +296,23 @@ describe("demo trader with three businesses", () => {
     const ids = new Set(state.entries.map((e) => e.businessId ?? "main"));
     expect([...ids].sort()).toEqual(["b-salon", "b-thetsane", "main"]);
     expect(businessList(state).map((b) => b.name)).toEqual(["Town shop", "Ha Thetsane shop", "Salon"]);
+  });
+});
+
+describe("statements wait for each business's due returns", () => {
+  it("only asks for returns of businesses with records in that period", () => {
+    const sept: TraderState = {
+      ...multi,
+      entries: [...multi.entries, entry("sale", 200, "2026-09-20", "s1", "b3")],
+    };
+    expect(returnsToFile(sept, "2026-09", TODAY)).toEqual([
+      { period: "2026-Q3", dueDate: "2026-10-20", businessId: "b3", businessName: "Salon" },
+    ]);
+    expect(returnsToFile(sept, "2026-09", TODAY, "b2")).toEqual([]);
+    const filed: TraderState = {
+      ...sept,
+      returns: [{ period: "2026-Q3", turnover: 200, taxEstimate: 4, confirmedAt: "2026-10-02T08:00:00.000Z", reference: "MOCK-S", paid: false, businessId: "b3" }],
+    };
+    expect(returnsToFile(filed, "2026-09", TODAY)).toEqual([]);
   });
 });

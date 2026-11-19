@@ -1,6 +1,6 @@
 # Khoebo build spec
 
-Prototype for the RSL Taxathon 2026, Challenge 1 (informal sector compliance).
+Built for the RSL Taxathon 2026, Challenge 1 (informal sector compliance).
 Live at https://khoebo-r8lc.vercel.app (the link to submit). Also served at khoebo.newempireai.online.
 Submission due 6 November 2026. Spec written 28 October 2026.
 
@@ -150,14 +150,14 @@ Define these as Tailwind theme colours. Components use the token names only. The
 | `muted` | #6D6D70 | Times, hints, secondary text |
 | `line` | #DEE2E6 | Borders, dividers |
 
-Status colours for the four officer actions (the alert colour pairs in RSL's stylesheet):
+Status colours for the four officer actions (tints of the site colours, since 19 November 2026):
 
 | Action | Text token | Background token |
 | --- | --- | --- |
-| Officer follow-up | `status-followup` #856404 | `status-followup-bg` #FFF3CD |
-| Human review | `status-review` #0C5460 | `status-review-bg` #D1ECF1 |
-| Automated check-in | `status-checkin` #383D41 | `status-checkin-bg` #E2E3E5 |
-| No action | `status-none` #155724 | `status-none-bg` #D4EDDA |
+| Officer follow-up | `status-followup` #B74006 | `status-followup-bg` #FEEAE0 |
+| Human review | `status-review` #232733 | `status-review-bg` #FDEAC1 |
+| Automated check-in | `status-checkin` #232733 | `status-checkin-bg` #E9ECEF |
+| No action | `status-none` #1D7831 | `status-none-bg` #E1F3E5 |
 
 Every status pill shows its written label. Colour is never the only signal.
 
@@ -175,8 +175,9 @@ Every status pill shows its written label. Colour is never the only signal.
 - No flag stripe: the tricolour stripe that ran along the top and bottom of every page was removed on 31 October 2026 (see section 14).
 - No mokorotlo emblem, no RSL logo, no WhatsApp name, logo or green.
 - The wordmark is the word "Khoebo" in bold white on the charcoal header, with "Records and tax assistant" under it from 640px up and the Khoebo mark to its left (added 29 October 2026, see section 14): a white chat bubble holding three rising bars on a circle. Since 19 November 2026 the drawing is unchanged and only its colours changed: the circle and the first two bars are `brand-bright`, the tallest bar `charcoal` (they were `flag-blue`, with the last bar `flag-green`).
-- A small pill reading "Prototype · RSL Taxathon 2026" sits in every page header.
-- Footer text on every page: "Prototype for the RSL Taxathon 2026. Not an official RSL service. All data shown is simulated."
+- A small pill reading "RSL Taxathon 2026" sits in every page header (`EventPill`).
+- Footer text on every page: "Built for the RSL Taxathon 2026. Not an official RSL service. All data shown is simulated."
+- The word "prototype" isn't used anywhere in the app (since 19 November 2026; see section 14). "Demo" marks what is simulated, such as payments and voice notes.
 
 ### Accessibility
 
@@ -194,11 +195,11 @@ This is the first thing judges see. It should look finished and calm, with plent
 The design follows the owner's mockup of 19 November 2026 (see section 14), with the pipeline, officer, Lesotho and results sections kept and restyled to match. Sections use a small orange caps eyebrow over a bold heading (`SectionHeading`).
 
 **1. Header** (sticky and floating: a rounded `charcoal` bar inset from the page edges, shared with the officer pages)
-- Left: the Khoebo mark, "Khoebo" in white and "Records and tax assistant" (from 640px), and the prototype pill.
-- Middle from 1024px: the anchor links "How it works", "The pipeline", "For officers" and "Results" in a rounded group.
+- Left: the Khoebo mark, "Khoebo" in white and "Records and tax assistant" (from 640px), and the event pill.
+- Middle from 1024px: the anchor links "How it works", "The pipeline" and "For officers" in a rounded group ("Results" went with its section on 19 November 2026).
 - The bar, the link group and the "Try the chat" button are fully rounded (`pill` on the button), as the white floating header was before 19 November 2026. Below 640px the bar has 24px corners, since it is two rows high.
 - Right: "Officer view" (from 1280px) and the primary button "Try the chat →".
-- Below 1024px: the button and a three-line menu button. The menu opens a rounded white panel with the four anchor links and "Officer view", and closes on a link tap, Escape, or a tap outside it. Below 640px the prototype pill sits on its own row under the wordmark, inside the header.
+- Below 1024px: the button and a three-line menu button. The menu opens a rounded white panel with the four anchor links and "Officer view", and closes on a link tap, Escape, or a tap outside it. Below 640px the event pill sits on its own row under the wordmark, inside the header.
 
 **2. Hero** (on `page`)
 - Two columns on desktop (text left, example chat right). Stacked on mobile.
@@ -236,7 +237,7 @@ The design follows the owner's mockup of 19 November 2026 (see section 14), with
   - Languages — "English, with Sesotho next" — "It already understands common Sesotho phrases. Full Sesotho replies come with the pilot."
   - Lock — "Records stay with the trader" — "RSL sees the return a trader files, not their daily sales."
 
-**8. Results** (id `results`, on `page`)
+**8. Results** (removed on 19 November 2026 at the owner's request; the figures are still in `data/test_results.json` and the documents. What it was:)
 - Eyebrow "Evidence", heading "Tested on simulated data", and three white cards with an orange left edge:
   - "38% fewer officer cases" — "than following up every nil return"
   - "96% of field visits" — "reached a trader who really was under-declaring"
@@ -260,7 +261,7 @@ A full-height chat that feels like a messaging app, centred in a 420px column on
 **Header** (`brand`, white text)
 - Back arrow to `/`, a round avatar with the letter K, "Khoebo" and a subline "Records and tax assistant".
 - Right: a "Demo" button that opens the demo menu.
-- The prototype pill sits in a thin strip under the header.
+- The event pill sits in a thin strip under the header.
 
 **Messages**
 - Trader bubbles on the right in `brand` with white text. Assistant bubbles on the left in white with `ink` text and a `line` border.
@@ -306,8 +307,9 @@ A full-height chat that feels like a messaging app, centred in a 420px column on
 
 **Statements and records** (`/trader/statement?period=...`, added 19 November 2026)
 - A trader asks in the chat ("get my statement", "my records for October", "something to show the bank") and the `get_statement` tool shows a `statement_card` with "Open statement" and "Download spreadsheet".
-- The page shows one month (`period=2026-10`, or `this_month`, `last_month`) or every record (`period=all`), with a month picker. It has: the Khoebo mark and prototype pill, the trader's business, district, registration and the date made, totals (money in, money out, profit estimate, client money when there is some, entries, days with no entries), a month-by-month table for more than one month, any filed returns that overlap the period (with the mock reference and the placeholder note), every entry (date, kind, note, amount, rand, Lekuka result), and a footer saying it is made from the trader's own records, not checked by RSL and not an official RSL document.
+- The page shows one month (`period=2026-10`, or `this_month`, `last_month`) or every record (`period=all`), with a month picker. It has: the Khoebo mark and event pill, the trader's business, district, registration and the date made, totals (money in, money out, profit estimate, client money when there is some, entries, days with no entries), a month-by-month table for more than one month, any filed returns that overlap the period (with the mock reference and the placeholder note), every entry (date, kind, note, amount, rand, Lekuka result), and a footer saying it is made from the trader's own records, not checked by RSL and not an official RSL document.
 - The Khoebo mark sits behind the statement as a faint watermark (added 19 November 2026). On screen it is centred on the statement; when printed it is fixed, so it repeats in the middle of every page.
+- **No statement while a return is due** (added 19 November 2026). A return is due once its filing period has ended. If any finished filing period the statement's records fall in has no filed return (for each business, with several), there is nothing to save or print: the page shows "File your return first", lists each return with its dates and due date, and links back to the chat. In the chat, `get_statement` returns `return_not_filed` with a "File now" reminder card for each return. The card's "Download spreadsheet" checks again when tapped and opens the page instead. A period still running never blocks a statement.
 - "Save as PDF or print" opens the browser's print window, which prints only the statement. "Download spreadsheet" saves a CSV file (`khoebo-statement-2026-10.csv`, or `khoebo-records-<date>.csv` for all records).
 - Everything is worked out in the browser from localStorage by `lib/statement.ts`. Nothing is sent to the server.
 - A trader with more than one business also gets a business picker ("All businesses" or one of them, `&business=<id>`). All businesses shows a line for each and the business under each entry; one business shows its own name, type and district.
@@ -454,7 +456,7 @@ All amounts in and out are maloti. Every handler is a pure function of `(state, 
 | `start_registration` | none | Sends a `registration_card` listing what the trader will need and where to go, with buttons for RSL's e-Registration site and the RSL app (added 17 November 2026; before that it said "RSL registration channel (to be confirmed)"). The model never types a web address. At a field visit, the card also says the officer can help now. |
 | `show_obligations` | none | Added 17 November 2026. Sends an `obligations_card`: register, keep records, file by the due date, pay, each with this trader's own status, worked out in code. |
 | (several tools) | `business?` | Added 19 November 2026 to `record_entry`, `get_summary`, `get_tax_estimate`, `prepare_return`, `confirm_return`, `start_payment`, `read_receipt` and `get_statement`. Ignored when the trader has one business. With several, tools that record or file return `status: "needs_business"` with the names and change nothing until one is given. `get_summary` and `get_statement` without one cover all businesses with a line each, and `get_tax_estimate` gives each business's estimate separately, never added up. |
-| `get_statement` | `period?`: `this_month` (default), `last_month`, a month like `2026-10`, or `all` | Added 19 November 2026. Totals from `lib/statement.ts` (money in, out, profit estimate, client money, entries, returns filed) and a `statement_card`. With no records in the period, it says so and shows no card. Future and malformed months are refused. |
+| `get_statement` | `period?`: `this_month` (default), `last_month`, a month like `2026-10`, or `all` | Added 19 November 2026. Totals from `lib/statement.ts` (money in, out, profit estimate, client money, entries, returns filed) and a `statement_card`. With no records in the period, it says so and shows no card. Future and malformed months are refused. While a return the statement covers is due and not filed, it returns `status: "return_not_filed"` with those returns and a `reminder_card` (File now) for each, and no statement (added 19 November 2026). |
 | `show_reminder` | none | Added in step 4. Sends a `reminder_card` for the current filing period, for the demo menu's "Simulate a reminder". |
 | `offer_quick_replies` | `options` (1 to 6, each under 24 characters, or the full district or business type list) | Added in step 4. Sends a `quick_replies` UI block. The model has no other way to show quick replies. |
 
@@ -708,6 +710,7 @@ A script, `npm run eval:chat`, sends each message to the running API with a know
 | "sold 300 today" (three businesses) | asks which business, with the three names as quick replies; nothing recorded |
 | "file my return" (three businesses) | asks which business; no return card, nothing filed |
 | "file the return for the Ha Thetsane shop" (three businesses) | `prepare_return` and a return card for that business |
+| "can I get my statement for September?" (2026-Q3 not filed) | `get_statement` refuses: a "File now" reminder card, no statement card |
 | "I need all my records to show the bank" | `get_statement` with `all`; the reply says it isn't an official RSL document and never promises the bank will accept it |
 
 ### Receipt eval (`tests/receipt-eval/`)
@@ -1218,3 +1221,15 @@ At the owner's request, three changes, built on the `rsl-look` branch so the liv
 - **Header on phones.** The wordmark's subline is hidden below 640px, so the button and menu fit beside the wordmark at 360px.
 - **Floating header kept** (the same day, at the owner's request). The mockup's full-width bar was changed back to the earlier floating rounded header, inset from the page edges, now in `charcoal`. Buttons gained a `pill` option for full rounding inside it.
 - **Checked in headless Chrome on a local production build:** the landing page at 360, 768, 1024 and 1280px, `/officer` at 360 and 1280px, and `/trader` at 360px, all with no horizontal scroll and no console errors. Also the phone menu, and a statement printed to an A4 PDF with the watermark on both pages. 200 tests pass, as do `npm run lint` and `npm run build`.
+
+### Prototype wording removed, results section removed, statements wait for due returns, status colours (19 November 2026)
+
+At the owner's request:
+
+- **No "prototype".** The owner decided the word isn't needed. The header pill now reads "RSL Taxathon 2026" (`PrototypePill` became `EventPill`), the footer and page titles say "Built for the RSL Taxathon 2026", and the rest says "demo" where something is simulated (voice notes, mock filing, payments, the receipt privacy note). The system prompt now says Khoebo was built for the Taxathon and isn't an official RSL service. Code comments and the Python docstrings were reworded too. "Not an official RSL service. All data shown is simulated." stays in every footer, so nobody takes Khoebo for an RSL service. CLAUDE.md's rule 5 was rewritten to match. Earlier entries in this section still say "prototype pill"; they record what was built at the time.
+- **Results section removed** from the landing page, with its header link and its strings (`components/landing/Results.tsx`). `lib/results.ts`, its test and `data/test_results.json` stay, since the export script writes the file and the documents use the figures.
+- **Statements wait for due returns.** As described in sections 5.2 and 6: `returnsToFile()` in `lib/statement.ts` lists every finished filing period the statement's records fall in that has no filed return, per business. The chat, the statement page and the card's download button all use it, so the rule lives in code, not in the model. "Due" was read as "the period has ended", when the return can first be filed, rather than "past the due date"; switching to the due date is a one-line change in `returnsToFile()`. The demo traders' records all fall in 2026-Q4, which is still running, so their statements are unaffected. To see the rule, record a sale dated in September and ask for September's statement.
+- **Status colours.** The four action pills now use tints of the site's own colours instead of the Bootstrap alert colours: Officer follow-up orange `#B74006` on `#FEEAE0`, Human review charcoal on yellow `#FDEAC1`, Automated check-in charcoal on grey `#E9ECEF`, No action green `#1D7831` on `#E1F3E5`. All pass WCAG AA (4.8:1 or more). Everything using the status tokens picks them up: pills, the summary strip, the worklist, evidence charts and error text. The chat's quick replies now use `brand-soft` on hover instead of the old review colour.
+- **Tests.** Five new: three for `returnsToFile()`, one for `get_statement` refusing with a File now card, and one for businesses. One test changed so that last month's statement first has its return filed. 205 pass.
+- **Chat eval.** A new case, "can I get my statement for September?" with an unfiled 2026-Q3, expects `get_statement`, a reminder card and no statement card. Full eval on a local production build: 93 of 93 (31 cases, three runs each).
+- **Checked in headless Chrome on a local production build:** September's statement with a September sale shows "File your return first" with no save, print or statement; this month's statement still has its buttons; the officer page shows the new pill colours. No page shows the word "prototype", the landing page has no results section, and there were no console errors.

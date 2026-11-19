@@ -28,7 +28,7 @@ import {
   storedBusinessId,
   type BusinessInfo,
 } from "./businesses";
-import { buildStatement, resolveStatementPeriod } from "./statement";
+import { buildStatement, resolveStatementPeriod, returnsToFile } from "./statement";
 import type { Entry, FiledReturn, TraderState } from "./state";
 import { strings } from "./strings";
 import { dueDate, filingPeriod, isValidPeriod, periodRange, taxEstimate, type TaxEstimate } from "./tax";
@@ -247,7 +247,7 @@ const descriptions: Record<ToolName, string> = {
     "Show what the trader has to do as a taxpayer (register, keep records, file, pay), with their own status and the current period's due date.",
   show_reminder: "Show the filing reminder for the current filing period, with the estimated tax and due date.",
   get_statement:
-    "Make a statement of the trader's records for one month, or of all their records. Shows a card with buttons to open it (to print or save as a PDF) and to download it as a spreadsheet.",
+    "Make a statement of the trader's records for one month, or of all their records. Shows a card with buttons to open it (to print or save as a PDF) and to download it as a spreadsheet. Refused while a return it covers is due and not filed.",
   read_receipt:
     "Report what is printed on the receipt the trader just sent. Checks it and shows a card with Save and Change buttons. Saves nothing. Only call it when a receipt is attached.",
   save_receipt:
@@ -820,7 +820,7 @@ const handlers: Handlers = {
         shown: "mock payment card with a Pay (demo) button",
         amount: money(filed.taxEstimate),
         reference: filed.reference,
-        message: "No real money moves in this prototype.",
+        message: "No real money moves in this demo.",
       },
       ui: [
         {
@@ -984,6 +984,38 @@ const handlers: Handlers = {
           entries: 0,
           message: "There are no records in this period, so there is nothing to put in a statement. Tell the trader.",
         },
+      };
+    }
+    // A statement can't be exported while a return it covers is due and not
+    // filed. The trader gets a File now card for each one instead.
+    const toFile = returnsToFile(state, check.key, ctx.today, businessId);
+    if (toFile.length > 0) {
+      const list = businessList(state);
+      return {
+        state,
+        result: {
+          ...period,
+          status: "return_not_filed",
+          returns_to_file: toFile.map((r) => ({
+            period: r.period,
+            ...(r.businessName ? { business: r.businessName } : {}),
+            due_date: formatDate(r.dueDate),
+          })),
+          shown: "a card with a File now button for each return",
+          message:
+            "No statement was made. A statement can only be exported once the return for every finished filing period it covers is filed. Say so in one short sentence and point to the File now button. Don't file anything yourself.",
+        },
+        ui: toFile.map((r) => {
+          const b = list.find((x) => x.id === r.businessId) ?? list[0];
+          return {
+            type: "reminder_card" as const,
+            period: r.period,
+            dueDate: r.dueDate,
+            taxEstimate: taxEstimate(entriesFor(state.entries, b.id), r.period).estimate,
+            note: TAX.placeholder ? TAX.note : null,
+            ...cardBusiness(state, b),
+          };
+        }),
       };
     }
     const sm = st.summary;

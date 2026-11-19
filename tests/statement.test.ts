@@ -11,6 +11,7 @@ import {
   statementMonths,
   statementPath,
   statementRange,
+  returnsToFile,
 } from "@/lib/statement";
 
 const TODAY = "2026-11-19";
@@ -134,7 +135,7 @@ describe("statementCsv", () => {
     const csv = statementCsv(buildStatement(trader, "2026-10", TODAY));
     const lines = csv.trimEnd().split("\r\n");
     expect(lines[0]).toBe("Khoebo business records");
-    expect(lines[1]).toContain("Prototype for the RSL Taxathon 2026");
+    expect(lines[1]).toContain("Built for the RSL Taxathon 2026");
     expect(csv).toContain("Trader,Palesa");
     expect(csv).toContain("Money in (sales),770.50");
     expect(csv).toContain("Profit (estimate),-129.50");
@@ -163,5 +164,25 @@ describe("file names and paths", () => {
     expect(statementFileName(buildStatement(trader, "2026-10", TODAY))).toBe("khoebo-statement-2026-10.csv");
     expect(statementFileName(buildStatement(trader, "all", TODAY))).toBe("khoebo-records-2026-11-19.csv");
     expect(statementPath("2026-10")).toBe("/trader/statement?period=2026-10");
+  });
+});
+
+describe("returns to file before a statement", () => {
+  it("allows a month whose filing period is filed or still running", () => {
+    expect(returnsToFile(trader, "2026-09", TODAY)).toEqual([]); // 2026-Q3 is filed
+    expect(returnsToFile(trader, "2026-11", TODAY)).toEqual([]); // 2026-Q4 is still running
+  });
+
+  it("lists every finished period the records fall in that isn't filed", () => {
+    const unfiled = { ...trader, returns: [] };
+    expect(returnsToFile(unfiled, "2026-09", TODAY)).toEqual([{ period: "2026-Q3", dueDate: "2026-10-20", businessId: "main" }]);
+    expect(returnsToFile(unfiled, "all", TODAY).map((r) => r.period)).toEqual(["2026-Q3"]);
+    expect(returnsToFile(unfiled, "2026-10", TODAY)).toEqual([]);
+  });
+
+  it("counts from the day after the period ends", () => {
+    const q3: TraderState = { ...trader, returns: [] };
+    expect(returnsToFile(q3, "2026-09", "2026-09-30")).toEqual([]);
+    expect(returnsToFile(q3, "2026-09", "2026-10-01")).toHaveLength(1);
   });
 });
