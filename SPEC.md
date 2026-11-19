@@ -58,6 +58,7 @@ app/
   icon.svg              browser-tab icon (the Khoebo mark)
   apple-icon.png        180 px home-screen icon
   trader/page.tsx       chat
+  trader/statement/page.tsx printable statement (added 19 Nov 2026)
   officer/page.tsx      worklist
   officer/[id]/page.tsx trader detail
   officer/leads/page.tsx potential registrants (added 17 Nov 2026)
@@ -66,6 +67,7 @@ components/
   landing/              one file per landing section, plus PhoneFrame (hero phone) and IconCircle
   chat/                 ChatShell, MessageBubble, SummaryCard, QuickReplies, cards, Composer, VoiceSheet, VoiceBubble,
                         TypingIndicator, DemoMenu, ReceiptSheet
+  statement/            StatementView (the printable statement page) and download (the CSV file)
   officer/              SummaryStrip, Filters, WorklistTable, EvidenceChart, OverridePanel,
                         Worklist (strip, filters and table, synced with the URL), DemoCases, OfficerHeader,
                         OfficerTabs, PipelineStrip, Leads, LeadCard, LeadResults, FieldVisitButton
@@ -80,6 +82,7 @@ lib/
   chat.ts               chat messages in the browser: history for the API, quick replies, localStorage
   demo.ts               the demo trader's four weeks of records
   tools.ts              tool definitions and their handlers
+  statement.ts          monthly statements and all records: totals, months, returns, CSV (pure functions)
   receipts.ts           receipt files: checks, and shrinking a photo on the phone
   lekuka.ts             the simulated Lekuka invoice check, with made-up invoices
   state.ts              TraderState type, zod schema, localStorage load/save
@@ -119,6 +122,7 @@ tests/
   decisions.test.ts
   chat-eval/            cases.json (sample messages and expected tool calls, section 12) and run.mts
   receipts.test.ts      the Lekuka check, read_receipt, save_receipt, receipt files
+  statement.test.ts     statement periods, totals, returns, CSV and file names
   receipt-eval/         22 made-up receipts, cases.json and run.mts (section 12)
 ```
 
@@ -296,11 +300,18 @@ A full-height chat that feels like a messaging app, centred in a 420px column on
 - "Load demo runner" (added 17 November 2026): a registered runner in Maseru who buys goods in Bloemfontein for clients every Tuesday and Friday. Client money is kept apart and only the fees are turnover.
 - "Show this week's summary": sends the message "how am I doing this week?"
 - "Simulate a reminder": the assistant posts the reminder message for the current filing period, as if it were 3 days before the due date.
+- "Open this month's statement" (added 19 November 2026): opens the statement page for this month, without calling the API.
 - "Reset everything": opens an in-app confirm dialog, then clears localStorage and restarts onboarding. Never use `window.confirm` or `alert`.
 
 **Network and errors**
 - If a request fails, keep the trader's message on screen with a small "Not sent. Tap to retry" note.
 - If the session cap is reached, the assistant says the demo limit is reached and offers "Reset everything" in the demo menu.
+
+**Statements and records** (`/trader/statement?period=...`, added 19 November 2026)
+- A trader asks in the chat ("get my statement", "my records for October", "something to show the bank") and the `get_statement` tool shows a `statement_card` with "Open statement" and "Download spreadsheet".
+- The page shows one month (`period=2026-10`, or `this_month`, `last_month`) or every record (`period=all`), with a month picker. It has: the Khoebo mark and prototype pill, the trader's business, district, registration and the date made, totals (money in, money out, profit estimate, client money when there is some, entries, days with no entries), a month-by-month table for more than one month, any filed returns that overlap the period (with the mock reference and the placeholder note), every entry (date, kind, note, amount, rand, Lekuka result), and a footer saying it is made from the trader's own records, not checked by RSL and not an official RSL document.
+- "Save as PDF or print" opens the browser's print window, which prints only the statement. "Download spreadsheet" saves a CSV file (`khoebo-statement-2026-10.csv`, or `khoebo-records-<date>.csv` for all records).
+- Everything is worked out in the browser from localStorage by `lib/statement.ts`. Nothing is sent to the server.
 
 ### 5.3 Officer worklist (`/officer`)
 
@@ -432,6 +443,7 @@ All amounts in and out are maloti. Every handler is a pure function of `(state, 
 | `start_payment` | `period` | Sends a `payment_card` UI block showing a mock mobile money payment. Marks the return paid only after the "Pay (demo)" button sends an action. |
 | `start_registration` | none | Sends a `registration_card` listing what the trader will need and where to go, with buttons for RSL's e-Registration site and the RSL app (added 17 November 2026; before that it said "RSL registration channel (to be confirmed)"). The model never types a web address. At a field visit, the card also says the officer can help now. |
 | `show_obligations` | none | Added 17 November 2026. Sends an `obligations_card`: register, keep records, file by the due date, pay, each with this trader's own status, worked out in code. |
+| `get_statement` | `period?`: `this_month` (default), `last_month`, a month like `2026-10`, or `all` | Added 19 November 2026. Totals from `lib/statement.ts` (money in, out, profit estimate, client money, entries, returns filed) and a `statement_card`. With no records in the period, it says so and shows no card. Future and malformed months are refused. |
 | `show_reminder` | none | Added in step 4. Sends a `reminder_card` for the current filing period, for the demo menu's "Simulate a reminder". |
 | `offer_quick_replies` | `options` (1 to 6, each under 24 characters, or the full district or business type list) | Added in step 4. Sends a `quick_replies` UI block. The model has no other way to show quick replies. |
 
@@ -447,6 +459,7 @@ The API can return these alongside the reply text:
 - `registration_card`: a checklist, the hand-off text, link buttons to RSL's e-Registration and app, and an officer note at a field visit
 - `obligations_card`: four items, each with its text and whether it is done, and the placeholder note
 - `reminder_card`: due date, estimated tax, "File now" button
+- `statement_card`: month or "All records", dates, money in, money out, profit, client money when there is some, entries count, the "not an official RSL document" note, and "Open statement" and "Download spreadsheet" buttons (added 19 November 2026)
 - `receipt_card`: what was read from a receipt (supplier, date, total), the simulated Lekuka result, and Save and Change buttons
 - `placeholder_note`: the placeholder rate note, sent with `get_tax_estimate` and `confirm_return` so a tax amount in the reply text also shows the note (added in step 4)
 
@@ -675,6 +688,8 @@ A script, `npm run eval:chat`, sends each message to the running API with a know
 | "client gave me R4000 for a fridge from Bloemfontein, my fee is R400" (a runner) | two `record_entry` calls: `client_money` 4000 and `sale` 400 |
 | "client gave me R2000 for school uniforms, my fee is R200" (a runner, after an earlier summary in the history) | two `record_entry` calls, and the reply never calls the earlier summary wrong |
 | "got 2000 today" (a runner) | asks whether it is their fee or the client's money; nothing recorded |
+| "can I get my statement for this month?" | `get_statement` and a `statement_card`; no web address in the reply |
+| "I need all my records to show the bank" | `get_statement` with `all`; the reply says it isn't an official RSL document and never promises the bank will accept it |
 
 ### Receipt eval (`tests/receipt-eval/`)
 
@@ -1128,4 +1143,20 @@ The owner compared Khoebo with RSL's call and with the points from the meet and 
 
 - **Section 7, "How Khoebo works with RSL's other services"** (added the same day at the owner's request). The owner's position: Khoebo doesn't replace any RSL service and no RSL service replaces Khoebo; it solves Challenge 1 and leads traders on to RSL's other services. The section has a diagram (Khoebo between traders and officers and six RSL services), a table of each connection (e-Registration and the app, return filing, payment, Lekuka, customs declarations, the case system, taxpayer education and the Mobile Office) with what is working in the prototype today, the path from found to staying compliant, how connections would work in a pilot (APIs carrying only what each job needs, with the trader's consent), and what we need from RSL. Further services a growing trader may need (VAT registration, employer duties, a tax clearance) are named as examples for RSL to confirm, not as built features.
 
-**Left as pilot work:** the data agreements each identification source needs; Khoebo QR codes at wholesalers, border posts and flea markets; a record of income and compliance that traders can show lenders; a "tax pot" for setting money aside; one-tap nil returns with a reason; a daily evening check-in message; Sesotho replies.
+**Left as pilot work:** the data agreements each identification source needs; Khoebo QR codes at wholesalers, border posts and flea markets; a record of income and compliance that lenders can trust (the trader-made statement is built; see "Statements and records" below); a "tax pot" for setting money aside; one-tap nil returns with a reason; a daily evening check-in message; Sesotho replies.
+
+### Statements and records (19 November 2026)
+
+At the owner's request, the trader side can now export monthly statements and business records. Built as described in sections 5.2 and 6.
+
+- **What it is for.** Traders keep their records in Khoebo, but had no way to take them out: to keep a copy, give one to an accountant or a family member who helps with the business, or show a bank or lender how the business is doing. It also answers the earlier pilot idea of a record traders can show lenders, in a first, honest form.
+- **Two ways in.** Asking in the chat calls the new `get_statement` tool, which shows a card with two buttons. The demo menu's "Open this month's statement" opens the page directly, without the API. "Get my statement" is also a quick reply after loading either demo trader.
+- **Month or everything.** A statement covers a calendar month, or all records from the first entry to today. The model only picks `this_month`, `last_month`, a month like `2026-10`, or `all`. Code works out the dates and totals (rule 1), and a month that hasn't started is refused.
+- **PDF without a library.** "Save as PDF or print" uses the browser's own print window, where phones and computers offer "Save as PDF". Print styles hide the controls and keep the prototype pill and footer, so a printed copy still says it is a prototype (rule 5). No PDF library was added.
+- **Spreadsheet.** The CSV opens in Excel, Google Sheets and LibreOffice. It starts with the prototype label and the disclaimer, then the trader's details, totals, a month-by-month table for more than one month, filed returns with the placeholder note (rule 6), and one row per entry with date, type, note, amount, rand, how it was recorded and the Lekuka result. Amounts are plain numbers with two decimals so a spreadsheet can add them. Notes that start with `=`, `+`, `-` or `@` get a leading apostrophe, so a note can never run as a formula. The file starts with a byte order mark so Excel reads it as UTF-8.
+- **Privacy.** The page and both files are made in the browser from localStorage. No record goes to the server or to the AI to make them (rule 3).
+- **Honest about what it is.** The card, the page and the CSV all say: "Made by Khoebo from the trader's own records. RSL hasn't checked these figures, and this isn't an official RSL document." The prompt tells the assistant to say so too, and never to promise that a bank or anyone else will accept it. A statement RSL or a lender can trust would need RSL's own filing and payment records behind it, which is pilot work.
+- **The card's figures** are from when it was shown. "Open statement" and "Download spreadsheet" always use the records as they are when tapped.
+- **Tests.** `tests/statement.test.ts` (15 tests: periods, ranges, month list, totals, client money, overlapping returns, all records, CSV quoting and formula guard, file names) and three new `get_statement` tests in `tests/tools.test.ts`. All 180 tests pass, as do `npm run lint` and `npm run build`.
+- **Chat eval.** Two new cases (section 12). The first run of the bank case failed 3 of 3 only because its check matched "I can't promise the bank will accept it", which is the reply we want; the check now looks only for a promise. Full eval on a local production build: 75 of 75 (25 cases, three runs each).
+- **Checked in headless Chrome on a local production build at 360px:** the card in the chat, both download buttons (the file is named `khoebo-statement-2026-11.csv`), the page for this month and for all records, the month picker updating the address, the demo-menu link, a phone with no records ("No records in this period yet."), and a future month in the address falling back to this month. No horizontal scroll on `/trader` or `/trader/statement`, and no console errors. A PDF printed from the page shows the header, totals, month table, records and footer on A4.

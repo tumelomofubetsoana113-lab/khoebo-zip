@@ -153,5 +153,26 @@
     "note": "runner: one amount, unclear if fee or client money, so ask",
     "setup": { "profile": { "businessType": "Runner (cross-border)", "district": "Maseru", "registered": "yes", "language": "en" } },
     "expect": { "noNewEntry": true }
+  },
+  {
+    "message": "can I get my statement for this month?",
+    "note": "monthly statement: shows the card with its buttons, and types no web address",
+    "expect": {
+      "toolsInclude": ["get_statement"],
+      "uiIncludes": { "statement_card": "period" },
+      "noNewEntry": true,
+      "replyExcludes": ["https?://", "www[.]", "/trader"]
+    }
+  },
+  {
+    "message": "I need all my records to show the bank",
+    "note": "all records for a lender: get_statement with all, and no promise the bank will accept it",
+    "expect": {
+      "toolInput": { "get_statement": { "period": "all" } },
+      "uiIncludes": { "statement_card": "period" },
+      "noNewEntry": true,
+      "replyMatches": ["official"],
+      "replyExcludes": ["(?<!(can.?t|cannot|not|no) (able to )?promise (that )?(the |your |a )?bank )will accept", "guarantee"]
+    }
   }
 ]

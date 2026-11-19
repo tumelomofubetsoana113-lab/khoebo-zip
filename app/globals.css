@@ -62,3 +62,17 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* Printing a statement (or saving it as a PDF): white paper, sensible margins,
+   and colours kept, so the prototype label still shows. */
+@media print {
+  @page {
+    margin: 15mm;
+  }
+
+  body {
+    background: var(--color-surface);
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+}

@@ -2,6 +2,7 @@
 
 import { ArrowLeft, FileText, RotateCcw } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ChatResponse } from "@/app/api/chat/route";
 import { Logo } from "@/components/ui/Logo";
@@ -25,6 +26,7 @@ import { todayISO } from "@/lib/dates";
 import { demoRunnerState, demoTraderState } from "@/lib/demo";
 import { attachmentKind, type ReceiptAttachment } from "@/lib/receipts";
 import { clearState, emptyState, loadState, saveState, type TraderState } from "@/lib/state";
+import { statementPath } from "@/lib/statement";
 import { strings } from "@/lib/strings";
 import { UiBlocks } from "./cards";
 import { Composer } from "./Composer";
@@ -144,6 +146,7 @@ function ChatSession() {
   const [demoOpen, setDemoOpen] = useState(false);
   const [resetOpen, setResetOpen] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   // The latest values, for use inside async callbacks.
   const traderRef = useRef(trader);
@@ -279,6 +282,8 @@ function ChatSession() {
       send({ text: t.demoMenu.weekSummaryMessage });
     } else if (choice === "reminder") {
       send({ text: t.demoMenu.reminder, action: { type: "simulate_reminder" } }, { showBubble: false });
+    } else if (choice === "statement") {
+      router.push(statementPath("this_month"));
     } else {
       setResetOpen(true);
     }

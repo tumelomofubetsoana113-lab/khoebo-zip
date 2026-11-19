@@ -1,13 +1,15 @@
 // Cards that render inside Khoebo's bubbles. Amounts arrive as numbers from
 // the tools and are only formatted here, never calculated.
 
-import { CheckCircle2, Circle, ExternalLink, Info, ShieldCheck } from "lucide-react";
+import { CheckCircle2, Circle, Download, ExternalLink, FileText, Info, ShieldCheck } from "lucide-react";
 import type { ReactNode } from "react";
-import { Button } from "@/components/ui/Button";
+import { downloadSavedStatement } from "@/components/statement/download";
+import { Button, ButtonLink } from "@/components/ui/Button";
 import type { ChatAction, UiBlock } from "@/lib/blocks";
 import { buttonKey } from "@/lib/chat";
 import { formatDate } from "@/lib/dates";
 import { formatMoney } from "@/lib/ledger";
+import { statementPath } from "@/lib/statement";
 import { strings } from "@/lib/strings";
 import { SummaryCard } from "./SummaryCard";
 
@@ -270,6 +272,37 @@ function ObligationsCard({ block }: { block: Extract<UiBlock, { type: "obligatio
   );
 }
 
+// A statement of the trader's records. Opening it shows the printable page;
+// downloading saves a spreadsheet made from the records on this phone.
+function StatementCard({ block }: { block: Extract<UiBlock, { type: "statement_card" }> }) {
+  const st = strings.chat.statement;
+  return (
+    <CardFrame title={st.cardTitle(block.title)}>
+      <p className="text-sm text-muted">{t.periodDates(formatDate(block.start), formatDate(block.end))}</p>
+      <Rows
+        rows={[
+          { label: strings.chat.summary.moneyIn, value: formatMoney(block.moneyIn) },
+          { label: strings.chat.summary.moneyOut, value: formatMoney(block.moneyOut) },
+          { label: strings.chat.summary.profit, value: formatMoney(block.profit) },
+          ...(block.clientMoney ? [{ label: strings.chat.summary.clientMoney, value: formatMoney(block.clientMoney) }] : []),
+        ]}
+      />
+      <p className="mt-2 text-sm text-muted">{strings.chat.summary.entries(block.entryCount)}</p>
+      <PlaceholderNote text={st.disclaimer} />
+      <div className="mt-3 flex flex-wrap items-center gap-2">
+        <ButtonLink href={statementPath(block.period)} size="sm">
+          <FileText size={16} aria-hidden="true" />
+          {st.open}
+        </ButtonLink>
+        <Button variant="secondary" size="sm" onClick={() => downloadSavedStatement(block.period)}>
+          <Download size={16} aria-hidden="true" />
+          {st.download}
+        </Button>
+      </div>
+    </CardFrame>
+  );
+}
+
 // Renders a message's UI blocks. Quick replies are drawn separately, under the list.
 export function UiBlocks({ blocks, ...props }: ActionProps & { blocks: UiBlock[] }) {
   return (
@@ -304,6 +337,8 @@ export function UiBlocks({ blocks, ...props }: ActionProps & { blocks: UiBlock[]
             return <PlaceholderNote key={i} text={block.text} />;
           case "receipt_card":
             return <ReceiptCard key={i} block={block} {...props} />;
+          case "statement_card":
+            return <StatementCard key={i} block={block} />;
           default:
             return null; // quick_replies, and anything unknown from an older save
         }

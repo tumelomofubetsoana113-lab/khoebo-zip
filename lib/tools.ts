@@ -17,6 +17,7 @@ import {
   type Summary,
 } from "./ledger";
 import type { ChatAction, UiBlock } from "./blocks";
+import { buildStatement, resolveStatementPeriod } from "./statement";
 import type { Entry, FiledReturn, TraderState } from "./state";
 import { strings } from "./strings";
 import { dueDate, filingPeriod, isValidPeriod, periodRange, taxEstimate, type TaxEstimate } from "./tax";
@@ -135,6 +136,15 @@ const inputs = {
   start_registration: z.object({}),
   show_obligations: z.object({}),
   show_reminder: z.object({}),
+  get_statement: z.object({
+    period: z
+      .string()
+      .max(12)
+      .optional()
+      .describe(
+        '"this_month", "last_month", a month like "2026-10", or "all" for every record. Leave out for this month.',
+      ),
+  }),
   read_receipt: z.object({
     supplier: z.string().max(200).optional().describe("The business that issued the receipt, as printed."),
     date: z
@@ -190,6 +200,8 @@ const descriptions: Record<ToolName, string> = {
   show_obligations:
     "Show what the trader has to do as a taxpayer (register, keep records, file, pay), with their own status and the current period's due date.",
   show_reminder: "Show the filing reminder for the current filing period, with the estimated tax and due date.",
+  get_statement:
+    "Make a statement of the trader's records for one month, or of all their records. Shows a card with buttons to open it (to print or save as a PDF) and to download it as a spreadsheet.",
   read_receipt:
     "Report what is printed on the receipt the trader just sent. Checks it and shows a card with Save and Change buttons. Saves nothing. Only call it when a receipt is attached.",
   save_receipt:
@@ -648,6 +660,61 @@ const handlers: Handlers = {
         message: `Write this as a friendly reminder sent ${TAX.reminderDaysBefore} days before the due date.`,
       },
       ui: [{ type: "reminder_card", period, dueDate: dueDate(period), taxEstimate: e.estimate, note: e.note }],
+    };
+  },
+
+  get_statement(state, input, ctx) {
+    const check = resolveStatementPeriod(input.period ?? "this_month", ctx.today);
+    if (!check.ok) {
+      return fail(
+        state,
+        check.error,
+        check.error === "future_period"
+          ? "That month hasn't started yet."
+          : 'Not a valid period. Use "this_month", "last_month", a month like "2026-10", or "all".',
+      );
+    }
+    const st = buildStatement(state, check.key, ctx.today);
+    const period = { statement: st.title, from: formatDate(st.start), to: formatDate(st.end) };
+    if (st.entries.length === 0) {
+      return {
+        state,
+        result: {
+          ...period,
+          entries: 0,
+          message: "There are no records in this period, so there is nothing to put in a statement. Tell the trader.",
+        },
+      };
+    }
+    const sm = st.summary;
+    return {
+      state,
+      result: {
+        ...period,
+        money_in: money(sm.moneyIn),
+        money_out: money(sm.moneyOut),
+        profit_estimate: money(sm.profit),
+        ...clientMoneyResult(sm.clientMoney),
+        entries: sm.entryCount,
+        returns_filed: st.returns.map((r) => r.period),
+        shown: "statement card with Open statement and Download spreadsheet buttons",
+        message:
+          "Point the trader to the buttons in one short sentence: Open statement shows it to print or save as a PDF, and Download spreadsheet saves a file. Say it is made from their own records and isn't an official RSL document. Never type a web address.",
+      },
+      ui: [
+        {
+          type: "statement_card",
+          period: st.key,
+          title: st.title,
+          start: st.start,
+          end: st.end,
+          moneyIn: sm.moneyIn,
+          moneyOut: sm.moneyOut,
+          clientMoney: sm.clientMoney,
+          profit: sm.profit,
+          entryCount: sm.entryCount,
+        },
+      ],
     };
   },
 

@@ -48,6 +48,7 @@ describe("tool definitions", () => {
       "start_registration",
       "show_obligations",
       "show_reminder",
+      "get_statement",
       "read_receipt",
       "save_receipt",
       "offer_quick_replies",
@@ -375,6 +376,63 @@ describe("cards with no state change", () => {
     expect(out.ui).toEqual([
       { type: "reminder_card", period: "2026-Q4", dueDate: "2027-01-20", taxEstimate: 27, note: TAX.note },
     ]);
+  });
+
+  it("makes a statement for this month by default, from the ledger", () => {
+    const out = runTool("get_statement", {}, setUp, ctx());
+    expect(out.isError).toBeUndefined();
+    expect(out.state).toBe(setUp);
+    expect(out.result).toMatchObject({
+      statement: "October 2026",
+      from: "1 October 2026",
+      to: "31 October 2026",
+      money_in: { amount: 1350, text: "M1,350" },
+      money_out: { amount: 400, text: "M400" },
+      profit_estimate: { amount: 950, text: "M950" },
+      entries: 3,
+      returns_filed: [],
+    });
+    expect(out.ui).toEqual([
+      {
+        type: "statement_card",
+        period: "2026-10",
+        title: "October 2026",
+        start: "2026-10-01",
+        end: "2026-10-31",
+        moneyIn: 1350,
+        moneyOut: 400,
+        clientMoney: 0,
+        profit: 950,
+        entryCount: 3,
+      },
+    ]);
+  });
+
+  it("makes a statement for last month or all records", () => {
+    expect(runTool("get_statement", { period: "last_month" }, setUp, ctx()).result).toMatchObject({
+      statement: "September 2026",
+      money_in: { amount: 9000 },
+    });
+    expect(runTool("get_statement", { period: "all" }, setUp, ctx()).result).toMatchObject({
+      statement: "All records",
+      from: "15 September 2026",
+      to: "29 October 2026",
+      entries: 4,
+    });
+  });
+
+  it("shows no card when the period has no records, and refuses future months", () => {
+    const empty = runTool("get_statement", { period: "2026-08" }, setUp, ctx());
+    expect(empty.result).toMatchObject({ entries: 0 });
+    expect(empty.ui).toBeUndefined();
+    expect(runTool("get_statement", { period: "2026-11" }, setUp, ctx())).toMatchObject({
+      isError: true,
+      result: { error: "future_period" },
+    });
+    expect(runTool("get_statement", { period: "Oct" }, setUp, ctx())).toMatchObject({
+      isError: true,
+      result: { error: "invalid_period" },
+    });
   });
 
   it("limits quick replies to 6 short options", () => {

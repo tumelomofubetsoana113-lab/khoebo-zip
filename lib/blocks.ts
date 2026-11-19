@@ -73,6 +73,19 @@ export type UiBlock =
   | { type: "reminder_card"; period: string; dueDate: string; taxEstimate: number; note: string | null }
   | { type: "placeholder_note"; text: string }
   | {
+      // A monthly statement or the full record, with links to open and download it.
+      type: "statement_card";
+      period: string; // "2026-10" or "all"
+      title: string;
+      start: string;
+      end: string;
+      moneyIn: number;
+      moneyOut: number;
+      clientMoney?: number;
+      profit: number;
+      entryCount: number;
+    }
+  | {
       type: "receipt_card";
       receiptId: string;
       supplier: string | null;
