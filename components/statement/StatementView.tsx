@@ -13,6 +13,7 @@ import { Logo } from "@/components/ui/Logo";
 import { BusinessRows } from "@/components/chat/BusinessRows";
 import { businessIdOf, businessList, hasSeveralBusinesses } from "@/lib/businesses";
 import { formatDate, todayISO } from "@/lib/dates";
+import { CHAT_PATH } from "@/lib/home";
 import { formatMoney } from "@/lib/ledger";
 import { loadState, type Entry } from "@/lib/state";
 import {
@@ -126,7 +127,7 @@ function StatementView() {
       <div className="mb-4 space-y-3 print:hidden">
         <Link href="/trader" className="inline-flex min-h-11 items-center gap-2 font-semibold text-brand">
           <ArrowLeft size={20} aria-hidden="true" />
-          {t.backToChat}
+          {strings.chat.back}
         </Link>
         <div className="flex flex-wrap items-end gap-3">
           <label className="flex min-w-48 flex-1 flex-col gap-1 text-sm font-semibold">
@@ -201,7 +202,7 @@ function StatementView() {
               );
             })}
           </ul>
-          <ButtonLink href="/trader" className="mt-5">
+          <ButtonLink href={CHAT_PATH} className="mt-5">
             {t.fileInChat}
             <ArrowRight size={18} aria-hidden="true" />
           </ButtonLink>

@@ -256,7 +256,19 @@ The design follows the owner's mockup of 19 November 2026 (see section 14), with
 
 Landing checkpoint: Lighthouse performance and accessibility both 90 or above on mobile, no horizontal scroll at 360px, all figures read from JSON.
 
-### 5.2 Trader chat (`/trader`)
+### 5.1a Trader home (`/trader`, added 19 November 2026)
+
+Where a trader lands after logging in or signing up. It is built for traders who don't use computers much: big buttons, an icon on every row, short words, one column at every width (up to 576px).
+
+- The floating charcoal header with "Log out".
+- "Hello, <first name>" and today's date.
+- **"Talk to Khoebo"**, the first and biggest thing on the page: a full-width orange button that opens the chat (`/trader/chat`).
+- A late-return card in the follow-up colours when an ended filing period has no return, with "File it now" to the chat.
+- A new trader sees "Let's get started" with a Start button to the chat; a set-up trader with no records sees "No records yet" with "Record a sale".
+- Once there are records: money in, money out and profit for this week or this month (two big tabs), with one line per business for a trader with several; a bar chart of each day's sales this week, Monday to Sunday, where tapping a bar shows its amount and the best day is named; the next return's period, due date, filed or not, and the tax so far, with the placeholder note (rule 6); and "My statement".
+- Every figure comes from `buildHome()` in `lib/home.ts`, which uses `lib/ledger.ts`, `lib/tax.ts` and `returnsToFile()`. The page reads the records again each time it shows, since Next.js keeps it in memory while the trader is in the chat.
+
+### 5.2 Trader chat (`/trader/chat`)
 
 A full-height chat that feels like a messaging app, centred in a 420px column on desktop with the `page` colour around it. The column is a rounded frame (28px corners, `line` border, soft shadow) with a small gap on every side, on phones too.
 
@@ -292,7 +304,7 @@ A full-height chat that feels like a messaging app, centred in a 420px column on
 - Then a short "You're set up" message and a quick reply "Log my first sale".
 - Name is optional and only asked if the trader offers it.
 
-**Field-visit start** (added 17 November 2026): opening `/trader?via=field&district=…&kind=…` (an officer's QR code, see 5.3a) on a phone that isn't set up fills in the district and business type, marks the profile `setUpAt: "field_visit"`, and opens with "An RSL officer shared this link with you… Are you registered with RSL?" with Yes / No / Not sure. Values not on the chat's own lists are ignored. A phone that is already set up or has records is never changed. The query is removed from the address once the chat starts.
+**Field-visit start** (added 17 November 2026): opening `/trader/chat?via=field&district=…&kind=…` (an officer's QR code, see 5.3a) on a phone that isn't set up fills in the district and business type, marks the profile `setUpAt: "field_visit"`, and opens with "An RSL officer shared this link with you… Are you registered with RSL?" with Yes / No / Not sure. Values not on the chat's own lists are ignored. A phone that is already set up or has records is never changed. The query is removed from the address once the chat starts.
 
 **Demo menu** (bottom sheet)
 - "Load demo trader": replaces state with a fruit and vegetable seller in Maseru, registered, with four weeks of realistic daily sales and twice-weekly purchases. Use the profile of the ordinary case.
@@ -1270,3 +1282,12 @@ At the owner's request: a log-in and sign-up page, a database for users, traders
 - **Evals.** `/api/chat` accepts `x-khoebo-eval-key` matching `CHAT_EVAL_KEY` only when not on Vercel, so `npm run eval:chat` still runs against a laptop. The chat eval passed 31 of 31 behind the log-in.
 - **Not done yet.** No password reset (there's no email or phone to send a code to), no way to change a password, and no screen to manage officers. Trader records aren't in the database, so they don't follow the trader to another phone.
 - **Tests.** 21 new tests (`tests/accounts.test.ts`) run the real SQL against PGlite: hashing, sign-up rules, `safeNext`, creating traders, taken names and IDs, log-in, lockout, sessions and expiry, rate limits, the first officer, the schema and row level security, and per-account storage keys. 226 pass.
+
+### Trader home page after logging in (19 November 2026)
+
+At the owner's request: after logging in or signing up, a trader should not go straight into the chat but to a simple page with their figures, easy enough for someone who doesn't use computers much, with the chat as the first thing on it.
+
+- **New addresses.** `/trader` is now the home page (section 5.1a) and the chat moved to `/trader/chat`. Log-in still sends traders to `/trader`, so they land on the home page. The chat's back arrow ("Back to home") now goes to `/trader` instead of the landing page, and the statement's link reads "Back to home". "File it in the chat" on a blocked statement, the 401 redirect from the chat, the officer's field-visit links (`fieldVisitPath()`) and the pipeline strip's link now point at `/trader/chat`. An old field-visit link to `/trader?via=field…` is forwarded to the chat with its details.
+- **Fresh figures.** Next.js keeps a page in memory for the back button, so the first version showed the figures from before the trader went into the chat. The page now reads the saved records with `useSyncExternalStore`, which reads them again whenever the page shows or the window gets focus.
+- **Tests.** Eight new in `tests/home.test.ts`: week and month totals, one bar per day with only sales, the best day, the next return's estimate, late returns, a filed return, several businesses, and no records. One chat test changed for the new field-visit address. 234 pass, as do `npm run lint` and `npm run build`.
+- **Checked in headless Chrome on a local production build at 360px:** sign-up lands on `/trader` with "Let's get started"; "Talk to Khoebo" opens the chat; after loading the demo trader, the back arrow shows the week's figures, the chart and the next return; the This month tab; log-out and log-in land on `/trader`; an old field-visit link forwards to the chat. No horizontal scroll at 1280px and no console errors.

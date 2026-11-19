@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
 import { RequireRole } from "@/components/auth/RequireRole";
-import { ChatShell } from "@/components/chat/ChatShell";
+import { TraderHome } from "@/components/home/TraderHome";
+import { strings } from "@/lib/strings";
 
 export const metadata: Metadata = {
-  title: "Trader chat",
+  title: strings.home.metaTitle,
 };
 
-export default function TraderPage() {
+// Where a trader lands after logging in (since 19 November 2026). The chat is
+// at /trader/chat, one tap away.
+export default function TraderHomePage() {
   return (
     <RequireRole role="trader">
-      <TraderPageContent />
+      <TraderHomeContent />
     </RequireRole>
   );
 }
 
-function TraderPageContent() {
-  return <ChatShell />;
+function TraderHomeContent() {
+  return <TraderHome />;
 }

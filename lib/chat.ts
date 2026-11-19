@@ -56,7 +56,7 @@ export function greeting(now: string): ChatMessage {
   };
 }
 
-// Opening an officer's field-visit link (/trader?via=field&district=...&kind=...)
+// Opening an officer's field-visit link (/trader/chat?via=field&district=...&kind=...)
 // on a phone that isn't set up yet: the district and business type are filled
 // in, and the first question is whether they're registered. Values must be on
 // the chat's own lists. A phone that is already set up is left alone, so a

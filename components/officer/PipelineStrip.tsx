@@ -19,7 +19,7 @@ export function PipelineStrip({ figures: f }: { figures: PipelineFigures }) {
       href: "/officer/leads?action=visit,invite",
     },
     { icon: UserPlus, title: t.register.title, value: t.register.value, detail: t.register.detail },
-    { icon: MessageSquare, title: t.record.title, value: t.record.value(f.registered), detail: t.record.detail, href: "/trader" },
+    { icon: MessageSquare, title: t.record.title, value: t.record.value(f.registered), detail: t.record.detail, href: "/trader/chat" },
     {
       icon: ClipboardCheck,
       title: t.check.title,

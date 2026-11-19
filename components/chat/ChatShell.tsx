@@ -64,7 +64,7 @@ function ChatHeader({ onDemo }: { onDemo?: () => void }) {
     <>
       <header className="flex items-center gap-2 bg-brand px-2 py-2 text-surface">
         <Link
-          href="/"
+          href="/trader"
           aria-label={t.back}
           className="flex size-11 shrink-0 items-center justify-center rounded-full hover:bg-surface/10"
         >
@@ -220,7 +220,7 @@ function ChatSession() {
         });
         clearTimeout(timer);
         // The session ran out: log in again, then come back to the chat.
-        if (response.status === 401) router.push("/login?next=/trader");
+        if (response.status === 401) router.push("/login?next=/trader/chat");
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = (await response.json()) as ChatResponse;
 

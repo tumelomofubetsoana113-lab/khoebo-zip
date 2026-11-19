@@ -183,7 +183,7 @@ describe("field-visit link", () => {
   const link = fieldVisitPath({ district: "Leribe", kind: "Flea market stall" });
 
   it("builds a link with the chat's own business type", () => {
-    expect(link).toBe("/trader?via=field&district=Leribe&kind=Clothing+or+flea+market");
+    expect(link).toBe("/trader/chat?via=field&district=Leribe&kind=Clothing+or+flea+market");
   });
 
   it("fills in district and business type on a phone that isn't set up, then asks about registration", () => {

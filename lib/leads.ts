@@ -94,7 +94,7 @@ export function fieldVisitPath(lead: Pick<Lead, "district" | "kind">): string {
     district: lead.district,
     kind: KIND_TO_BUSINESS_TYPE[lead.kind] ?? lead.kind,
   });
-  return `/trader?${params.toString()}`;
+  return `/trader/chat?${params.toString()}`;
 }
 
 // ---- Filters ----
