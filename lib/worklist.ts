@@ -32,7 +32,8 @@ export const MonthFiguresSchema = z.strictObject({
 });
 
 export const WorklistTraderSchema = z.strictObject({
-  id: z.string().regex(/^(TRD-\d{4}|DEMO-[A-Z]+)$/),
+  // The trader's 12-digit national ID (since 19 November 2026).
+  id: z.string().regex(/^\d{12}$/),
   label: z.string().nullable(),
   sector: z.string(),
   district: z.string(),

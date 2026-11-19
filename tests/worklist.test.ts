@@ -46,7 +46,7 @@ describe("data/worklist.json", () => {
   it("holds 300 simulated traders plus the three demo cases", () => {
     expect(worklist.simulated).toBe(300);
     expect(worklist.traders).toHaveLength(303);
-    expect(worklist.pinned).toEqual(["DEMO-ORDINARY", "DEMO-SEASONAL", "DEMO-REVIEW"]);
+    expect(worklist.pinned).toEqual(["072919658330", "350832593215", "846476991325"]);
     expect(new Set(worklist.traders.map((t) => t.id)).size).toBe(303);
   });
 
@@ -70,7 +70,7 @@ describe("data/worklist.json", () => {
 
 describe("the three demo cases", () => {
   it("ordinary: no action, declarations in line", () => {
-    const t = find("DEMO-ORDINARY");
+    const t = find("072919658330");
     expect(t.action).toBe("NO ACTION");
     expect(t.label).toBe("Fruit and vegetable seller, Maseru");
     expect(t.reasons.at(-1)).toMatch(/in line with the available evidence/);
@@ -78,7 +78,7 @@ describe("the three demo cases", () => {
   });
 
   it("seasonal: nil months match months with no evidence, no field follow-up", () => {
-    const t = find("DEMO-SEASONAL");
+    const t = find("350832593215");
     expect(["NO ACTION", "AUTOMATED CHECK-IN"]).toContain(t.action);
     expect(t.district).toBe("Mokhotlong");
     const nil = t.months.filter((m) => m.filed && m.declared === 0);
@@ -88,7 +88,7 @@ describe("the three demo cases", () => {
   });
 
   it("review: human review with the mobile money guardrail", () => {
-    const t = find("DEMO-REVIEW");
+    const t = find("846476991325");
     expect(t.action).toBe("HUMAN REVIEW");
     expect(t.district).toBe("Berea");
     expect(t.metrics.declared).toBe(0);
@@ -98,7 +98,7 @@ describe("the three demo cases", () => {
 });
 
 const row = (over: Partial<WorklistRow>): WorklistRow => ({
-  id: "TRD-0001",
+  id: "100000000001",
   label: null,
   sector: "Street food",
   district: "Maseru",
@@ -112,10 +112,10 @@ const row = (over: Partial<WorklistRow>): WorklistRow => ({
 
 describe("filters", () => {
   const rows = [
-    row({ id: "TRD-0001", action: "followup", district: "Berea" }),
-    row({ id: "TRD-0002", action: "review", sector: "Hair salon" }),
-    row({ id: "DEMO-REVIEW", label: "General dealer, Berea", action: "review", district: "Berea" }),
-    row({ id: "TRD-0167", action: "none" }),
+    row({ id: "100000000001", action: "followup", district: "Berea" }),
+    row({ id: "100000000002", action: "review", sector: "Hair salon" }),
+    row({ id: "846476991325", label: "General dealer, Berea", action: "review", district: "Berea" }),
+    row({ id: "699995807895", action: "none" }),
   ];
 
   it("reads and writes the URL query", () => {
@@ -129,11 +129,11 @@ describe("filters", () => {
   it("filters by action, district, sector and ID", () => {
     const ids = (q: Partial<typeof EMPTY_QUERY>) => filterRows(rows, { ...EMPTY_QUERY, ...q }).map((r) => r.id);
     expect(ids({})).toHaveLength(4);
-    expect(ids({ actions: ["review"] })).toEqual(["TRD-0002", "DEMO-REVIEW"]);
-    expect(ids({ actions: ["review"], district: "Berea" })).toEqual(["DEMO-REVIEW"]);
-    expect(ids({ sector: "Hair salon" })).toEqual(["TRD-0002"]);
-    expect(ids({ search: " trd-0167 " })).toEqual(["TRD-0167"]);
-    expect(ids({ search: "general dealer" })).toEqual(["DEMO-REVIEW"]);
+    expect(ids({ actions: ["review"] })).toEqual(["100000000002", "846476991325"]);
+    expect(ids({ actions: ["review"], district: "Berea" })).toEqual(["846476991325"]);
+    expect(ids({ sector: "Hair salon" })).toEqual(["100000000002"]);
+    expect(ids({ search: " 99580 " })).toEqual(["699995807895"]);
+    expect(ids({ search: "general dealer" })).toEqual(["846476991325"]);
   });
 
   it("toggles an action on and off, keeping the action order", () => {

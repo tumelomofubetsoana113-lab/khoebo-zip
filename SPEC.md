@@ -1300,3 +1300,13 @@ RSL gave us three spreadsheets the evening before the presentation (Filing, Regi
 - **Chat.** The Lekuka lines (cards, statement and spreadsheet) drop "(simulated)", the sample receipt hints say "The Lekuka check passes" or "asks you to look again", the voice sheet is titled "Voice notes", and the demo menu says "Show a reminder". The system prompt now says the Lekuka check uses a sample register rather than RSL's live system, that it must never say RSL has confirmed a receipt, and that it shouldn't call the check simulated.
 - **Not changed.** The data files, the Python scripts, field names such as `simulated` in the JSON, code comments, and these notes.
 - **Checked:** 234 tests pass, as do lint and the build. On a local production build, the landing page, `/officer`, `/officer/leads`, `/officer/TRD-0167` and `/officer/DEMO-REVIEW` contain no "simulat" in their text or title.
+
+### Traders identified by national ID (19 November 2026)
+
+At the owner's request, a registered trader's ID on the officer side is now their 12-digit national ID (like 016241167450), not `TRD-0167` or `DEMO-REVIEW`.
+
+- **How.** `scripts/export_worklist.py` gives each trader a made-up 12-digit number worked out from the simulation's own ID with SHA-256 (`national_id()`), and fails if two traders share one. The simulation, its random numbers, the actions, reasons and figures are unchanged: checked trader by trader against the previous `data/worklist.json`. `leads.json` and `test_results.json` were left as they were, and the worklist keeps its 17 November date.
+- **Demo cases.** Ordinary 072919658330, seasonal 350832593215, human review 846476991325. The landing page's example (the old TRD-0167) is 699995807895.
+- **App.** `WorklistTraderSchema` now accepts only 12 digits. The table column and search box say "National ID", with "e.g. 699995807895". Trader pages are at `/officer/<national ID>`. Officer notes saved in a browser under the old IDs no longer show.
+- **Not changed.** Potential registrants keep `LEAD-…` IDs: they aren't registered, so RSL wouldn't hold their national ID.
+- **Checked:** 234 tests pass (the worklist tests use the new IDs), as do lint and the build. On a local production build the worklist shows the IDs, a search for part of one finds it, the demo case and example pages open, and an old ID finds no trader.

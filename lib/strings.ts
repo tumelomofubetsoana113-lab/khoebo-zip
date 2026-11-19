@@ -557,8 +557,8 @@ export const strings = {
       allDistricts: "All districts",
       sector: "Sector",
       allSectors: "All sectors",
-      search: "Trader ID",
-      searchPlaceholder: "e.g. TRD-0167",
+      search: "National ID",
+      searchPlaceholder: "e.g. 699995807895",
       clear: "Clear filters",
       showing: (shown: number, total: number) => `Showing ${shown} of ${total} traders`,
       none: "No traders match these filters.",
@@ -567,7 +567,7 @@ export const strings = {
     },
     table: {
       caption: "Traders, sorted by action and then by the gap between evidence and declared turnover",
-      id: "Trader ID",
+      id: "National ID",
       sector: "Sector",
       district: "District",
       action: "Action",
@@ -779,7 +779,7 @@ export const strings = {
       // Copied from a real line of the simulated worklist (seed 7).
       example: {
         caption: "Example from the worklist",
-        id: "TRD-0167",
+        id: "699995807895",
         meta: "General dealer / spaza · Mafeteng",
         whyHeading: "Why this action",
         reasons: [

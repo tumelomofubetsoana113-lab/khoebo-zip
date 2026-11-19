@@ -14,6 +14,7 @@ Writes the two JSON files the app reads (run with `npm run data`):
 Fails loudly if a demo trader or demo lead lands on the wrong action, or if any hidden_*
 field would reach the app. Uses only the Python standard library.
 """
+import hashlib
 import json
 import sys
 from collections import Counter
@@ -36,10 +37,19 @@ def fail(message):
     sys.exit(1)
 
 
+def national_id(trader_id):
+    """The trader's 12-digit national ID, as RSL's records would show it
+    (owner's decision, 19 November 2026). Made up, and worked out from the
+    simulation's own ID with a hash, so the simulation and its random numbers
+    are untouched and every export gives the same IDs."""
+    digest = hashlib.sha256(f"khoebo-national-id:{trader_id}".encode()).hexdigest()
+    return f"{int(digest, 16) % 10**12:012d}"
+
+
 def trader_entry(trader_id, sector, district, label, rows):
     res = assess(rows)
     return {
-        "id": trader_id,
+        "id": national_id(trader_id),
         "label": label,
         "sector": sector,
         "district": district,
@@ -105,13 +115,16 @@ def build_worklist():
     out.sort(key=lambda t: (order[t["action"]],
                             -(t["metrics"]["evidenceMin"] - t["metrics"]["declared"]), t["id"]))
 
+    if len({t["id"] for t in out}) != len(out):
+        fail("two traders got the same national ID")
+
     counts = Counter(t["action"] for t in out)
     worklist = {
         "generatedAt": date.today().isoformat(),
         "window": WINDOW,
         "simulated": len(traders),
         "counts": {a: counts.get(a, 0) for a in ACTIONS},
-        "pinned": [d["trader_id"] for d in DEMO_TRADERS],
+        "pinned": [national_id(d["trader_id"]) for d in DEMO_TRADERS],
         "traders": out,
     }
     return worklist
