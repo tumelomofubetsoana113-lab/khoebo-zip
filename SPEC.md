@@ -1124,4 +1124,6 @@ The owner compared Khoebo with RSL's call and with the points from the meet and 
   - pilot changes
   - the progress list: proposal submitted, meet and greet done, presentation still to do
 
+**Technical concept doc (19 November 2026).** At the owner's request, a plain-English explanation of how Khoebo was built, for readers who aren't technical. It is a Claude Doc, "How Khoebo Was Built" (https://claude.ai/artifact/PvvLxZwpcNzvVQNNNSBgNS), outside the repo. Six sections: the overall design with a diagram of the parts, the frameworks and tools and why each was chosen, the AI model (inputs, outputs and the rules that keep it accurate), one message step by step, safety and privacy, and limits and growth. It writes as "we" and uses only tests and figures already recorded in this spec. It says plainly what this spec doesn't record: the `ANTHROPIC_MODEL` value currently set in Vercel, and how long Anthropic keeps the data it receives.
+
 **Left as pilot work:** the data agreements each identification source needs; Khoebo QR codes at wholesalers, border posts and flea markets; a record of income and compliance that traders can show lenders; a "tax pot" for setting money aside; one-tap nil returns with a reason; a daily evening check-in message; Sesotho replies.
