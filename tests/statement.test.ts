@@ -141,7 +141,7 @@ describe("statementCsv", () => {
     expect(csv).toContain("Profit (estimate),-129.50");
     expect(csv).toContain("Date,Type,Details,Amount (M),Given in rand,Recorded from,Lekuka check");
     expect(csv).toContain("2026-10-03,Sale,tomatoes,420.00,,Message,");
-    expect(csv).toContain('2026-10-05,Purchase,"Wholesaler, stock",900.00,,Receipt,Lekuka check passed (simulated)');
+    expect(csv).toContain('2026-10-05,Purchase,"Wholesaler, stock",900.00,,Receipt,Lekuka check passed');
     expect(csv).not.toContain("Client money");
   });
 

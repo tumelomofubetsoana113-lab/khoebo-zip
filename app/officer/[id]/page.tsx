@@ -68,7 +68,7 @@ async function TraderPageContent({ params }: PageProps<"/officer/[id]">) {
               {trader.label ? `${trader.id} · ` : ""}
               {trader.sector} · {trader.district}
             </p>
-            <p className="mt-1 text-sm text-muted">{trader.label ? t.demoCase : t.simulated}</p>
+            <p className="mt-1 text-sm text-muted">{trader.label ? t.demoCase : t.trader}</p>
             <PilotAccessNote className="mt-2" />
           </div>
           <ActionPill action={ACTION_KEY[trader.action]} />

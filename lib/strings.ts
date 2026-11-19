@@ -245,9 +245,9 @@ export const strings = {
       sources: { text: "Message", voice: "Voice note", button: "Button", receipt: "Receipt" },
       givenInRand: "Given in rand (R1 = M1)",
       lekuka: {
-        verified: "Lekuka check passed (simulated)",
-        mismatch: "Lekuka check: something differs (simulated)",
-        not_found: "Lekuka check: not matched (simulated)",
+        verified: "Lekuka check passed",
+        mismatch: "Lekuka check: something differs",
+        not_found: "Lekuka check: not matched",
         no_code: "No Lekuka code",
       },
       disclaimer:
@@ -302,8 +302,8 @@ export const strings = {
         "Demo: the picture goes to Khoebo's AI provider to be read, and Khoebo doesn't save it. Please use a sample, or a receipt you're happy to share.",
       samplesHeading: "Or try a sample receipt",
       samples: [
-        { src: "/samples/receipts/lekuka-verified.jpg", title: "Wholesaler receipt with a Lekuka code", hint: "The simulated check passes" },
-        { src: "/samples/receipts/lekuka-mismatch.jpg", title: "Lekuka receipt with a different total", hint: "The simulated check asks you to look again" },
+        { src: "/samples/receipts/lekuka-verified.jpg", title: "Wholesaler receipt with a Lekuka code", hint: "The Lekuka check passes" },
+        { src: "/samples/receipts/lekuka-mismatch.jpg", title: "Lekuka receipt with a different total", hint: "The Lekuka check asks you to look again" },
         { src: "/samples/receipts/till-slip.jpg", title: "Till slip with no Lekuka code", hint: "Can still be saved" },
       ],
       photoSent: "Receipt photo",
@@ -317,7 +317,7 @@ export const strings = {
       },
     },
     voice: {
-      title: "Voice notes (simulated in this demo)",
+      title: "Voice notes",
       intro: "Tap a note to send it. In a pilot, Khoebo would transcribe real voice notes.",
       play: "Send voice note",
       samples: [
@@ -338,7 +338,7 @@ export const strings = {
       loadRunnerHint: "Buys goods in South Africa for clients: only the fee is income",
       weekSummary: "Show this week's summary",
       weekSummaryMessage: "how am I doing this week?",
-      reminder: "Simulate a reminder",
+      reminder: "Show a reminder",
       reminderHint: "As if it were 3 days before the due date",
       statement: "Open this month's statement",
       statementHint: "Print it, save it as a PDF or download a spreadsheet",
@@ -400,9 +400,9 @@ export const strings = {
       dateAssumed: "The date wasn't clear, so today is used. Tap Change if that's wrong.",
       possibleDuplicate: "A receipt with this date and total is already saved. Is this a new purchase?",
       lekuka: {
-        verified: "Lekuka check passed (simulated)",
-        mismatch: "Lekuka check: something differs from the record (simulated). Please check the figures.",
-        not_found: "Lekuka check: couldn't be matched (simulated). You can still save it.",
+        verified: "Lekuka check passed",
+        mismatch: "Lekuka check: something differs from the record . Please check the figures.",
+        not_found: "Lekuka check: couldn't be matched . You can still save it.",
         no_code: "No Lekuka code on this receipt. You can still save it.",
       },
     },
@@ -453,7 +453,7 @@ export const strings = {
     },
     pipeline: {
       heading: "From the street to the tax net",
-      note: "Simulated figures, from the two officer lists.",
+      note: "Figures from the two officer lists.",
       find: {
         title: "Find",
         value: (n: number) => `${n} found`,
@@ -483,8 +483,8 @@ export const strings = {
     leads: {
       metaTitle: "Potential registrants",
       title: "Potential registrants",
-      subline: (simulated: number, demos: number, window: string) =>
-        `Simulated data · ${simulated} operators outside the tax net and ${demos} demo leads · ${window}`,
+      subline: (count: number, demos: number, window: string) =>
+        `${count} operators outside the tax net and ${demos} demo leads · ${window}`,
       sourcesNote:
         "Leads come from signals RSL could get through data agreements: supplier e-invoices with no tax number, mobile money merchant payments, licence and market stall lists, border declarations and courier volumes. None of these links exist yet.",
       summaryLabel: "Leads by action",
@@ -498,7 +498,7 @@ export const strings = {
       },
       demoHeading: "Demo leads",
       results: {
-        heading: "Tested on simulated data",
+        heading: "How well the rules work",
         fewerVisits: (pct: number) => `${pct}% fewer field visits`,
         fewerVisitsLabel: (visits: number, all: number) => `${visits} visits instead of ${all} to every lead`,
         precision: (pct: number) => `${pct}% of field visits`,
@@ -507,7 +507,7 @@ export const strings = {
         reached: (pct: number) => `${pct}% reached`,
         reachedLabel: "of operators trading outside the tax net get an invite or a visit",
         note: (populations: number, leads: number) =>
-          `Average of ${populations} simulated populations of ${leads} leads. Operators who leave no trace in any of these sources can't be found this way, so street sweeps still matter.`,
+          `Average of ${populations} test populations of ${leads} leads. Operators who leave no trace in any of these sources can't be found this way, so street sweeps still matter.`,
       },
       filters: {
         heading: "Filters",
@@ -540,8 +540,8 @@ export const strings = {
     },
     metaTitle: "Officer worklist",
     title: "Officer worklist",
-    subline: (simulated: number, demos: number, window: string) =>
-      `Simulated data · ${simulated} traders and ${demos} demo cases · ${window}`,
+    subline: (count: number, demos: number, window: string) =>
+      `${count} traders and ${demos} demo cases · ${window}`,
     navHome: "Home",
     pilotAccess: "Only signed-in officer accounts can see this page.",
     summaryLabel: "Traders by action",
@@ -579,8 +579,8 @@ export const strings = {
     },
     detail: {
       back: "All traders",
-      simulated: "Simulated trader",
-      demoCase: "Demo case · simulated trader",
+      trader: "Trader",
+      demoCase: "Demo case",
       why: "Why this action",
       chartHeading: "Declared turnover and evidence, by month",
       chartLegendDeclared: "Declared turnover",
@@ -778,7 +778,7 @@ export const strings = {
       },
       // Copied from a real line of the simulated worklist (seed 7).
       example: {
-        caption: "Example from the simulated worklist",
+        caption: "Example from the worklist",
         id: "TRD-0167",
         meta: "General dealer / spaza · Mafeteng",
         whyHeading: "Why this action",
