@@ -10,15 +10,16 @@ import { Results } from "@/components/landing/Results";
 import { SiteFooter } from "@/components/ui/SiteFooter";
 
 export default function Home() {
-  // White behind the floating header, instead of the grey page colour.
+  // The mockup's order (19 Nov 2026): hero, quote, how it works, then the
+  // pipeline, officer and results sections, and the closing band.
   return (
-    <div className="flex flex-1 flex-col bg-surface">
+    <div className="flex flex-1 flex-col bg-page">
       <Header />
       <main className="flex-1">
         <Hero />
         <Problem />
-        <Pipeline />
         <HowItWorks />
+        <Pipeline />
         <ForOfficers />
         <BuiltForLesotho />
         <Results />

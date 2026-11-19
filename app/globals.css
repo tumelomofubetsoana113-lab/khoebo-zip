@@ -3,28 +3,36 @@
 /*
  * Khoebo theme. The palette comes from SPEC.md section 4 and is the only
  * source of colour in the app: Tailwind's default colours are switched off,
- * so components can only use these token names.
+ * so components can only use these token names. Since 19 November 2026 the
+ * colours are taken from the RSL website (rsl.org.ls).
  */
 @theme {
   --color-*: initial;
 
-  --color-flag-blue: #00209f;
-  --color-flag-green: #009543;
-  --color-green-text: #007a37;
-  --color-page: #f4f6fa;
+  /* RSL orange, darkened to the same hue so white text on it passes WCAG AA. */
+  --color-brand: #c64506;
+  /* RSL orange as on rsl.org.ls: the logo, icons and accents, never small text on white. */
+  --color-brand-bright: #f86923;
+  --color-brand-soft: #fef0e9;
+  --color-charcoal: #232733;
+  --color-highlight: #f8c44f;
+  --color-highlight-soft: #fef9ed;
+  --color-success: #28a745;
+  --color-success-text: #1e7e34;
+  --color-page: #f8f9fa;
   --color-surface: #ffffff;
-  --color-ink: #111111;
-  --color-muted: #4b5563;
-  --color-line: #d9dee7;
+  --color-ink: #191b1c;
+  --color-muted: #6d6d70;
+  --color-line: #dee2e6;
 
-  --color-status-followup: #b45309;
-  --color-status-followup-bg: #fef3c7;
-  --color-status-review: #00209f;
-  --color-status-review-bg: #e6e9f7;
-  --color-status-checkin: #4b5563;
-  --color-status-checkin-bg: #eef0f3;
-  --color-status-none: #007a37;
-  --color-status-none-bg: #e3f4ea;
+  --color-status-followup: #856404;
+  --color-status-followup-bg: #fff3cd;
+  --color-status-review: #0c5460;
+  --color-status-review-bg: #d1ecf1;
+  --color-status-checkin: #383d41;
+  --color-status-checkin-bg: #e2e3e5;
+  --color-status-none: #155724;
+  --color-status-none-bg: #d4edda;
 
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
     sans-serif;
@@ -48,7 +56,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-flag-blue);
+  outline: 2px solid var(--color-brand);
   outline-offset: 2px;
 }
 

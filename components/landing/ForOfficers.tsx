@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/Card";
 import { ActionPill } from "@/components/ui/Pill";
 import { strings, type ActionKey } from "@/lib/strings";
+import { SectionHeading } from "./SectionHeading";
 
 const t = strings.landing.officers;
 const ex = t.example;
@@ -8,11 +9,10 @@ const order: ActionKey[] = ["followup", "review", "checkin", "none"];
 
 export function ForOfficers() {
   return (
-    <section id="for-officers" className="border-t border-line bg-surface px-4 py-16 sm:px-6">
+    <section id="for-officers" className="bg-page px-4 py-16 sm:px-6">
       <div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-2 lg:items-start">
         <div>
-          <h2 className="text-2xl font-bold md:text-3xl">{t.heading}</h2>
-          <p className="mt-3 text-lg text-muted">{t.lead}</p>
+          <SectionHeading eyebrow={t.eyebrow} heading={t.heading} lead={t.lead} />
           <ul className="mt-8 space-y-5">
             {order.map((action) => (
               <li key={action} className="space-y-1.5">
@@ -26,7 +26,7 @@ export function ForOfficers() {
         {/* A mock reason card, styled like the officer detail page. */}
         <figure>
           <figcaption className="mb-2 text-sm text-muted">{ex.caption}</figcaption>
-          <Card className="shadow-sm">
+          <Card className="rounded-2xl shadow-lg shadow-ink/5">
             <div className="flex flex-wrap items-start justify-between gap-2">
               <div>
                 <p className="text-lg font-bold">{ex.id}</p>

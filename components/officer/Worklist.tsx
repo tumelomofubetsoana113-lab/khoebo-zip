@@ -68,7 +68,7 @@ export function WorklistView({
           <button
             type="button"
             onClick={() => setLimit((n) => n + PAGE_SIZE)}
-            className="min-h-11 rounded-full border border-flag-blue px-5 font-semibold text-flag-blue hover:bg-page"
+            className="min-h-11 rounded-full border border-brand px-5 font-semibold text-brand hover:bg-page"
           >
             {strings.officer.filters.showMore(more)}
           </button>

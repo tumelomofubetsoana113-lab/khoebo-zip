@@ -42,7 +42,7 @@ export function PipelineStrip({ figures: f }: { figures: PipelineFigures }) {
           const body = (
             <>
               <span className="flex items-center gap-2 text-sm font-semibold text-muted">
-                <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-flag-blue text-surface">
+                <span className="inline-flex size-7 shrink-0 items-center justify-center rounded-full bg-brand text-surface">
                   <s.icon size={16} aria-hidden />
                 </span>
                 {i + 1}. {s.title}
@@ -54,7 +54,7 @@ export function PipelineStrip({ figures: f }: { figures: PipelineFigures }) {
           return (
             <li key={s.title}>
               {s.href ? (
-                <Link href={s.href} className="block h-full rounded-card border border-line bg-page p-3 hover:border-flag-blue">
+                <Link href={s.href} className="block h-full rounded-card border border-line bg-page p-3 hover:border-brand">
                   {body}
                 </Link>
               ) : (

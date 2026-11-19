@@ -65,8 +65,8 @@ export function LeadsView({
                 onClick={() => change(toggleLeadAction(query, action))}
                 aria-pressed={on}
                 aria-label={`${t.summaryFilter(strings.leadActions[action])}: ${counts[action]}`}
-                className={`flex h-full w-full flex-col items-start gap-2 rounded-card border bg-surface p-4 text-left transition-colors hover:border-flag-blue ${
-                  on ? "border-flag-blue ring-2 ring-flag-blue" : "border-line"
+                className={`flex h-full w-full flex-col items-start gap-2 rounded-card border bg-surface p-4 text-left transition-colors hover:border-brand ${
+                  on ? "border-brand ring-2 ring-brand" : "border-line"
                 }`}
               >
                 <LeadPill action={action} />
@@ -94,7 +94,7 @@ export function LeadsView({
                   aria-pressed={on}
                   onClick={() => change(toggleLeadAction(query, action))}
                   className={`inline-flex min-h-10 items-center gap-1.5 rounded-full border px-3 text-sm font-medium ${
-                    on ? "border-flag-blue bg-flag-blue text-surface" : "border-line bg-surface text-ink hover:bg-page"
+                    on ? "border-brand bg-brand text-surface" : "border-line bg-surface text-ink hover:bg-page"
                   }`}
                 >
                   {on && <Check size={16} aria-hidden />}
@@ -146,7 +146,7 @@ export function LeadsView({
           <button
             type="button"
             onClick={() => change({ actions: [], district: "", kind: "" })}
-            className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-semibold text-flag-blue hover:bg-page"
+            className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-semibold text-brand hover:bg-page"
           >
             {t.filters.clear}
           </button>
@@ -173,7 +173,7 @@ export function LeadsView({
           <button
             type="button"
             onClick={() => setLimit((n) => n + PAGE_SIZE)}
-            className="min-h-11 rounded-full border border-flag-blue px-5 font-semibold text-flag-blue hover:bg-page"
+            className="min-h-11 rounded-full border border-brand px-5 font-semibold text-brand hover:bg-page"
           >
             {t.filters.showMore(more)}
           </button>

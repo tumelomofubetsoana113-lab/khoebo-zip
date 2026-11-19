@@ -33,7 +33,7 @@ export function VoiceSheet({
             >
               <span
                 aria-hidden="true"
-                className="flex size-11 shrink-0 items-center justify-center rounded-full bg-flag-blue text-surface"
+                className="flex size-11 shrink-0 items-center justify-center rounded-full bg-brand text-surface"
               >
                 <Play size={18} className="fill-current" />
               </span>

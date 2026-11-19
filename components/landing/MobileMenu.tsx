@@ -8,8 +8,8 @@ const t = strings.landing.nav;
 
 type NavLink = { href: string; label: string };
 
-// Three-line menu button for phones. The panel drops below the floating
-// header and closes on a link tap, Escape, or a tap outside it.
+// Three-line menu button for phones, on the charcoal header. The panel drops
+// below the header and closes on a link tap, Escape, or a tap outside it.
 export function MobileMenu({ links }: { links: NavLink[] }) {
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
@@ -43,7 +43,7 @@ export function MobileMenu({ links }: { links: NavLink[] }) {
         aria-controls="mobile-menu"
         aria-label={open ? t.closeMenu : t.openMenu}
         onClick={() => setOpen((o) => !o)}
-        className="flex size-11 items-center justify-center rounded-full text-ink hover:bg-page"
+        className="flex size-11 items-center justify-center rounded-lg text-surface hover:bg-surface/10"
       >
         {open ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
       </button>
@@ -51,7 +51,7 @@ export function MobileMenu({ links }: { links: NavLink[] }) {
         <nav
           id="mobile-menu"
           aria-label={t.label}
-          className="absolute inset-x-2 top-full mt-2 rounded-3xl border border-line bg-surface p-3 shadow-lg shadow-ink/5 sm:inset-x-6"
+          className="absolute inset-x-2 top-full mt-2 rounded-2xl border border-line bg-surface p-3 text-ink shadow-lg shadow-ink/10 sm:inset-x-6"
         >
           <ul className="flex flex-col">
             {links.map((link) => (

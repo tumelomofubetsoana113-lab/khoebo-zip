@@ -61,7 +61,7 @@ export function ChatShell() {
 function ChatHeader({ onDemo }: { onDemo?: () => void }) {
   return (
     <>
-      <header className="flex items-center gap-2 bg-flag-blue px-2 py-2 text-surface">
+      <header className="flex items-center gap-2 bg-brand px-2 py-2 text-surface">
         <Link
           href="/"
           aria-label={t.back}

@@ -26,7 +26,7 @@ export function LeadResults({ runs }: { runs: Leads["thirtyRuns"] }) {
       <ul className="mt-3 grid gap-4 sm:grid-cols-3">
         {leadResultFigures(runs).map((f) => (
           <li key={f.value}>
-            <span className="block text-2xl font-bold text-flag-blue">{f.value}</span>
+            <span className="block text-2xl font-bold text-brand">{f.value}</span>
             <span className="block text-sm text-muted">{f.label}</span>
           </li>
         ))}

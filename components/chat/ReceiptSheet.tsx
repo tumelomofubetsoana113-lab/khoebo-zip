@@ -10,7 +10,7 @@ const t = strings.chat.receipt;
 
 const optionClass =
   "flex min-h-14 w-full items-center gap-3 rounded-card border border-line p-3 text-left hover:bg-page disabled:opacity-50";
-const iconClass = "flex size-11 shrink-0 items-center justify-center rounded-full bg-flag-blue text-surface";
+const iconClass = "flex size-11 shrink-0 items-center justify-center rounded-full bg-brand text-surface";
 
 export function ReceiptSheet({
   open,
@@ -90,7 +90,7 @@ export function ReceiptSheet({
         {t.samples.map((sample) => (
           <li key={sample.src}>
             <button type="button" disabled={blocked} onClick={() => void sendSample(sample.src)} className={optionClass}>
-              <ReceiptText size={22} aria-hidden="true" className="shrink-0 text-flag-blue" />
+              <ReceiptText size={22} aria-hidden="true" className="shrink-0 text-brand" />
               <span className="min-w-0">
                 <span className="block">{sample.title}</span>
                 <span className="block text-sm text-muted">{sample.hint}</span>

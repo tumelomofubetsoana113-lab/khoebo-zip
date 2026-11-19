@@ -40,7 +40,7 @@ export function DemoMenu({
               onClick={() => onChoose(id)}
               className="flex min-h-11 w-full items-center gap-3 rounded-card px-3 py-2 text-left hover:bg-page disabled:opacity-50"
             >
-              <Icon size={22} aria-hidden="true" className="shrink-0 text-flag-blue" />
+              <Icon size={22} aria-hidden="true" className="shrink-0 text-brand" />
               <span>
                 <span className="block font-medium">{label}</span>
                 {hint && <span className="block text-sm text-muted">{hint}</span>}

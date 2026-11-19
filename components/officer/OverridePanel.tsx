@@ -134,7 +134,7 @@ function Panel({ traderId, loaded = false }: { traderId: string; loaded?: boolea
               {errorText(error)}
             </p>
           )}
-          {saved && <p className="text-sm font-semibold text-green-text">{t.saved}</p>}
+          {saved && <p className="text-sm font-semibold text-success-text">{t.saved}</p>}
         </div>
         <Button type="submit" disabled={!loaded}>
           {t.save}

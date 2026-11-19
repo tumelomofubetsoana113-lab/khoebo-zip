@@ -1,26 +1,38 @@
-import { BarChart3, BellRing, CheckCircle2, MessageSquare } from "lucide-react";
+import { BarChart3, BellRing, CheckCircle2, Mic } from "lucide-react";
 import { strings } from "@/lib/strings";
-import { IconCircle } from "./IconCircle";
+import { SectionHeading } from "./SectionHeading";
 
 const t = strings.landing.howItWorks;
-const icons = [MessageSquare, BarChart3, BellRing, CheckCircle2];
+const icons = [Mic, BarChart3, BellRing, CheckCircle2];
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="bg-surface px-4 py-16 sm:px-6">
+    <section id="how-it-works" className="bg-page px-4 py-16 sm:px-6">
       <div className="mx-auto max-w-6xl">
-        <h2 className="text-2xl font-bold md:text-3xl">{t.heading}</h2>
+        <SectionHeading eyebrow={t.eyebrow} heading={t.heading} lead={t.lead} side />
         <ol className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {t.steps.map((step, i) => (
-            <li key={step.title}>
-              {/* Not <Card>: its white background would override the blue */}
-              <div className="h-full rounded-card bg-flag-blue p-5 text-surface transition duration-200 hover:-translate-y-1.5 hover:shadow-xl hover:shadow-flag-blue/25 motion-reduce:transition-none motion-reduce:hover:translate-y-0">
-                <IconCircle icon={icons[i]} inverse />
+          {t.steps.map((step, i) => {
+            const Icon = icons[i];
+            return (
+              <li
+                key={step.title}
+                className="flex flex-col rounded-2xl border border-line bg-surface p-5 transition duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-ink/5 motion-reduce:transition-none motion-reduce:hover:translate-y-0"
+              >
+                <span
+                  aria-hidden="true"
+                  className="flex size-9 items-center justify-center rounded-lg bg-brand-soft font-bold text-brand"
+                >
+                  {i + 1}
+                </span>
                 <h3 className="mt-4 text-lg font-semibold">{step.title}</h3>
-                <p className="mt-1 text-surface/85">{step.body}</p>
-              </div>
-            </li>
-          ))}
+                <p className="mt-1 flex-1 text-muted">{step.body}</p>
+                <p className="mt-4 flex items-center gap-1.5 border-t border-line pt-3 text-sm font-medium text-brand">
+                  <Icon size={16} aria-hidden="true" />
+                  {step.footer}
+                </p>
+              </li>
+            );
+          })}
         </ol>
       </div>
     </section>

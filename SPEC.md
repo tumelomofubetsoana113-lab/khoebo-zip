@@ -64,7 +64,7 @@ app/
   officer/leads/page.tsx potential registrants (added 17 Nov 2026)
   api/chat/route.ts     the only place the API key is used
 components/
-  landing/              one file per landing section, plus PhoneFrame (hero phone) and IconCircle
+  landing/              one file per landing section, plus IconCircle and SectionHeading (eyebrow and heading)
   chat/                 ChatShell, MessageBubble, SummaryCard, QuickReplies, cards, Composer, VoiceSheet, VoiceBubble,
                         TypingIndicator, DemoMenu, ReceiptSheet, BusinessRows (one line per business)
   statement/            StatementView (the printable statement page) and download (the CSV file)
@@ -130,29 +130,34 @@ tests/
 
 ## 4. Design system
 
-### Palette (Lesotho flag colours)
+### Palette (RSL website colours, since 19 November 2026)
 
-Define these as Tailwind theme colours. Components use the token names only.
+Define these as Tailwind theme colours. Components use the token names only. The colours come from the RSL website, https://www.rsl.org.ls/: its orange (`#F86923`), dark charcoal (`#232733`), body text (`#191B1C`), the grey of its logo text (`#6D6D70`), its yellow (`#F8C44F`), and the success and alert colours in its stylesheet. They replace the Lesotho flag colours used until then (see section 14).
 
 | Token | Hex | Used for |
 | --- | --- | --- |
-| `flag-blue` | #00209F | Header, primary buttons, the trader's own message bubbles, links |
-| `flag-green` | #009543 | Success fills, "recorded" ticks, icons |
-| `green-text` | #007A37 | Any green text (flag green is too light for small text on white) |
-| `page` | #F4F6FA | Page and chat background |
+| `brand` | #C64506 | Primary buttons, links, the chat header, the trader's own bubbles, orange text. RSL's orange darkened to the same hue, because white text on `#F86923` is only 3:1 |
+| `brand-bright` | #F86923 | RSL's orange as it is: the Khoebo mark, dots and accents. Never small text on white |
+| `brand-soft` | #FEF0E9 | Soft orange tiles and backgrounds behind `brand` text |
+| `charcoal` | #232733 | Site header bar, closing band, the tallest bar in the mark |
+| `highlight` | #F8C44F | RSL's yellow, for the quote band's border and icon tile |
+| `highlight-soft` | #FEF9ED | The quote band's background |
+| `success` | #28A745 | Success fills and "recorded" ticks |
+| `success-text` | #1E7E34 | Any green text, such as profit |
+| `page` | #F8F9FA | Page and chat background |
 | `surface` | #FFFFFF | Assistant bubbles, cards, panels |
-| `ink` | #111111 | Main text |
-| `muted` | #4B5563 | Times, hints, secondary text |
-| `line` | #D9DEE7 | Borders, dividers |
+| `ink` | #191B1C | Main text |
+| `muted` | #6D6D70 | Times, hints, secondary text |
+| `line` | #DEE2E6 | Borders, dividers |
 
-Status colours for the four officer actions:
+Status colours for the four officer actions (the alert colour pairs in RSL's stylesheet):
 
 | Action | Text token | Background token |
 | --- | --- | --- |
-| Officer follow-up | `status-followup` #B45309 | `status-followup-bg` #FEF3C7 |
-| Human review | `status-review` #00209F | `status-review-bg` #E6E9F7 |
-| Automated check-in | `status-checkin` #4B5563 | `status-checkin-bg` #EEF0F3 |
-| No action | `status-none` #007A37 | `status-none-bg` #E3F4EA |
+| Officer follow-up | `status-followup` #856404 | `status-followup-bg` #FFF3CD |
+| Human review | `status-review` #0C5460 | `status-review-bg` #D1ECF1 |
+| Automated check-in | `status-checkin` #383D41 | `status-checkin-bg` #E2E3E5 |
+| No action | `status-none` #155724 | `status-none-bg` #D4EDDA |
 
 Every status pill shows its written label. Colour is never the only signal.
 
@@ -161,7 +166,7 @@ Every status pill shows its written label. Colour is never the only signal.
 - System font stack (`ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif`). No web fonts, so pages load fast on weak data.
 - Chat text at least 16px. Body text 16px. Landing headline about 40px on desktop and 30px on mobile.
 - Tap targets at least 44px high. Quick-reply chips at least 40px high with 8px gaps.
-- Corner radius: 12px on cards, 18px on chat bubbles, full on pills.
+- Corner radius: 12px on cards, 18px on chat bubbles, 12px on buttons (full until 19 November 2026), full on pills. Landing page cards use 16px.
 - Light mode only for the prototype.
 - Respect `prefers-reduced-motion`. Keep animation to short fades and the typing indicator.
 
@@ -169,14 +174,14 @@ Every status pill shows its written label. Colour is never the only signal.
 
 - No flag stripe: the tricolour stripe that ran along the top and bottom of every page was removed on 31 October 2026 (see section 14).
 - No mokorotlo emblem, no RSL logo, no WhatsApp name, logo or green.
-- The wordmark is the word "Khoebo" set in bold `flag-blue`, with the Khoebo mark to its left (added 29 October 2026, see section 14): a white chat bubble holding three rising bars, the last one `flag-green`, on a `flag-blue` circle.
+- The wordmark is the word "Khoebo" in bold white on the charcoal header, with "Records and tax assistant" under it from 640px up and the Khoebo mark to its left (added 29 October 2026, see section 14): a white chat bubble holding three rising bars on a circle. Since 19 November 2026 the drawing is unchanged and only its colours changed: the circle and the first two bars are `brand-bright`, the tallest bar `charcoal` (they were `flag-blue`, with the last bar `flag-green`).
 - A small pill reading "Prototype · RSL Taxathon 2026" sits in every page header.
 - Footer text on every page: "Prototype for the RSL Taxathon 2026. Not an official RSL service. All data shown is simulated."
 
 ### Accessibility
 
 - WCAG AA contrast for all text. The palette above passes when used as specified.
-- Visible focus rings (2px `flag-blue` outline with offset).
+- Visible focus rings (2px `brand` outline with offset).
 - Every icon-only button has an `aria-label`.
 - Chat messages are in an `aria-live="polite"` region.
 
@@ -186,76 +191,64 @@ Every status pill shows its written label. Colour is never the only signal.
 
 This is the first thing judges see. It should look finished and calm, with plenty of white space, and work from 360px to desktop. Build each section as its own component. Text below is the copy to use; keep it as written unless it doesn't fit.
 
-**1. Header** (sticky, floating: a white rounded bar with a `line` border and a soft shadow, inset from the page edges)
-- Left: "Khoebo" wordmark and the prototype pill.
-- Right on desktop: anchor links "The pipeline" (added 17 November 2026), "How it works", "For officers", "Results", plus a small primary button "Try the chat". The links show from 1024px up; four of them overflow the bar at 768px.
-- Below 1024px (this was 768px until the fourth link was added): wordmark, the "Try the chat" button and a three-line menu button. The menu opens a rounded panel under the header with the three anchor links, and closes on a link tap, Escape, or a tap outside it. Below 640px the prototype pill sits on its own row under the wordmark, inside the header.
+The design follows the owner's mockup of 19 November 2026 (see section 14), with the pipeline, officer, Lesotho and results sections kept and restyled to match. Sections use a small orange caps eyebrow over a bold heading (`SectionHeading`).
 
-**2. Hero**
-- Two columns on desktop (text left, phone right). Stacked on mobile, phone below text.
-- The phone stands on a rounded panel holding a photo of green mountains (`public/landing/maloti.jpg`).
-- Eyebrow, small `muted` caps: "For informal traders and RSL officers"
-- Headline: "Keep your business records in a chat. File your tax return in a minute."
+**1. Header** (sticky, a full-width `charcoal` bar, shared with the officer pages)
+- Left: the Khoebo mark, "Khoebo" in white and "Records and tax assistant" (from 640px), and the prototype pill.
+- Middle from 1024px: the anchor links "How it works", "The pipeline", "For officers" and "Results" in a rounded group.
+- Right: "Officer view" (from 1280px) and the primary button "Try the chat →".
+- Below 1024px: the button and a three-line menu button. The menu opens a rounded white panel with the four anchor links and "Officer view", and closes on a link tap, Escape, or a tap outside it. Below 640px the prototype pill sits on its own row under the wordmark, inside the header.
+
+**2. Hero** (on `page`)
+- Two columns on desktop (text left, example chat right). Stacked on mobile.
+- A white chip with an orange dot: "For informal traders and RSL officers".
+- Headline: "Keep your business records in a chat." then "File your tax return in a minute." in `brand`.
 - Subline: "Khoebo helps traders in Lesotho log sales by message, see what their business earns each week, and file a pre-filled return. RSL officers get a short list of who to follow up, with the reasons written out."
-- Buttons: primary "Try it as a trader" → `/trader`; secondary (white with `flag-blue` border) "Open the officer view" → `/officer`.
-- Right side: a phone frame built in HTML and CSS (not an image) showing a short static chat:
-  - Trader: "sold 350 today"
-  - Khoebo: "Recorded a sale of M350 for today. That's M1,840 so far this week."
-  - Trader: "how am I doing this week?"
-  - Khoebo: a small summary card showing Money in M1,840, Money out M1,120, Profit about M720.
-  The frame uses the same bubble components as the real chat, so the two always match.
+- Buttons: primary "Try it as a trader →" to `/trader`; white outlined "Open the officer view" to `/officer`.
+- Two ticked lines: "Reads messages in Sesotho or English" and "No bookkeeping skills needed".
+- Right side: a static example chat card, "Maseru Central Market · Example trader chat · Active": the trader's "Ke rekisitse M420 ea meroho kajeno" with "I sold M420 of vegetables today · 17:42", Khoebo's "M420 recorded. Total this week: M2,150.", and "Sunday summary ready · See it →".
 
-**3. The problem** (one short band on `page` background, centred, max width about 640px)
-- "A nil return doesn't always mean someone is hiding income. Many traders are seasonal, or have closed, or just never kept records. Khoebo helps traders keep those records, and helps RSL tell the difference."
+**3. Quote band** (a rounded `highlight-soft` panel with a lightbulb tile)
+- "A nil return doesn't always mean someone is hiding income. Khoebo helps traders keep records, and helps RSL tell the difference." Credited to "Why we built Khoebo": it is Khoebo's own line, not RSL's.
 
-**3a. From the street to the tax net** (id `pipeline`, white background, added 17 November 2026)
-- Heading "From the street to the tax net", and a lead saying Khoebo covers every step with the least effort for the trader and for RSL.
-- Six steps in a grid (three across on desktop, two on tablet, stacked on mobile). Each has an icon, a title, who does it in `green-text`, and one sentence: Find (RSL officer), Reach (Khoebo and the officer), Register (trader, with RSL), Keep records (trader, in Khoebo), File and pay (trader, in Khoebo), Stay compliant (RSL officer).
-- Under the steps, who it's for: street and market sellers, spaza shops, hair salons, repairers, flea market and online sellers, couriers, and runners. Then a link, "See both officer lists", to `/officer/leads`.
-- A `line` border under it, since "How it works" is also white.
-- The step cards lift 6px with a soft blue shadow on hover, like the "How it works" cards, and don't move when the visitor prefers reduced motion (added 17 November 2026 at the owner's request).
+**4. How it works** (id `how-it-works`)
+- Eyebrow "Simple for traders", heading "How it works", and to the right: "No new system to learn. Traders keep doing business as usual, and Khoebo does the sums and fills in the return."
+- Four white cards, each with a number tile, title, sentence and an orange footer line with an icon:
+  1. "Log a sale" — "Send a short message or voice note, like 'sold 350 today'." — Mic, "Text or voice note"
+  2. "See your week" — "Money in, money out and profit every Sunday, with no sums to do." — BarChart3, "Weekly summary"
+  3. "Get a reminder" — "A message before each due date, with your estimated tax." — BellRing, "Before every due date"
+  4. "File in a minute" — "Your return is filled in from your records. You check it and tap Confirm." — CheckCircle2, "Mock filing in this prototype"
 
-**4. How it works for traders** (id `how-it-works`)
-- Heading: "How it works for traders"
-- Four cards in a row on desktop, two by two on tablet, stacked on mobile. Each card is `flag-blue` with white text and lifts slightly on hover, and has a lucide icon in a white circle, a short title and one sentence.
-  1. MessageSquare — "Log a sale" — "Send a short message or voice note, like 'sold 350 today'."
-  2. BarChart3 — "See your week" — "Get money in, money out and profit every Sunday."
-  3. BellRing — "Get a reminder" — "A message before each due date, with your estimated tax."
-  4. CheckCircle2 — "File in a minute" — "Your return is filled in from your records. You check it and confirm."
+**5. From the street to the tax net** (id `pipeline`, white, added 17 November 2026)
+- Eyebrow "The pipeline", heading "From the street to the tax net", and a lead saying Khoebo covers every step with the least effort for the trader and for RSL.
+- Six step cards (three across on desktop, two on tablet, stacked on mobile), each with an orange icon tile, a title, who does it in `brand`, and one sentence: Find (RSL officer), Reach (Khoebo and the officer), Register (trader, with RSL), Keep records (trader, in Khoebo), File and pay (trader, in Khoebo), Stay compliant (RSL officer). The cards lift slightly on hover, except with reduced motion.
+- Under the steps, who it's for, then the link "See both officer lists" to `/officer/leads`.
 
-**5. For RSL officers** (id `for-officers`, white background)
-- Heading: "For RSL officers"
-- Lead: "Every trader is placed in one of four actions. Each one shows the evidence behind it, and the officer always makes the final call."
-- The four action pills, each with one line:
-  - Officer follow-up: "Strong, repeated evidence of trading well above what was declared."
-  - Human review: "Some evidence, but thin or mixed. An officer checks before any visit."
-  - Automated check-in: "Nil returns and no sign of trading. A friendly message asks if the business is still running."
-  - No action: "Declarations match the evidence, or nil months match months with no activity."
-- Below: a mock reason card copied from a real worklist line, styled like the officer detail page.
+**6. For RSL officers** (id `for-officers`, on `page`)
+- Eyebrow "Officer view", heading "For RSL officers", lead: "Every trader is placed in one of four actions. Each one shows the evidence behind it, and the officer always makes the final call."
+- The four action pills, each with one line (follow-up, review, check-in, no action, as before), and a mock reason card copied from a real worklist line.
 
-**6. Built for Lesotho** (on `page` background)
-- Heading: "Built for Lesotho"
-- Four items in a grid, icon plus title plus one sentence:
-  - Smartphone — "Ready for WhatsApp" — "The prototype runs in the browser. In a pilot, the same assistant runs on WhatsApp, with SMS for basic phones."
+**7. Built for Lesotho** (white)
+- Eyebrow "Fit for purpose", heading "Built for Lesotho", four cards:
+  - Smartphone — "Ready for messaging apps" — "The prototype runs in the browser. In a pilot, the same assistant runs in a messaging app, with SMS for basic phones." (It named WhatsApp until 19 November 2026, against the brand rules.)
   - Wifi — "Light on data" — "Small pages and short messages that work on a weak connection."
   - Languages — "English, with Sesotho next" — "It already understands common Sesotho phrases. Full Sesotho replies come with the pilot."
   - Lock — "Records stay with the trader" — "RSL sees the return a trader files, not their daily sales."
 
-**7. Results** (id `results`, white background)
-- Heading: "Tested on simulated data"
-- Three large figures with a one-line label each:
+**8. Results** (id `results`, on `page`)
+- Eyebrow "Evidence", heading "Tested on simulated data", and three white cards with an orange left edge:
   - "38% fewer officer cases" — "than following up every nil return"
   - "96% of field visits" — "reached a trader who really was under-declaring"
   - "48 found" — "undeclared traders per 300, close to the 49 found by following up every nil return"
 - Read every figure from `data/test_results.json`. Never type them into the page.
 - Small centred note under them in `muted`: "Average of 30 simulated populations of 300 traders. No real taxpayer data was used. The next step is testing on masked RSL data."
 
-**8. Closing band** (a rounded `flag-blue` card inset from the page edges, white text)
-- "See it for yourself."
-- Buttons: white "Try the trader chat", and outlined white "Open the officer view".
+**9. Closing band** (a rounded `charcoal` card)
+- "See it for yourself." and "Try the trader chat with a demo trader, or open the officer worklist built from simulated data."
+- Buttons: primary "Try the trader chat →", and a dark outlined "Open the officer view".
 
-**9. Footer**
-- Footer text from section 4, centred.
+**10. Footer** (shared by every page with a site header)
+- Left: the Khoebo mark and name. Right: the footer text from section 4.
 
 Landing checkpoint: Lighthouse performance and accessibility both 90 or above on mobile, no horizontal scroll at 360px, all figures read from JSON.
 
@@ -263,13 +256,13 @@ Landing checkpoint: Lighthouse performance and accessibility both 90 or above on
 
 A full-height chat that feels like a messaging app, centred in a 420px column on desktop with the `page` colour around it. The column is a rounded frame (28px corners, `line` border, soft shadow) with a small gap on every side, on phones too.
 
-**Header** (`flag-blue`, white text)
+**Header** (`brand`, white text)
 - Back arrow to `/`, a round avatar with the letter K, "Khoebo" and a subline "Records and tax assistant".
 - Right: a "Demo" button that opens the demo menu.
 - The prototype pill sits in a thin strip under the header.
 
 **Messages**
-- Trader bubbles on the right in `flag-blue` with white text. Assistant bubbles on the left in white with `ink` text and a `line` border.
+- Trader bubbles on the right in `brand` with white text. Assistant bubbles on the left in white with `ink` text and a `line` border.
 - Small time under each bubble in `muted`.
 - Typing indicator (three dots) while waiting for the API.
 - Cards render inside assistant bubbles (see "UI blocks" in section 6).
@@ -313,6 +306,7 @@ A full-height chat that feels like a messaging app, centred in a 420px column on
 **Statements and records** (`/trader/statement?period=...`, added 19 November 2026)
 - A trader asks in the chat ("get my statement", "my records for October", "something to show the bank") and the `get_statement` tool shows a `statement_card` with "Open statement" and "Download spreadsheet".
 - The page shows one month (`period=2026-10`, or `this_month`, `last_month`) or every record (`period=all`), with a month picker. It has: the Khoebo mark and prototype pill, the trader's business, district, registration and the date made, totals (money in, money out, profit estimate, client money when there is some, entries, days with no entries), a month-by-month table for more than one month, any filed returns that overlap the period (with the mock reference and the placeholder note), every entry (date, kind, note, amount, rand, Lekuka result), and a footer saying it is made from the trader's own records, not checked by RSL and not an official RSL document.
+- The Khoebo mark sits behind the statement as a faint watermark (added 19 November 2026). On screen it is centred on the statement; when printed it is fixed, so it repeats in the middle of every page.
 - "Save as PDF or print" opens the browser's print window, which prints only the statement. "Download spreadsheet" saves a CSV file (`khoebo-statement-2026-10.csv`, or `khoebo-records-<date>.csv` for all records).
 - Everything is worked out in the browser from localStorage by `lib/statement.ts`. Nothing is sent to the server.
 - A trader with more than one business also gets a business picker ("All businesses" or one of them, `&business=<id>`). All businesses shows a line for each and the business under each entry; one business shows its own name, type and district.
@@ -1199,3 +1193,26 @@ At the owner's request, a trader can run more than one business: branches of the
 - **Tests.** `tests/businesses.test.ts`, 20 tests: old and new saved states, finding a business, adding and renaming, recording with and without a business, summaries, statements and CSV per business, estimates, returns and payments per business, obligations and reminders, receipts with a button per business, button keys, the context block, and the demo trader. 200 tests pass in total, as do `npm run lint` and `npm run build`.
 - **Chat eval.** Five new cases (section 12) and three new checks in `run.mts`: `entryBusiness`, `businessCount` and `uiExcludes`. Full eval on a local production build: 89 of 90 (30 cases, three runs each). The one failure was the "show the bank" statements case, whose check matched one reply's wording; that reply wasn't captured, and the case passed 5 of 5 when run again.
 - **Checked in headless Chrome on a local production build at 360px:** the new demo menu item and demo trader, the summary card's lines per business, a receipt card with three Save buttons, a return card naming its business, and the statement page with the business picker for all businesses and for the Salon, whose CSV is named `khoebo-statement-2026-11-b-salon.csv`. The single-business demo's statement still has no business picker. No horizontal scroll and no console errors.
+
+### RSL colours and the new landing page (19 November 2026)
+
+At the owner's request, three changes, built on the `rsl-look` branch so the live link stayed unchanged until the owner checked the preview.
+
+- **Colours from the RSL website.** Taken from rsl.org.ls itself: its stylesheets (orange `#F86923` is its most used colour, then charcoal `#232733`, body text `#191B1C`, yellow `#F8C44F`, and its success and alert colours) and the grey in its logo (`#6D6D70`). Section 4 has the new table. The RSL logo was only sampled for its colours and isn't used anywhere (rule 5).
+- **Contrast.** White text on RSL's orange is 3:1, below WCAG AA, so buttons, links, the chat header, the trader's bubbles and orange text use `brand`, the same hue darkened to `#C64506` (4.9:1 on white, 4.7:1 on `page`). `brand-bright` is RSL's exact orange, for the mark and accents only. Green text uses `#1E7E34` (5.1:1). The four status pairs are RSL's alert colours, all above 4.9:1.
+- **Token names.** `flag-blue`, `flag-green` and `green-text` were renamed `brand`, `success` and `success-text` across the code, since they no longer hold flag colours. New tokens: `brand-bright`, `brand-soft`, `charcoal`, `highlight`, `highlight-soft`.
+- **The logo.** The drawing is unchanged. Only its colours changed: the circle and first two bars are RSL orange, the tallest bar RSL charcoal. `app/icon.svg` and `public/brand/` were recoloured the same way, and `app/apple-icon.png` and the 512 and 1024px profile PNGs were re-rendered from `khoebo-profile.svg` in Chrome. The browser theme colour is now charcoal.
+- **The landing page** follows the owner's mockup (two screenshots): a charcoal header bar, a hero with an example chat card, a yellow quote band, "How it works" as four white numbered cards, a charcoal closing band and a two-sided footer. The owner chose to keep the pipeline, officer, Lesotho and results sections, restyled to match, between "How it works" and the closing band. "How it works" now comes before the pipeline, as in the mockup.
+- **Where the copy differs from the mockup, and why:**
+  - The quote was credited to "Lesotho Revenue Services · Civic Inclusion Framework". RSL never said it, so it is credited to "Why we built Khoebo".
+  - The mockup named WhatsApp twice. The brand rules forbid that, so the chat card has no app name and step 1 says "message or voice note". The Lesotho section's old "Ready for WhatsApp" card had the same problem and now says "Ready for messaging apps".
+  - "Join informal traders and revenue officers currently using Khoebo" became "Try the trader chat with a demo trader…", because nobody uses it yet.
+  - "Pre-filled RSL compliant return" and "Instant e-tax submission" became "You check it and tap Confirm" and "Mock filing in this prototype", because nothing is sent to RSL.
+  - "Sesotho & English support" became "Reads messages in Sesotho or English", because replies are English only.
+  - "Estimated nil tax liability preserved" was dropped, and "© 2025" was left out.
+  - The prototype pill stays in the header and the footer text stays in the footer (rule 5). The mockup had neither.
+  - Fonts stay on the system stack, with no web font, to keep pages light on data. Buttons use 12px corners as in the mockup.
+- **Removed:** the hero's phone illustration (`PhoneFrame.tsx`) and its mountain photo (`public/landing/maloti.jpg`), which the example chat card replaces.
+- **Watermark.** The printable statement carries the Khoebo mark at 7% opacity behind the content. Printed, it repeats in the middle of every page.
+- **Header on phones.** The wordmark's subline is hidden below 640px, so the button and menu fit beside the wordmark at 360px.
+- **Checked in headless Chrome on a local production build:** the landing page at 360, 768, 1024 and 1280px, `/officer` at 360 and 1280px, and `/trader` at 360px, all with no horizontal scroll and no console errors. Also the phone menu, and a statement printed to an A4 PDF with the watermark on both pages. 200 tests pass, as do `npm run lint` and `npm run build`.

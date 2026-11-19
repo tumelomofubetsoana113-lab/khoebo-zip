@@ -20,7 +20,7 @@ export function OfficerTabs({ current }: { current: "traders" | "leads" }) {
             href={tab.href}
             aria-current={on ? "page" : undefined}
             className={`inline-flex min-h-11 flex-1 items-center justify-center rounded-full px-4 text-center text-sm font-semibold sm:flex-none ${
-              on ? "bg-flag-blue text-surface" : "text-flag-blue hover:bg-page"
+              on ? "bg-brand text-surface" : "text-brand hover:bg-page"
             }`}
           >
             {tab.label}

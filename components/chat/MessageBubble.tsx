@@ -19,7 +19,7 @@ export function MessageBubble({
       <div
         className={`${wide ? "w-[92%]" : "max-w-[85%]"} rounded-bubble px-3.5 py-2 text-base leading-snug ${
           mine
-            ? "rounded-br-md bg-flag-blue text-surface"
+            ? "rounded-br-md bg-brand text-surface"
             : "rounded-bl-md border border-line bg-surface text-ink"
         }`}
       >

@@ -1,6 +1,7 @@
 import testResults from "@/data/test_results.json";
 import { headlineFigures, type TestResults } from "@/lib/results";
 import { strings } from "@/lib/strings";
+import { SectionHeading } from "./SectionHeading";
 
 const t = strings.landing.results;
 
@@ -15,13 +16,13 @@ export function Results() {
   ];
 
   return (
-    <section id="results" className="bg-surface px-4 py-16 sm:px-6">
+    <section id="results" className="bg-page px-4 py-16 sm:px-6">
       <div className="mx-auto max-w-6xl">
-        <h2 className="text-2xl font-bold md:text-3xl">{t.heading}</h2>
-        <ul className="mt-8 grid gap-8 md:grid-cols-3">
+        <SectionHeading eyebrow={t.eyebrow} heading={t.heading} />
+        <ul className="mt-8 grid gap-4 md:grid-cols-3">
           {figures.map((fig) => (
-            <li key={fig.value} className="border-l-4 border-flag-green pl-4">
-              <p className="text-3xl font-bold text-flag-blue md:text-4xl">{fig.value}</p>
+            <li key={fig.value} className="rounded-2xl border border-line border-l-4 border-l-brand-bright bg-surface p-5">
+              <p className="text-3xl font-extrabold tracking-tight text-brand md:text-4xl">{fig.value}</p>
               <p className="mt-2 text-muted">{fig.label}</p>
             </li>
           ))}

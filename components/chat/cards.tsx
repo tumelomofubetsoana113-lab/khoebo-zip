@@ -33,7 +33,7 @@ function CardFrame({ title, children }: { title?: string; children: ReactNode })
 
 // Which business a card is for, when the trader has more than one.
 function BusinessLine({ name }: { name?: string }) {
-  return name ? <p className="text-sm font-semibold text-flag-blue">{name}</p> : null;
+  return name ? <p className="text-sm font-semibold text-brand">{name}</p> : null;
 }
 
 // The business on a card's buttons. Left out for the first business, as before.
@@ -75,8 +75,8 @@ function CardButton({
 }: ActionProps & { action: ChatAction; label: string; doneLabel: string; variant?: "primary" | "secondary" }) {
   if (used.includes(buttonKey(action))) {
     return (
-      <span className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-green-text">
-        <CheckCircle2 size={18} aria-hidden="true" className="text-flag-green" />
+      <span className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-success-text">
+        <CheckCircle2 size={18} aria-hidden="true" className="text-success" />
         {doneLabel}
       </span>
     );
@@ -92,9 +92,9 @@ function EntryReceipt({ entry, ...props }: ActionProps & { entry: Extract<UiBloc
   return (
     <CardFrame>
       <div className="flex items-start gap-2">
-        <CheckCircle2 size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-flag-green" />
+        <CheckCircle2 size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-success" />
         <div className="min-w-0 flex-1">
-          <p className="font-semibold text-green-text">{t.recorded}</p>
+          <p className="font-semibold text-success-text">{t.recorded}</p>
           <p>
             {entry.kind === "sale" ? t.sale : entry.kind === "purchase" ? t.purchase : t.clientMoney}{" "}
             {formatMoney(entry.amount)} · {formatDate(entry.date)}
@@ -122,8 +122,8 @@ function LekukaLine({ status }: { status: keyof typeof t.lekuka }) {
   const verified = status === "verified";
   const Icon = verified ? ShieldCheck : Info;
   return (
-    <p className={`mt-2 flex gap-1.5 text-sm ${verified ? "font-semibold text-green-text" : "text-muted"}`}>
-      <Icon size={16} aria-hidden="true" className={`mt-0.5 shrink-0 ${verified ? "text-flag-green" : ""}`} />
+    <p className={`mt-2 flex gap-1.5 text-sm ${verified ? "font-semibold text-success-text" : "text-muted"}`}>
+      <Icon size={16} aria-hidden="true" className={`mt-0.5 shrink-0 ${verified ? "text-success" : ""}`} />
       <span>{t.lekuka[status]}</span>
     </p>
   );
@@ -264,7 +264,7 @@ function RegistrationCard({ block }: { block: Extract<UiBlock, { type: "registra
       <ul className="mt-1 space-y-1">
         {block.checklist.map((item) => (
           <li key={item} className="flex gap-2">
-            <Circle size={16} aria-hidden="true" className="mt-1 shrink-0 text-flag-blue" />
+            <Circle size={16} aria-hidden="true" className="mt-1 shrink-0 text-brand" />
             <span>{item}</span>
           </li>
         ))}
@@ -278,7 +278,7 @@ function RegistrationCard({ block }: { block: Extract<UiBlock, { type: "registra
               href={l.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-flag-blue px-4 text-sm font-semibold text-surface hover:opacity-90"
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-full bg-brand px-4 text-sm font-semibold text-surface hover:opacity-90"
             >
               {l.label}
               <ExternalLink size={16} aria-hidden="true" />
@@ -287,7 +287,7 @@ function RegistrationCard({ block }: { block: Extract<UiBlock, { type: "registra
           ))}
         </div>
       ) : null}
-      {block.officerNote && <p className="mt-2 font-semibold text-green-text">{block.officerNote}</p>}
+      {block.officerNote && <p className="mt-2 font-semibold text-success-text">{block.officerNote}</p>}
     </CardFrame>
   );
 }
@@ -301,9 +301,9 @@ function ObligationsCard({ block }: { block: Extract<UiBlock, { type: "obligatio
         {block.items.map((item) => (
           <li key={item.text} className="flex gap-2">
             {item.done ? (
-              <CheckCircle2 size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-flag-green" />
+              <CheckCircle2 size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-success" />
             ) : (
-              <Circle size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-flag-blue" />
+              <Circle size={18} aria-hidden="true" className="mt-0.5 shrink-0 text-brand" />
             )}
             <span>
               <span className="sr-only">{item.done ? t.obligationsDone : t.obligationsToDo}: </span>

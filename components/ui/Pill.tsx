@@ -10,7 +10,7 @@ const toneClasses: Record<Tone, string> = {
   checkin: "bg-status-checkin-bg text-status-checkin",
   none: "bg-status-none-bg text-status-none",
   neutral: "bg-page text-muted border border-line",
-  prototype: "bg-status-review-bg text-flag-blue",
+  prototype: "bg-brand-soft text-brand",
 };
 
 export function Pill({

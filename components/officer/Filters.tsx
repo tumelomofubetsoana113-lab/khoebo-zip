@@ -37,7 +37,7 @@ export function Filters({
                 aria-pressed={on}
                 onClick={() => onChange?.(toggleAction(query, action))}
                 className={`inline-flex min-h-10 items-center gap-1.5 rounded-full border px-3 text-sm font-medium ${
-                  on ? "border-flag-blue bg-flag-blue text-surface" : "border-line bg-surface text-ink hover:bg-page"
+                  on ? "border-brand bg-brand text-surface" : "border-line bg-surface text-ink hover:bg-page"
                 }`}
               >
                 {on && <Check size={16} aria-hidden />}
@@ -110,7 +110,7 @@ export function Filters({
         <button
           type="button"
           onClick={() => onChange?.({ actions: [], district: "", sector: "", search: "" })}
-          className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-semibold text-flag-blue hover:bg-page"
+          className="inline-flex min-h-11 items-center rounded-full px-3 text-sm font-semibold text-brand hover:bg-page"
         >
           {t.clear}
         </button>

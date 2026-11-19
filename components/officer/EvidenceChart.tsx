@@ -25,7 +25,7 @@ function FilingMarker({ status, x, y }: { status: FilingStatus; x: number; y: nu
   return (
     <g transform={`translate(${x - 8} ${y - 8})`} fill="none" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round">
       <title>{t.filing[status]}</title>
-      {status === "onTime" && <polyline points="3,8.5 6.5,12 13,4.5" className="stroke-green-text" />}
+      {status === "onTime" && <polyline points="3,8.5 6.5,12 13,4.5" className="stroke-success-text" />}
       {status === "late" && (
         <>
           <circle cx={8} cy={8} r={6.5} className="stroke-status-followup" strokeWidth={2} />
@@ -82,7 +82,7 @@ function Chart({ months, width, height, className }: { months: MonthFigures[]; w
             {/* An invisible column so hovering anywhere in the month shows its figures. */}
             <rect x={cx - groupW / 2} y={top} width={groupW} height={plotH} className="fill-surface" fillOpacity={0} />
             {m.declared !== null && (
-              <rect x={cx - barW - 2} y={top + plotH - declaredH} width={barW} height={declaredH} rx={3} className="fill-flag-blue" />
+              <rect x={cx - barW - 2} y={top + plotH - declaredH} width={barW} height={declaredH} rx={3} className="fill-brand" />
             )}
             <rect x={cx + 2} y={top + plotH - evidenceH} width={barW} height={evidenceH} rx={3} className="fill-muted" fillOpacity={0.4} />
             <text x={cx} y={top + plotH + 18} textAnchor="middle" className="fill-ink text-[12px]">
@@ -102,7 +102,7 @@ export function EvidenceChart({ months }: { months: MonthFigures[] }) {
     <figure>
       <ul className="mb-3 flex flex-wrap gap-x-5 gap-y-1 text-sm" aria-hidden>
         <li className="inline-flex items-center gap-2">
-          <span className="inline-block size-3 rounded-sm bg-flag-blue" />
+          <span className="inline-block size-3 rounded-sm bg-brand" />
           {t.chartLegendDeclared}
         </li>
         <li className="inline-flex items-center gap-2">
@@ -115,7 +115,7 @@ export function EvidenceChart({ months }: { months: MonthFigures[] }) {
       <Chart months={months} width={300} height={250} className="md:hidden" />
       <ul className="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-sm text-muted" aria-label={t.filingHeading}>
         <li className="inline-flex items-center gap-1.5">
-          <Check size={16} aria-hidden className="text-green-text" />
+          <Check size={16} aria-hidden className="text-success-text" />
           {t.filing.onTime}
         </li>
         <li className="inline-flex items-center gap-1.5">
@@ -130,7 +130,7 @@ export function EvidenceChart({ months }: { months: MonthFigures[] }) {
       <figcaption className="mt-3 text-sm text-muted">{t.chartNote}</figcaption>
 
       <details className="mt-4 rounded-card border border-line">
-        <summary className="flex min-h-11 cursor-pointer items-center px-3 text-sm font-semibold text-flag-blue">
+        <summary className="flex min-h-11 cursor-pointer items-center px-3 text-sm font-semibold text-brand">
           {mt.toggle}
         </summary>
         <div className="overflow-x-auto border-t border-line">

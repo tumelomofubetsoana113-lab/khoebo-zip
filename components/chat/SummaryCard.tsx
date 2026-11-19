@@ -38,7 +38,7 @@ export function SummaryCard({
         ))}
         <div className="flex justify-between gap-4 border-t border-line pt-1">
           <dt className="font-semibold">{t.profit}</dt>
-          <dd className="font-bold text-green-text">{profit}</dd>
+          <dd className="font-bold text-success-text">{profit}</dd>
         </div>
       </dl>
       {clientMoney && (

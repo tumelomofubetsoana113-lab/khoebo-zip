@@ -62,7 +62,7 @@ function Pairs({ rows }: { rows: { label: string; value: string; strong?: boolea
       {rows.map((row) => (
         <div key={row.label} className="flex justify-between gap-4">
           <dt className={row.strong ? "font-semibold" : "text-muted"}>{row.label}</dt>
-          <dd className={`text-right ${row.strong ? "font-bold text-green-text" : "font-semibold"}`}>{row.value}</dd>
+          <dd className={`text-right ${row.strong ? "font-bold text-success-text" : "font-semibold"}`}>{row.value}</dd>
         </div>
       ))}
     </dl>
@@ -119,7 +119,7 @@ function StatementView() {
     <div className="mx-auto w-full max-w-3xl px-4 py-4 sm:py-8 print:max-w-none print:p-0">
       {/* Controls: never printed. */}
       <div className="mb-4 space-y-3 print:hidden">
-        <Link href="/trader" className="inline-flex min-h-11 items-center gap-2 font-semibold text-flag-blue">
+        <Link href="/trader" className="inline-flex min-h-11 items-center gap-2 font-semibold text-brand">
           <ArrowLeft size={20} aria-hidden="true" />
           {t.backToChat}
         </Link>
@@ -175,7 +175,15 @@ function StatementView() {
       </div>
 
       {/* The statement itself. */}
-      <article className="rounded-card border border-line bg-surface p-4 sm:p-8 print:rounded-none print:border-0 print:p-0">
+      <article className="relative isolate overflow-hidden rounded-card border border-line bg-surface p-4 sm:p-8 print:overflow-visible print:rounded-none print:border-0 print:p-0">
+        {/* The Khoebo mark as a faint watermark. On screen it sits behind the
+            statement; when printed it is fixed, so it repeats on every page. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 flex items-center justify-center print:fixed"
+        >
+          <Logo size={420} className="h-auto max-w-[80%] opacity-[0.07]" />
+        </div>
         <header className="flex flex-wrap items-start justify-between gap-3">
           <div className="flex items-center gap-2">
             <Logo size={36} />
@@ -189,7 +197,7 @@ function StatementView() {
 
         <h1 className="mt-6 text-2xl font-bold">{st.isMonth ? t.monthTitle : t.allTitle}</h1>
         {several && (
-          <p className="text-lg font-semibold text-flag-blue">{st.businessName ?? strings.businesses.allBusinesses}</p>
+          <p className="text-lg font-semibold text-brand">{st.businessName ?? strings.businesses.allBusinesses}</p>
         )}
         <p className="text-muted">
           {st.title} · {formatDate(st.start)} to {formatDate(st.end)}

@@ -44,7 +44,7 @@ export function WorklistTable({ rows }: { rows: WorklistRow[] }) {
                 <th scope="row" className="px-3 py-2 font-semibold">
                   <Link
                     href={`/officer/${row.id}`}
-                    className="inline-flex min-h-10 items-center text-flag-blue underline-offset-2 hover:underline"
+                    className="inline-flex min-h-10 items-center text-brand underline-offset-2 hover:underline"
                   >
                     {row.label ? (
                       <span>
@@ -76,11 +76,11 @@ export function WorklistTable({ rows }: { rows: WorklistRow[] }) {
           <li key={row.id}>
             <Link
               href={`/officer/${row.id}`}
-              className="block rounded-card border border-line bg-surface p-4 hover:border-flag-blue"
+              className="block rounded-card border border-line bg-surface p-4 hover:border-brand"
             >
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
-                  <p className="font-semibold text-flag-blue">{name(row)}</p>
+                  <p className="font-semibold text-brand">{name(row)}</p>
                   <p className="text-sm text-muted">
                     {row.label ? `${row.id} · ` : ""}
                     {row.sector} · {row.district}

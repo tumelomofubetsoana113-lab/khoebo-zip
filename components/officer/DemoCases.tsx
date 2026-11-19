@@ -30,7 +30,7 @@ export function DemoCases({ traders }: { traders: WorklistTrader[] }) {
             <Link
               href={`/officer/${trader.id}`}
               aria-label={t.viewTrader(trader.label ?? trader.id)}
-              className="mt-3 inline-flex min-h-11 items-center gap-1 self-start rounded-full px-1 font-semibold text-flag-blue hover:underline"
+              className="mt-3 inline-flex min-h-11 items-center gap-1 self-start rounded-full px-1 font-semibold text-brand hover:underline"
             >
               {t.view}
               <ArrowRight size={18} aria-hidden />

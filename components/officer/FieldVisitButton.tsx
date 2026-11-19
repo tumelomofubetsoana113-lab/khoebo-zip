@@ -43,7 +43,7 @@ export function FieldVisitButton({ lead }: { lead: Lead }) {
           setUrl(`${window.location.origin}${fieldVisitPath(lead)}`);
           setOpen(true);
         }}
-        className="mt-3 inline-flex min-h-11 items-center gap-2 self-start rounded-full border border-flag-blue px-4 text-sm font-semibold text-flag-blue hover:bg-page"
+        className="mt-3 inline-flex min-h-11 items-center gap-2 self-start rounded-full border border-brand px-4 text-sm font-semibold text-brand hover:bg-page"
       >
         <QrCode size={18} aria-hidden />
         {t.button}
@@ -52,7 +52,7 @@ export function FieldVisitButton({ lead }: { lead: Lead }) {
         <p className="text-sm">{t.intro}</p>
         {url && <QrSvg text={url} label={t.qrLabel(lead.kind, lead.district)} />}
         <p className="mt-2 text-sm font-semibold">{t.linkLabel}</p>
-        <a href={url} className="block break-all text-sm text-flag-blue underline">
+        <a href={url} className="block break-all text-sm text-brand underline">
           {url}
         </a>
         <p className="mt-3 text-sm text-muted">{t.note}</p>

@@ -543,6 +543,7 @@ export const strings = {
       howItWorks: "How it works",
       forOfficers: "For officers",
       results: "Results",
+      officerView: "Officer view",
       tryChat: "Try the chat",
       openMenu: "Open menu",
       closeMenu: "Close menu",
@@ -550,11 +551,29 @@ export const strings = {
     hero: {
       eyebrow: "For informal traders and RSL officers",
       headline: "Keep your business records in a chat. File your tax return in a minute.",
+      // The headline in two parts: the second is shown in the brand colour.
+      headlineStart: "Keep your business records in a chat.",
+      headlineAccent: "File your tax return in a minute.",
       subline:
         "Khoebo helps traders in Lesotho log sales by message, see what their business earns each week, and file a pre-filled return. RSL officers get a short list of who to follow up, with the reasons written out.",
       primary: "Try it as a trader",
       secondary: "Open the officer view",
+      checks: ["Reads messages in Sesotho or English", "No bookkeeping skills needed"],
       phoneLabel: "Example chat with Khoebo",
+      // The example chat card beside the headline (a static illustration).
+      card: {
+        initials: "PM",
+        title: "Maseru Central Market",
+        subtitle: "Example trader chat",
+        status: "Active",
+        trader: "Ke rekisitse M420 ea meroho kajeno",
+        translation: "I sold M420 of vegetables today",
+        time: "17:42",
+        replyTitle: "M420 recorded.",
+        replyBody: "Total this week: M2,150.",
+        footer: "Sunday summary ready",
+        review: "See it",
+      },
       // A static illustration of the chat, not tool output.
       demo: {
         trader1: "sold 350 today",
@@ -569,9 +588,15 @@ export const strings = {
     },
     problem:
       "A nil return doesn't always mean someone is hiding income. Many traders are seasonal, or have closed, or just never kept records. Khoebo helps traders keep those records, and helps RSL tell the difference.",
+    // The quote band under the hero. Khoebo's own words, not RSL's.
+    quote: {
+      text: "A nil return doesn't always mean someone is hiding income. Khoebo helps traders keep records, and helps RSL tell the difference.",
+      source: "Why we built Khoebo",
+    },
     // Added 17 November 2026: RSL asked to see the whole pipeline, from finding
     // an informal operator to a taxpayer who keeps complying.
     pipeline: {
+      eyebrow: "The pipeline",
       heading: "From the street to the tax net",
       lead: "Khoebo covers every step, from finding informal operators to keeping them compliant, with the least effort for the trader and for RSL.",
       who: "For street and market sellers, spaza shops, hair salons, repairers, flea market and online sellers, couriers, and runners who buy goods in South Africa or Botswana for clients.",
@@ -610,18 +635,34 @@ export const strings = {
       link: "See both officer lists",
     },
     howItWorks: {
-      heading: "How it works for traders",
+      eyebrow: "Simple for traders",
+      heading: "How it works",
+      lead: "No new system to learn. Traders keep doing business as usual, and Khoebo does the sums and fills in the return.",
       steps: [
-        { title: "Log a sale", body: "Send a short message or voice note, like 'sold 350 today'." },
-        { title: "See your week", body: "Get money in, money out and profit every Sunday." },
-        { title: "Get a reminder", body: "A message before each due date, with your estimated tax." },
+        {
+          title: "Log a sale",
+          body: "Send a short message or voice note, like 'sold 350 today'.",
+          footer: "Text or voice note",
+        },
+        {
+          title: "See your week",
+          body: "Money in, money out and profit every Sunday, with no sums to do.",
+          footer: "Weekly summary",
+        },
+        {
+          title: "Get a reminder",
+          body: "A message before each due date, with your estimated tax.",
+          footer: "Before every due date",
+        },
         {
           title: "File in a minute",
-          body: "Your return is filled in from your records. You check it and confirm.",
+          body: "Your return is filled in from your records. You check it and tap Confirm.",
+          footer: "Mock filing in this prototype",
         },
       ],
     },
     officers: {
+      eyebrow: "Officer view",
       heading: "For RSL officers",
       lead: "Every trader is placed in one of four actions. Each one shows the evidence behind it, and the officer always makes the final call.",
       actions: {
@@ -651,11 +692,12 @@ export const strings = {
       },
     },
     lesotho: {
+      eyebrow: "Fit for purpose",
       heading: "Built for Lesotho",
       items: [
         {
-          title: "Ready for WhatsApp",
-          body: "The prototype runs in the browser. In a pilot, the same assistant runs on WhatsApp, with SMS for basic phones.",
+          title: "Ready for messaging apps",
+          body: "The prototype runs in the browser. In a pilot, the same assistant runs in a messaging app, with SMS for basic phones.",
         },
         { title: "Light on data", body: "Small pages and short messages that work on a weak connection." },
         {
@@ -669,6 +711,7 @@ export const strings = {
       ],
     },
     results: {
+      eyebrow: "Evidence",
       heading: "Tested on simulated data",
       fewerCases: (pct: number) => `${pct}% fewer officer cases`,
       fewerCasesLabel: "than following up every nil return",
@@ -683,6 +726,7 @@ export const strings = {
     },
     closing: {
       heading: "See it for yourself.",
+      body: "Try the trader chat with a demo trader, or open the officer worklist built from simulated data.",
       chat: "Try the trader chat",
       officer: "Open the officer view",
     },

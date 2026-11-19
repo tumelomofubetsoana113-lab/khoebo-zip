@@ -46,7 +46,7 @@ export default async function TraderPage({ params }: PageProps<"/officer/[id]">)
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
         <Link
           href="/officer"
-          className="inline-flex min-h-11 items-center gap-1.5 rounded-full pr-3 font-semibold text-flag-blue hover:underline"
+          className="inline-flex min-h-11 items-center gap-1.5 rounded-full pr-3 font-semibold text-brand hover:underline"
         >
           <ArrowLeft size={18} aria-hidden />
           {t.back}

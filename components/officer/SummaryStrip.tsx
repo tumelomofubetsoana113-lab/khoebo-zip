@@ -28,8 +28,8 @@ export function SummaryStrip({
               onClick={() => onToggle?.(action)}
               aria-pressed={on}
               aria-label={`${t.summaryFilter(strings.actions[action])}: ${counts[action]}`}
-              className={`flex h-full w-full flex-col items-start gap-2 rounded-card border bg-surface p-4 text-left transition-colors hover:border-flag-blue ${
-                on ? "border-flag-blue ring-2 ring-flag-blue" : "border-line"
+              className={`flex h-full w-full flex-col items-start gap-2 rounded-card border bg-surface p-4 text-left transition-colors hover:border-brand ${
+                on ? "border-brand ring-2 ring-brand" : "border-line"
               }`}
             >
               <ActionPill action={action} />
