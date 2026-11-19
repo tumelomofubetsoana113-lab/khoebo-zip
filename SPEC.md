@@ -1310,3 +1310,13 @@ At the owner's request, a registered trader's ID on the officer side is now thei
 - **App.** `WorklistTraderSchema` now accepts only 12 digits. The table column and search box say "National ID", with "e.g. 699995807895". Trader pages are at `/officer/<national ID>`. Officer notes saved in a browser under the old IDs no longer show.
 - **Not changed.** Potential registrants keep `LEAD-…` IDs: they aren't registered, so RSL wouldn't hold their national ID.
 - **Checked:** 234 tests pass (the worklist tests use the new IDs), as do lint and the build. On a local production build the worklist shows the IDs, a search for part of one finds it, the demo case and example pages open, and an old ID finds no trader.
+
+### Presentation cut to 10 minutes, in the app's colours (19 November 2026)
+
+At the owner's request, the deck in the Blueprint folder was rebuilt for a 10-minute talk, mostly live demo. The 17 November version is kept beside it as "Khoebo RSL Taxathon Presentation (17 Nov version).pptx".
+
+- **Colours:** the app's own tokens: charcoal title and closing slides, white content slides, RSL orange icons and accents, and the app's action pill colours. The footer reads "© Khoebo 2026". No slide says "prototype" or "simulated".
+- **Cut:** the two problem slides (RSL's problem and the trader's side). The step-by-step slides became two backup slides, for use only if the demo can't run.
+- **Order:** title; Khoebo in one slide; four live demo slides (the trader chat with all its features, on WhatsApp in the pilot; the home screen and statements; the officer worklist; potential registrants and the field-visit QR code); test results; trust; the pilot; thank you. Then five backup slides. Speaker notes give each slide's time and the demo steps, about 10 minutes in all.
+- **Screenshots** were retaken from a local production build of the current app. The field-visit QR code points at the live site.
+- **Wording kept honest:** statements are monthly or the full record (returns are quarterly); WhatsApp and SMS are described as the pilot, with the browser chat working today; officer list results are averages over test groups we built ourselves.
