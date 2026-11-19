@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { scopedKey } from "./storage-scope";
 
 // Officer decisions on the trader detail page. In this demo they live in
 // the officer's browser (localStorage); in a pilot they go to RSL's case system.
@@ -51,7 +52,7 @@ function defaultStore(): KeyValueStore | null {
 // An empty log when nothing is saved or the saved value is broken. Never throws.
 export function loadDecisions(store: KeyValueStore | null = defaultStore()): DecisionLog {
   try {
-    const raw = store?.getItem(DECISIONS_KEY);
+    const raw = store?.getItem(scopedKey(DECISIONS_KEY));
     if (!raw) return {};
     const parsed = DecisionLogSchema.safeParse(JSON.parse(raw));
     return parsed.success ? parsed.data : {};
@@ -63,7 +64,7 @@ export function loadDecisions(store: KeyValueStore | null = defaultStore()): Dec
 export function saveDecisions(log: DecisionLog, store: KeyValueStore | null = defaultStore()): boolean {
   try {
     if (!store) return false;
-    store.setItem(DECISIONS_KEY, JSON.stringify(log));
+    store.setItem(scopedKey(DECISIONS_KEY), JSON.stringify(log));
     return true;
   } catch {
     return false;

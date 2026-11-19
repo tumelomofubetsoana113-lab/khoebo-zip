@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { RequireRole } from "@/components/auth/RequireRole";
 import { ChatShell } from "@/components/chat/ChatShell";
 
 export const metadata: Metadata = {
@@ -6,5 +7,13 @@ export const metadata: Metadata = {
 };
 
 export default function TraderPage() {
+  return (
+    <RequireRole role="trader">
+      <TraderPageContent />
+    </RequireRole>
+  );
+}
+
+function TraderPageContent() {
   return <ChatShell />;
 }

@@ -1,4 +1,4 @@
-import { ArrowRight, LayoutList } from "lucide-react";
+import { ArrowRight, LogIn } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import { strings } from "@/lib/strings";
 
@@ -13,13 +13,13 @@ export function ClosingBand() {
           <p className="mt-2 max-w-lg text-surface/70">{t.body}</p>
         </div>
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-          <ButtonLink href="/trader">
+          <ButtonLink href="/signup">
             {t.chat}
             <ArrowRight size={18} aria-hidden="true" />
           </ButtonLink>
-          <ButtonLink href="/officer" variant="inverse-outline">
+          <ButtonLink href="/login" variant="inverse-outline">
             {t.officer}
-            <LayoutList size={18} aria-hidden="true" />
+            <LogIn size={18} aria-hidden="true" />
           </ButtonLink>
         </div>
       </div>

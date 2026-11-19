@@ -6,6 +6,10 @@
 //   EVAL_URL=https://... npm run eval:chat     against another server
 //   EVAL_REPEAT=3 npm run eval:chat            run each case 3 times
 //   EVAL_ONLY="350|RSL" npm run eval:chat      only cases whose message matches
+//
+// The chat API needs a signed-in trader. For the eval, start the server with
+// CHAT_EVAL_KEY set (16+ characters, never on Vercel) and run the eval with the
+// same CHAT_EVAL_KEY.
 
 import { readFileSync } from "node:fs";
 
@@ -189,7 +193,7 @@ async function run(c: Case): Promise<{ problems: string[]; res?: ChatResponse }>
   );
   const response = await fetch(`${BASE_URL}/api/chat`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "x-khoebo-eval-key": process.env.CHAT_EVAL_KEY ?? "" },
     body: JSON.stringify({ messages: [...(c.history ?? []), { role: "user", content: c.message }], state }),
   });
   if (!response.ok) return { problems: [`HTTP ${response.status}: ${await response.text()}`] };

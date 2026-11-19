@@ -1,4 +1,5 @@
 import { ArrowLeft } from "lucide-react";
+import { RequireRole } from "@/components/auth/RequireRole";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -25,7 +26,15 @@ export async function generateMetadata({ params }: PageProps<"/officer/[id]">): 
   return { title: trader ? (trader.label ?? trader.id) : strings.officer.metaTitle };
 }
 
-export default async function TraderPage({ params }: PageProps<"/officer/[id]">) {
+export default function TraderPage(props: PageProps<"/officer/[id]">) {
+  return (
+    <RequireRole role="officer">
+      <TraderPageContent {...props} />
+    </RequireRole>
+  );
+}
+
+async function TraderPageContent({ params }: PageProps<"/officer/[id]">) {
   const trader = getTrader((await params).id);
   if (!trader) notFound();
 

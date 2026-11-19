@@ -1,4 +1,5 @@
 import { Database } from "lucide-react";
+import { RequireRole } from "@/components/auth/RequireRole";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { LeadCard } from "@/components/officer/LeadCard";
@@ -21,6 +22,14 @@ export const metadata: Metadata = { title: t.metaTitle };
 
 // Operators outside the tax net, found through third-party signals.
 export default function LeadsPage() {
+  return (
+    <RequireRole role="officer">
+      <LeadsPageContent />
+    </RequireRole>
+  );
+}
+
+function LeadsPageContent() {
   const counts = leadCounts(leads);
   const worklistCounts = Object.fromEntries(
     RULE_ACTIONS.map((a) => [ACTION_KEY[a], worklist.counts[a]]),

@@ -1,4 +1,4 @@
-import { ArrowRight, CheckCircle2, LayoutList } from "lucide-react";
+import { ArrowRight, CheckCircle2, LogIn } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import { strings } from "@/lib/strings";
 
@@ -64,13 +64,13 @@ export function Hero() {
           </h1>
           <p className="mt-5 text-lg text-muted">{t.subline}</p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-            <ButtonLink href="/trader">
+            <ButtonLink href="/signup">
               {t.primary}
               <ArrowRight size={18} aria-hidden="true" />
             </ButtonLink>
-            <ButtonLink href="/officer" variant="outline">
+            <ButtonLink href="/login" variant="outline">
               {t.secondary}
-              <LayoutList size={18} aria-hidden="true" />
+              <LogIn size={18} aria-hidden="true" />
             </ButtonLink>
           </div>
           <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted">

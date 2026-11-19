@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import type { ChatResponse } from "@/app/api/chat/route";
+import { useAccount } from "@/components/auth/AccountProvider";
+import { LogoutIconButton } from "@/components/auth/LogoutButton";
 import { Logo } from "@/components/ui/Logo";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import type { ChatAction } from "@/lib/blocks";
@@ -81,6 +83,7 @@ function ChatHeader({ onDemo }: { onDemo?: () => void }) {
         >
           {t.demo}
         </button>
+        <LogoutIconButton />
       </header>
     </>
   );
@@ -115,9 +118,13 @@ function ReceiptPreview({ kind, file }: { kind: "photo" | "pdf"; file?: ReceiptA
 }
 
 function ChatSession() {
+  const account = useAccount();
   // An officer's field-visit link fills in the set-up on a phone that isn't set up yet.
+  // The name comes from the account when the records don't have one yet.
   const [start] = useState(() => {
-    const saved = loadState();
+    const loaded = loadState();
+    const saved =
+      account && !loaded.profile.name ? { ...loaded, profile: { ...loaded.profile, name: account.fullName } } : loaded;
     return fieldVisitStart(window.location.search, saved, new Date().toISOString()) ?? { state: saved, message: null };
   });
   const [trader, setTrader] = useState<TraderState>(start.state);
@@ -212,6 +219,8 @@ function ChatSession() {
           signal: controller.signal,
         });
         clearTimeout(timer);
+        // The session ran out: log in again, then come back to the chat.
+        if (response.status === 401) router.push("/login?next=/trader");
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = (await response.json()) as ChatResponse;
 
@@ -234,7 +243,7 @@ function ChatSession() {
         setPending(false);
       }
     },
-    [pending, updateMessage],
+    [pending, updateMessage, router],
   );
 
   function retry(message: ChatMessage) {

@@ -1,5 +1,4 @@
-import { ArrowRight, ClipboardCheck, FileCheck2, MessageSquare, Search, Send, UserPlus } from "lucide-react";
-import Link from "next/link";
+import { ClipboardCheck, FileCheck2, MessageSquare, Search, Send, UserPlus } from "lucide-react";
 import { strings } from "@/lib/strings";
 import { IconCircle } from "./IconCircle";
 import { SectionHeading } from "./SectionHeading";
@@ -32,13 +31,6 @@ export function Pipeline() {
           ))}
         </ol>
         <p className="mt-6 max-w-3xl">{t.who}</p>
-        <Link
-          href="/officer/leads"
-          className="mt-4 inline-flex min-h-11 items-center gap-1 rounded-lg font-semibold text-brand hover:underline"
-        >
-          {t.link}
-          <ArrowRight size={18} aria-hidden />
-        </Link>
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { RequireRole } from "@/components/auth/RequireRole";
 import { Suspense } from "react";
 import { DemoCases } from "@/components/officer/DemoCases";
 import { OfficerHeader } from "@/components/officer/OfficerHeader";
@@ -18,6 +19,14 @@ const t = strings.officer;
 export const metadata: Metadata = { title: t.metaTitle };
 
 export default function OfficerPage() {
+  return (
+    <RequireRole role="officer">
+      <OfficerPageContent />
+    </RequireRole>
+  );
+}
+
+function OfficerPageContent() {
   const rows = worklistRows();
   const counts = Object.fromEntries(
     RULE_ACTIONS.map((a) => [ACTION_KEY[a], worklist.counts[a]]),

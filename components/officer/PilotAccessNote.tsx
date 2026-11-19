@@ -1,8 +1,8 @@
 import { Lock } from "lucide-react";
 import { strings } from "@/lib/strings";
 
-// The officer pages are open in this demo because all data is simulated.
-// This says plainly that a pilot would put them behind RSL sign-in.
+// Since 19 November 2026 the officer pages need an officer account
+// (components/auth/RequireRole.tsx), and this says so.
 export function PilotAccessNote({ className = "" }: { className?: string }) {
   return (
     <p className={`flex items-start gap-1.5 text-sm text-muted ${className}`}>

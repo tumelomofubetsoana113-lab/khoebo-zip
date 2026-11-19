@@ -3,10 +3,12 @@
 // request and saves the state that comes back.
 
 import Anthropic from "@anthropic-ai/sdk";
+import { timingSafeEqual } from "node:crypto";
 import { z } from "zod";
 import { blocksToShow } from "@/lib/blocks";
 import { todayISO } from "@/lib/dates";
 import { contextBlock, SYSTEM_PROMPT } from "@/lib/prompt";
+import { currentAccount } from "@/lib/server/session";
 import { attachmentLooksValid, MAX_ATTACHMENT_CHARS, ReceiptAttachmentSchema } from "@/lib/receipts";
 import { TraderStateSchema, type TraderState } from "@/lib/state";
 import { strings } from "@/lib/strings";
@@ -103,8 +105,24 @@ function json(body: unknown, status = 200) {
   return Response.json(body, { status, headers: { "Cache-Control": "no-store" } });
 }
 
+// Only a signed-in trader can use the chat (added 19 Nov 2026), so the public
+// link can't be used to spend on the model. The chat eval can run against a
+// laptop with CHAT_EVAL_KEY set instead; that key is never accepted on Vercel.
+async function allowed(request: Request): Promise<boolean> {
+  const evalKey = process.env.CHAT_EVAL_KEY;
+  const sent = request.headers.get("x-khoebo-eval-key");
+  if (!process.env.VERCEL && evalKey && evalKey.length >= 16 && sent) {
+    const a = new TextEncoder().encode(sent);
+    const b = new TextEncoder().encode(evalKey);
+    if (a.length === b.length && timingSafeEqual(a, b)) return true;
+  }
+  const account = await currentAccount();
+  return account?.role === "trader";
+}
+
 export async function POST(request: Request) {
   const started = Date.now();
+  if (!(await allowed(request))) return json({ error: "signed_out" }, 401);
 
   const declared = Number(request.headers.get("content-length") ?? 0);
   if (declared > MAX_BODY_WITH_RECEIPT_BYTES) return json({ error: "too_large" }, 413);

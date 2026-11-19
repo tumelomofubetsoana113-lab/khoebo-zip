@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { scopedKey } from "./storage-scope";
 
 // The trader's whole record. It lives in the browser's localStorage and is
 // sent with every chat request, so the API validates it with these schemas.
@@ -105,7 +106,7 @@ function defaultStore(): KeyValueStore | null {
 // or storage can't be read. Never throws.
 export function loadState(store: KeyValueStore | null = defaultStore()): TraderState {
   try {
-    const raw = store?.getItem(STORAGE_KEY);
+    const raw = store?.getItem(scopedKey(STORAGE_KEY));
     if (!raw) return emptyState();
     const parsed = TraderStateSchema.safeParse(JSON.parse(raw));
     return parsed.success ? parsed.data : emptyState();
@@ -118,7 +119,7 @@ export function loadState(store: KeyValueStore | null = defaultStore()): TraderS
 export function saveState(state: TraderState, store: KeyValueStore | null = defaultStore()): boolean {
   try {
     if (!store) return false;
-    store.setItem(STORAGE_KEY, JSON.stringify(state));
+    store.setItem(scopedKey(STORAGE_KEY), JSON.stringify(state));
     return true;
   } catch {
     return false;
@@ -127,7 +128,7 @@ export function saveState(state: TraderState, store: KeyValueStore | null = defa
 
 export function clearState(store: KeyValueStore | null = defaultStore()): void {
   try {
-    store?.removeItem(STORAGE_KEY);
+    store?.removeItem(scopedKey(STORAGE_KEY));
   } catch {
     // nothing to clear
   }

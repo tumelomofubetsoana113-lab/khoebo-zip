@@ -77,7 +77,7 @@ function attachmentFor(file: string) {
 async function post(body: unknown): Promise<ChatResponse> {
   const response = await fetch(`${BASE_URL}/api/chat`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "x-khoebo-eval-key": process.env.CHAT_EVAL_KEY ?? "" },
     body: JSON.stringify(body),
   });
   if (!response.ok) throw new Error(`HTTP ${response.status}: ${await response.text()}`);

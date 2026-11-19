@@ -5,6 +5,7 @@ import { z } from "zod";
 import { strings } from "./strings";
 import { ChatActionSchema, type ChatAction, type UiBlock } from "./blocks";
 import type { TraderState } from "./state";
+import { scopedKey } from "./storage-scope";
 
 export type ChatMessage = {
   id: string;
@@ -165,7 +166,7 @@ function defaultStore(): Store | null {
 
 export function loadChat(store: Store | null = defaultStore()): ChatMessage[] | null {
   try {
-    const raw = store?.getItem(CHAT_KEY);
+    const raw = store?.getItem(scopedKey(CHAT_KEY));
     if (!raw) return null;
     const parsed = z.array(ChatMessageSchema).safeParse(JSON.parse(raw));
     if (!parsed.success) return null;
@@ -178,7 +179,7 @@ export function loadChat(store: Store | null = defaultStore()): ChatMessage[] | 
 
 export function saveChat(messages: ChatMessage[], store: Store | null = defaultStore()): void {
   try {
-    store?.setItem(CHAT_KEY, JSON.stringify(messages.slice(-MAX_SAVED)));
+    store?.setItem(scopedKey(CHAT_KEY), JSON.stringify(messages.slice(-MAX_SAVED)));
   } catch {
     // storage full or blocked: the chat still works for this visit
   }
@@ -186,7 +187,7 @@ export function saveChat(messages: ChatMessage[], store: Store | null = defaultS
 
 export function clearChat(store: Store | null = defaultStore()): void {
   try {
-    store?.removeItem(CHAT_KEY);
+    store?.removeItem(scopedKey(CHAT_KEY));
   } catch {
     // nothing to clear
   }

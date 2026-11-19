@@ -1,4 +1,4 @@
-import { ArrowRight, LayoutList } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/Button";
 import { SiteHeader } from "@/components/ui/SiteHeader";
@@ -15,7 +15,8 @@ const links = [
 
 // The anchor links sit in a rounded group in the middle of the bar from
 // 1024px up. Below that they are in a three-line menu, and the button stays
-// in the bar beside it.
+// in the bar beside it. Since 19 November 2026 the landing page has no links
+// into the trader or officer pages: everyone logs in or signs up first.
 export function Header() {
   return (
     <SiteHeader
@@ -37,17 +38,16 @@ export function Header() {
       }
     >
       <Link
-        href="/officer"
-        className="hidden min-h-11 items-center gap-1.5 rounded-full px-2 text-sm font-semibold text-surface/85 hover:text-surface xl:inline-flex"
+        href="/login"
+        className="hidden min-h-11 items-center rounded-full px-3 text-sm font-semibold text-surface/85 hover:text-surface sm:inline-flex"
       >
-        <LayoutList size={16} aria-hidden="true" />
-        {t.officerView}
+        {t.login}
       </Link>
-      <ButtonLink href="/trader" size="sm" pill>
-        {t.tryChat}
+      <ButtonLink href="/signup" size="sm" pill>
+        {t.signup}
         <ArrowRight size={16} aria-hidden="true" />
       </ButtonLink>
-      <MobileMenu links={[...links, { href: "/officer", label: t.officerView }]} />
+      <MobileMenu links={[...links, { href: "/login", label: t.login }]} />
     </SiteHeader>
   );
 }
