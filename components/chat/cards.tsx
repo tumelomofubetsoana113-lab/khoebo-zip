@@ -11,6 +11,7 @@ import { formatDate } from "@/lib/dates";
 import { formatMoney } from "@/lib/ledger";
 import { statementPath } from "@/lib/statement";
 import { strings } from "@/lib/strings";
+import { BusinessRows } from "./BusinessRows";
 import { SummaryCard } from "./SummaryCard";
 
 const t = strings.chat.cards;
@@ -28,6 +29,16 @@ function CardFrame({ title, children }: { title?: string; children: ReactNode })
       {children}
     </div>
   );
+}
+
+// Which business a card is for, when the trader has more than one.
+function BusinessLine({ name }: { name?: string }) {
+  return name ? <p className="text-sm font-semibold text-flag-blue">{name}</p> : null;
+}
+
+// The business on a card's buttons. Left out for the first business, as before.
+function forBusiness(id?: string): { businessId?: string } {
+  return id && id !== "main" ? { businessId: id } : {};
 }
 
 function Rows({ rows }: { rows: { label: string; value: string }[] }) {
@@ -128,12 +139,15 @@ function ReceiptCard({ block, ...props }: ActionProps & { block: Extract<UiBlock
     invoiceNumber: block.invoiceNumber,
     deviceId: block.deviceId,
     verificationCode: block.verificationCode,
+    ...forBusiness(block.businessId),
   };
   const change: ChatAction = { type: "change_receipt", receiptId: block.receiptId, total: block.total, date: block.date };
   const saved = props.used.includes(buttonKey(save));
   const changing = props.used.includes(buttonKey(change));
+  const choices = block.businesses?.length ? block.businesses : null;
   return (
     <CardFrame title={t.receiptTitle}>
+      <BusinessLine name={block.businessName} />
       <Rows
         rows={[
           ...(block.supplier ? [{ label: t.supplier, value: block.supplier }] : []),
@@ -145,7 +159,24 @@ function ReceiptCard({ block, ...props }: ActionProps & { block: Extract<UiBlock
       {block.dateAssumed && <PlaceholderNote text={t.dateAssumed} />}
       {block.possibleDuplicate && <PlaceholderNote text={t.possibleDuplicate} />}
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        {!changing && <CardButton {...props} action={save} label={t.savePurchase} doneLabel={t.saved} />}
+        {!changing &&
+          (choices ? (
+            saved ? (
+              <CardButton {...props} action={save} label={t.savePurchase} doneLabel={t.saved} />
+            ) : (
+              choices.map((b) => (
+                <CardButton
+                  key={b.id}
+                  {...props}
+                  action={{ ...save, ...forBusiness(b.id) }}
+                  label={strings.businesses.saveTo(b.name)}
+                  doneLabel={strings.businesses.savedTo(b.name)}
+                />
+              ))
+            )
+          ) : (
+            <CardButton {...props} action={save} label={t.savePurchase} doneLabel={t.saved} />
+          ))}
         {!saved && <CardButton {...props} action={change} label={t.change} doneLabel={t.change} variant="secondary" />}
       </div>
     </CardFrame>
@@ -153,11 +184,13 @@ function ReceiptCard({ block, ...props }: ActionProps & { block: Extract<UiBlock
 }
 
 function ReturnCard({ block, ...props }: ActionProps & { block: Extract<UiBlock, { type: "return_card" }> }) {
-  const confirm: ChatAction = { type: "confirm_return", period: block.period, turnover: block.turnover };
-  const change: ChatAction = { type: "change_return", period: block.period };
+  const b = forBusiness(block.businessId);
+  const confirm: ChatAction = { type: "confirm_return", period: block.period, turnover: block.turnover, ...b };
+  const change: ChatAction = { type: "change_return", period: block.period, ...b };
   const confirmed = props.used.includes(buttonKey(confirm));
   return (
     <CardFrame title={t.returnTitle(block.period)}>
+      <BusinessLine name={block.businessName} />
       <p className="text-sm text-muted">{t.periodDates(formatDate(block.start), formatDate(block.end))}</p>
       <Rows
         rows={[
@@ -180,6 +213,7 @@ function ReturnCard({ block, ...props }: ActionProps & { block: Extract<UiBlock,
 function PaymentCard({ block, ...props }: ActionProps & { block: Extract<UiBlock, { type: "payment_card" }> }) {
   return (
     <CardFrame title={t.paymentTitle}>
+      <BusinessLine name={block.businessName} />
       <Rows
         rows={[
           { label: t.amount, value: formatMoney(block.amount) },
@@ -189,7 +223,12 @@ function PaymentCard({ block, ...props }: ActionProps & { block: Extract<UiBlock
       <PlaceholderNote text={t.noRealMoney} />
       {block.note && <PlaceholderNote text={block.note} />}
       <div className="mt-3">
-        <CardButton {...props} action={{ type: "pay_return", period: block.period }} label={t.pay} doneLabel={t.paid} />
+        <CardButton
+          {...props}
+          action={{ type: "pay_return", period: block.period, ...forBusiness(block.businessId) }}
+          label={t.pay}
+          doneLabel={t.paid}
+        />
       </div>
     </CardFrame>
   );
@@ -198,6 +237,7 @@ function PaymentCard({ block, ...props }: ActionProps & { block: Extract<UiBlock
 function ReminderCard({ block, ...props }: ActionProps & { block: Extract<UiBlock, { type: "reminder_card" }> }) {
   return (
     <CardFrame title={t.reminderTitle(block.period)}>
+      <BusinessLine name={block.businessName} />
       <Rows
         rows={[
           { label: t.dueDate, value: formatDate(block.dueDate) },
@@ -206,7 +246,12 @@ function ReminderCard({ block, ...props }: ActionProps & { block: Extract<UiBloc
       />
       {block.note && <PlaceholderNote text={block.note} />}
       <div className="mt-3">
-        <CardButton {...props} action={{ type: "file_now", period: block.period }} label={t.fileNow} doneLabel={t.done} />
+        <CardButton
+          {...props}
+          action={{ type: "file_now", period: block.period, ...forBusiness(block.businessId) }}
+          label={t.fileNow}
+          doneLabel={t.done}
+        />
       </div>
     </CardFrame>
   );
@@ -278,6 +323,7 @@ function StatementCard({ block }: { block: Extract<UiBlock, { type: "statement_c
   const st = strings.chat.statement;
   return (
     <CardFrame title={st.cardTitle(block.title)}>
+      <BusinessLine name={block.businessName} />
       <p className="text-sm text-muted">{t.periodDates(formatDate(block.start), formatDate(block.end))}</p>
       <Rows
         rows={[
@@ -288,13 +334,14 @@ function StatementCard({ block }: { block: Extract<UiBlock, { type: "statement_c
         ]}
       />
       <p className="mt-2 text-sm text-muted">{strings.chat.summary.entries(block.entryCount)}</p>
+      <BusinessRows rows={block.byBusiness} />
       <PlaceholderNote text={st.disclaimer} />
       <div className="mt-3 flex flex-wrap items-center gap-2">
-        <ButtonLink href={statementPath(block.period)} size="sm">
+        <ButtonLink href={statementPath(block.period, block.businessId)} size="sm">
           <FileText size={16} aria-hidden="true" />
           {st.open}
         </ButtonLink>
-        <Button variant="secondary" size="sm" onClick={() => downloadSavedStatement(block.period)}>
+        <Button variant="secondary" size="sm" onClick={() => downloadSavedStatement(block.period, block.businessId)}>
           <Download size={16} aria-hidden="true" />
           {st.download}
         </Button>
@@ -321,6 +368,7 @@ export function UiBlocks({ blocks, ...props }: ActionProps & { blocks: UiBlock[]
                 clientMoney={block.clientMoney ? formatMoney(block.clientMoney) : undefined}
                 profit={formatMoney(block.profit)}
                 entries={block.entryCount}
+                byBusiness={block.byBusiness}
               />
             );
           case "return_card":

@@ -6,6 +6,8 @@
 import { TAX } from "@/config/tax";
 import { daysInMonth, formatDate, ymd, type DateRange } from "./dates";
 import { roundMoney, summarize, type Summary } from "./ledger";
+import type { BusinessTotals } from "./blocks";
+import { businessIdOf, businessList, entriesFor, hasSeveralBusinesses } from "./businesses";
 import type { Entry, FiledReturn, TraderState } from "./state";
 import { strings } from "./strings";
 import { periodRange } from "./tax";
@@ -77,7 +79,7 @@ export type MonthTotals = Pick<Summary, "moneyIn" | "moneyOut" | "clientMoney" |
   month: string;
 };
 
-export type StatementReturn = FiledReturn & DateRange;
+export type StatementReturn = FiledReturn & DateRange & { businessName?: string };
 
 export type Statement = DateRange & {
   key: StatementKey;
@@ -90,12 +92,46 @@ export type Statement = DateRange & {
   returns: StatementReturn[]; // filed returns whose period overlaps this one
   taxNote: string | null; // the placeholder note, when a return's tax is shown
   madeOn: string; // YYYY-MM-DD
+  // A trader with several businesses: the one this statement is for, or a
+  // line for each business when it covers them all. Missing for one business.
+  businessId?: string;
+  businessName?: string;
+  byBusiness?: BusinessTotals[];
+  businessNames?: Record<string, string>; // id -> name, to label entries and returns
+  // The detail rows at the top: the chosen business's own type and district,
+  // the list of names when it covers several businesses, or the profile's.
+  details: { label: string; value: string }[];
 };
 
-export function buildStatement(state: TraderState, key: StatementKey, today: string): Statement {
-  const range = statementRange(key, state.entries, today);
-  const summary = summarize(state.entries, range, today);
-  const entries = state.entries
+function detailRows(state: TraderState, one?: { name: string; type?: string; district?: string }) {
+  const p = state.profile;
+  const b = strings.businesses;
+  if (one) {
+    return [
+      { label: b.business, value: one.name },
+      { label: b.typeLabel, value: one.type ?? s.notGiven },
+      { label: s.district, value: one.district ?? s.notGiven },
+    ];
+  }
+  if (hasSeveralBusinesses(state)) {
+    return [{ label: b.businessesLabel, value: businessList(state).map((x) => x.name).join(", ") }];
+  }
+  return [
+    { label: s.business, value: p.businessType ?? s.notGiven },
+    { label: s.district, value: p.district ?? s.notGiven },
+  ];
+}
+
+export function buildStatement(state: TraderState, key: StatementKey, today: string, businessId?: string): Statement {
+  const several = hasSeveralBusinesses(state);
+  const businesses = businessList(state);
+  const one = several && businessId ? businesses.find((b) => b.id === businessId) : undefined;
+  const source = one ? entriesFor(state.entries, one.id) : state.entries;
+  const names = several ? Object.fromEntries(businesses.map((b) => [b.id, b.name])) : undefined;
+
+  const range = statementRange(key, source, today);
+  const summary = summarize(source, range, today);
+  const entries = source
     .filter((e) => e.date >= range.start && e.date <= range.end)
     .toSorted((a, b) => a.date.localeCompare(b.date) || a.createdAt.localeCompare(b.createdAt));
 
@@ -113,9 +149,18 @@ export function buildStatement(state: TraderState, key: StatementKey, today: str
   }
 
   const returns = state.returns
-    .map((r) => ({ ...r, ...periodRange(r.period) }))
+    .filter((r) => !one || businessIdOf(r) === one.id)
+    .map((r) => ({ ...r, ...periodRange(r.period), ...(names ? { businessName: names[businessIdOf(r)] } : {}) }))
     .filter((r) => r.start <= range.end && r.end >= range.start)
     .toSorted((a, b) => a.start.localeCompare(b.start));
+
+  const byBusiness: BusinessTotals[] | undefined =
+    several && !one
+      ? businesses.map((b) => {
+          const t = summarize(entriesFor(entries, b.id), range, today);
+          return { name: b.name, moneyIn: t.moneyIn, moneyOut: t.moneyOut, profit: t.profit };
+        })
+      : undefined;
 
   return {
     ...range,
@@ -129,6 +174,10 @@ export function buildStatement(state: TraderState, key: StatementKey, today: str
     returns,
     taxNote: returns.length > 0 && TAX.placeholder ? TAX.note : null,
     madeOn: today,
+    details: detailRows(state, one),
+    ...(one ? { businessId: one.id, businessName: one.name } : {}),
+    ...(byBusiness ? { byBusiness } : {}),
+    ...(names ? { businessNames: names } : {}),
   };
 }
 
@@ -169,8 +218,7 @@ export function statementCsv(st: Statement): string {
     [s.disclaimer],
     [],
     [s.trader, p.name ?? s.notGiven],
-    [s.business, p.businessType ?? s.notGiven],
-    [s.district, p.district ?? s.notGiven],
+    ...st.details.map((d) => [d.label, d.value]),
     [s.registered, p.registered ? s.registeredValues[p.registered] : s.notGiven],
     [s.period, `${st.title}: ${formatDate(st.start)} to ${formatDate(st.end)}`],
     [s.madeOn, formatDate(st.madeOn)],
@@ -183,6 +231,12 @@ export function statementCsv(st: Statement): string {
     [s.entries, st.summary.entryCount],
     [],
   ];
+
+  if (st.byBusiness) {
+    rows.push([strings.businesses.byBusiness], [strings.businesses.business, ...s.csvMonthColumns.slice(1, 4)]);
+    for (const b of st.byBusiness) rows.push([b.name, csvAmount(b.moneyIn), csvAmount(b.moneyOut), csvAmount(b.profit)]);
+    rows.push([]);
+  }
 
   if (st.months.length > 1) {
     rows.push([s.byMonth], [...s.csvMonthColumns]);
@@ -200,9 +254,11 @@ export function statementCsv(st: Statement): string {
   }
 
   if (st.returns.length > 0) {
-    rows.push([s.returnsTitle], [...s.csvReturnColumns]);
+    const named = Boolean(st.businessNames);
+    rows.push([s.returnsTitle], [...(named ? [strings.businesses.business] : []), ...s.csvReturnColumns]);
     for (const r of st.returns) {
       rows.push([
+        ...(named ? [r.businessName ?? ""] : []),
         r.period,
         r.start,
         r.end,
@@ -216,10 +272,12 @@ export function statementCsv(st: Statement): string {
     rows.push([]);
   }
 
-  rows.push([s.recordsTitle], [...s.csvColumns]);
+  const names = st.businessNames;
+  rows.push([s.recordsTitle], [...s.csvColumns.slice(0, 1), ...(names ? [strings.businesses.business] : []), ...s.csvColumns.slice(1)]);
   for (const e of st.entries) {
     rows.push([
       e.date,
+      ...(names ? [names[businessIdOf(e)] ?? ""] : []),
       s.kinds[e.kind],
       e.note ?? "",
       csvAmount(e.amount),
@@ -235,10 +293,11 @@ export function statementCsv(st: Statement): string {
 
 // "khoebo-statement-2026-10.csv", or "khoebo-records-2026-11-19.csv" for all records.
 export function statementFileName(st: Statement): string {
-  return st.isMonth ? `khoebo-statement-${st.key}.csv` : `khoebo-records-${st.madeOn}.csv`;
+  const business = st.businessId ? `-${st.businessId === "main" ? "main" : st.businessId}` : "";
+  return st.isMonth ? `khoebo-statement-${st.key}${business}.csv` : `khoebo-records-${st.madeOn}${business}.csv`;
 }
 
-// Where the printable statement lives.
-export function statementPath(key: StatementKey): string {
-  return `/trader/statement?period=${encodeURIComponent(key)}`;
+// Where the printable statement lives. A business is added only when one was chosen.
+export function statementPath(key: StatementKey, businessId?: string): string {
+  return `/trader/statement?period=${encodeURIComponent(key)}${businessId ? `&business=${encodeURIComponent(businessId)}` : ""}`;
 }

@@ -9,7 +9,15 @@
 
 import { readFileSync } from "node:fs";
 
-type Entry = { id: string; kind: "sale" | "purchase" | "client_money"; amount: number; date: string; source: string; createdAt: string };
+type Entry = {
+  id: string;
+  kind: "sale" | "purchase" | "client_money";
+  amount: number;
+  date: string;
+  source: string;
+  createdAt: string;
+  businessId?: string;
+};
 type State = {
   version: 1;
   onboardingDone: boolean;
@@ -17,6 +25,7 @@ type State = {
   entries: Entry[];
   returns: unknown[];
   messageCount: number;
+  businesses?: { id: string; name: string; type?: string; district?: string }[];
 };
 type Expect = {
   toolsInclude?: string[];
@@ -36,6 +45,9 @@ type Expect = {
   quickReplies?: string[]; // these options, in any order
   profileMatches?: Record<string, string>; // profile field -> pattern, after the reply
   uiIncludes?: Record<string, string>; // block type -> a field on it that must be set
+  uiExcludes?: string[]; // block types that must not be shown
+  entryBusiness?: string; // every new entry belongs to this business ("main" for the first)
+  businessCount?: number; // further businesses after the reply (not counting the first)
 };
 type Case = {
   message: string;
@@ -149,6 +161,16 @@ function check(c: Case, before: State, res: ChatResponse): string[] {
   }
   for (const [type, field] of Object.entries(e.uiIncludes ?? {})) {
     if (!res.ui.some((b) => b.type === type && b[field])) problems.push(`expected a ${type} with ${field}`);
+  }
+  for (const type of e.uiExcludes ?? []) {
+    if (res.ui.some((b) => b.type === type)) problems.push(`didn't expect a ${type}`);
+  }
+  if (e.entryBusiness !== undefined) {
+    const wrong = added.filter((x) => (x.businessId ?? "main") !== e.entryBusiness);
+    if (!added.length || wrong.length) problems.push(`expected new entries for business ${e.entryBusiness}, got ${JSON.stringify(added)}`);
+  }
+  if (e.businessCount !== undefined && (res.state.businesses?.length ?? 0) !== e.businessCount) {
+    problems.push(`expected ${e.businessCount} further businesses, got ${JSON.stringify(res.state.businesses ?? [])}`);
   }
   for (const [field, pattern] of Object.entries(e.profileMatches ?? {})) {
     const value = res.state.profile[field];

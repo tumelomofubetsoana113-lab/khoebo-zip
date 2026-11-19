@@ -7,11 +7,15 @@ import type { Entry } from "./state";
 // Button actions. Taps that change records arrive as structured actions,
 // never as free text, so a trader can't confirm a return by accident.
 
+// Which business a button is for, when the trader has more than one. Left out
+// for the first business, so cards saved before 19 Nov 2026 still work.
+const businessId = z.string().max(32).optional();
+
 export const ChatActionSchema = z.discriminatedUnion("type", [
-  z.object({ type: z.literal("confirm_return"), period: z.string().max(10), turnover: z.number() }),
-  z.object({ type: z.literal("change_return"), period: z.string().max(10) }),
-  z.object({ type: z.literal("pay_return"), period: z.string().max(10) }),
-  z.object({ type: z.literal("file_now"), period: z.string().max(10) }),
+  z.object({ type: z.literal("confirm_return"), period: z.string().max(10), turnover: z.number(), businessId }),
+  z.object({ type: z.literal("change_return"), period: z.string().max(10), businessId }),
+  z.object({ type: z.literal("pay_return"), period: z.string().max(10), businessId }),
+  z.object({ type: z.literal("file_now"), period: z.string().max(10), businessId }),
   z.object({ type: z.literal("undo_entry"), entryId: z.string().max(32) }),
   z.object({ type: z.literal("simulate_reminder") }),
   z.object({
@@ -23,6 +27,7 @@ export const ChatActionSchema = z.discriminatedUnion("type", [
     invoiceNumber: z.string().max(60).nullable(),
     deviceId: z.string().max(60).nullable(),
     verificationCode: z.string().max(60).nullable(),
+    businessId,
   }),
   z.object({
     type: z.literal("change_receipt"),
@@ -35,7 +40,11 @@ export const ChatActionSchema = z.discriminatedUnion("type", [
 export type ChatAction = z.infer<typeof ChatActionSchema>;
 
 // UI blocks the browser renders alongside the reply. Amounts are numbers;
-// the browser formats them with formatMoney.
+// the browser formats them with formatMoney. Cards for one of several
+// businesses carry its id and name; for a single business they don't.
+
+type ForBusiness = { businessId?: string; businessName?: string };
+export type BusinessTotals = { name: string; moneyIn: number; moneyOut: number; profit: number };
 
 export type UiBlock =
   | { type: "quick_replies"; options: string[] }
@@ -50,8 +59,9 @@ export type UiBlock =
       clientMoney?: number; // a runner's client money, shown apart when above zero
       profit: number;
       entryCount: number;
+      byBusiness?: BusinessTotals[]; // all of a trader's businesses, one line each
     }
-  | {
+  | ({
       type: "return_card";
       period: string;
       start: string;
@@ -60,8 +70,8 @@ export type UiBlock =
       taxEstimate: number;
       dueDate: string;
       note: string | null;
-    }
-  | { type: "payment_card"; period: string; amount: number; reference: string; note: string | null }
+    } & ForBusiness)
+  | ({ type: "payment_card"; period: string; amount: number; reference: string; note: string | null } & ForBusiness)
   | {
       type: "registration_card";
       checklist: string[];
@@ -70,9 +80,9 @@ export type UiBlock =
       officerNote?: string;
     }
   | { type: "obligations_card"; items: { text: string; done: boolean }[]; note: string | null }
-  | { type: "reminder_card"; period: string; dueDate: string; taxEstimate: number; note: string | null }
+  | ({ type: "reminder_card"; period: string; dueDate: string; taxEstimate: number; note: string | null } & ForBusiness)
   | { type: "placeholder_note"; text: string }
-  | {
+  | ({
       // A monthly statement or the full record, with links to open and download it.
       type: "statement_card";
       period: string; // "2026-10" or "all"
@@ -84,8 +94,9 @@ export type UiBlock =
       clientMoney?: number;
       profit: number;
       entryCount: number;
-    }
-  | {
+      byBusiness?: BusinessTotals[];
+    } & ForBusiness)
+  | ({
       type: "receipt_card";
       receiptId: string;
       supplier: string | null;
@@ -98,7 +109,9 @@ export type UiBlock =
       verificationCode: string | null;
       lekuka: "verified" | "mismatch" | "not_found" | "no_code";
       possibleDuplicate: boolean;
-    };
+      // With several businesses and none named, one Save button per business.
+      businesses?: { id: string; name: string }[];
+    } & ForBusiness);
 
 // What the browser is sent. Only the last set of quick replies shows. A receipt
 // or return card has its own Save or Confirm button, and a quick reply beside it

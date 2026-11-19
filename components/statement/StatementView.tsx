@@ -11,6 +11,8 @@ import { useState, useSyncExternalStore, type ReactNode } from "react";
 import { Button } from "@/components/ui/Button";
 import { Logo } from "@/components/ui/Logo";
 import { PrototypePill } from "@/components/ui/Pill";
+import { BusinessRows } from "@/components/chat/BusinessRows";
+import { businessIdOf, businessList, hasSeveralBusinesses } from "@/lib/businesses";
 import { formatDate, todayISO } from "@/lib/dates";
 import { formatMoney } from "@/lib/ledger";
 import { loadState, type Entry } from "@/lib/state";
@@ -67,8 +69,9 @@ function Pairs({ rows }: { rows: { label: string; value: string; strong?: boolea
   );
 }
 
-function EntryDetails({ entry }: { entry: Entry }) {
+function EntryDetails({ entry, business }: { entry: Entry; business?: string }) {
   const extras = [
+    business ?? null,
     entry.currency === "rand" ? t.givenInRand : null,
     entry.receipt ? t.lekuka[entry.receipt.lekuka] : null,
   ].filter(Boolean);
@@ -93,15 +96,23 @@ function StatementView() {
     const check = resolveStatementPeriod(asked, today);
     return check.ok ? check.key : today.slice(0, 7);
   });
+  // Only for a trader with several businesses: one of them, or "" for all.
+  const several = hasSeveralBusinesses(trader);
+  const businesses = businessList(trader);
+  const [business, setBusiness] = useState<string>(() => {
+    const asked = new URLSearchParams(window.location.search).get("business") ?? "";
+    return several && businesses.some((b) => b.id === asked) ? asked : "";
+  });
 
-  const st = buildStatement(trader, key, today);
+  const st = buildStatement(trader, key, today, business || undefined);
   const months = statementMonths(trader.entries, today);
   const p = trader.profile;
   const sm = st.summary;
 
-  function choose(next: StatementKey) {
+  function choose(next: StatementKey, nextBusiness = business) {
     setKey(next);
-    window.history.replaceState(null, "", statementPath(next));
+    setBusiness(nextBusiness);
+    window.history.replaceState(null, "", statementPath(next, nextBusiness || undefined));
   }
 
   return (
@@ -129,6 +140,23 @@ function StatementView() {
               <option value="all">{t.allRecords}</option>
             </select>
           </label>
+          {several && (
+            <label className="flex min-w-48 flex-1 flex-col gap-1 text-sm font-semibold">
+              {strings.businesses.business}
+              <select
+                value={business}
+                onChange={(e) => choose(key, e.target.value)}
+                className="min-h-11 rounded-card border border-line bg-surface px-3 text-base font-normal"
+              >
+                <option value="">{strings.businesses.allBusinesses}</option>
+                {businesses.map((b) => (
+                  <option key={b.id} value={b.id}>
+                    {b.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
           <div className="flex flex-wrap gap-2">
             <Button size="sm" onClick={() => window.print()}>
               <Printer size={16} aria-hidden="true" />
@@ -160,6 +188,9 @@ function StatementView() {
         </header>
 
         <h1 className="mt-6 text-2xl font-bold">{st.isMonth ? t.monthTitle : t.allTitle}</h1>
+        {several && (
+          <p className="text-lg font-semibold text-flag-blue">{st.businessName ?? strings.businesses.allBusinesses}</p>
+        )}
         <p className="text-muted">
           {st.title} · {formatDate(st.start)} to {formatDate(st.end)}
         </p>
@@ -167,8 +198,7 @@ function StatementView() {
         <Pairs
           rows={[
             ...(p.name ? [{ label: t.trader, value: p.name }] : []),
-            { label: t.business, value: p.businessType ?? t.notGiven },
-            { label: t.district, value: p.district ?? t.notGiven },
+            ...st.details,
             { label: t.registered, value: p.registered ? t.registeredValues[p.registered] : t.notGiven },
             { label: t.madeOn, value: formatDate(st.madeOn) },
           ]}
@@ -187,6 +217,12 @@ function StatementView() {
           />
           {sm.clientMoney > 0 && <p className="mt-2 text-sm text-muted">{t.clientMoneyNote}</p>}
         </Section>
+
+        {st.byBusiness && (
+          <div className="mt-2">
+            <BusinessRows rows={st.byBusiness} />
+          </div>
+        )}
 
         {st.months.length > 1 && (
           <Section title={t.byMonth}>
@@ -219,8 +255,11 @@ function StatementView() {
           <Section title={t.returnsTitle}>
             <ul className="mt-2 space-y-3">
               {st.returns.map((r) => (
-                <li key={r.period}>
-                  <p className="font-semibold">{t.returnLine(r.period, formatDate(r.start), formatDate(r.end))}</p>
+                <li key={`${r.period}-${r.businessId ?? "main"}`}>
+                  <p className="font-semibold">
+                    {r.businessName && !st.businessName ? `${r.businessName}: ` : ""}
+                    {t.returnLine(r.period, formatDate(r.start), formatDate(r.end))}
+                  </p>
                   <Pairs
                     rows={[
                       { label: t.turnover, value: formatMoney(r.turnover) },
@@ -253,7 +292,10 @@ function StatementView() {
                   <tr key={e.id} className="break-inside-avoid border-t border-line align-top">
                     <td className="py-1.5 pr-2 whitespace-nowrap">{shortDate(e.date, !st.isMonth)}</td>
                     <td className="py-1.5 pr-2">
-                      <EntryDetails entry={e} />
+                      <EntryDetails
+                        entry={e}
+                        business={st.businessNames && !st.businessName ? st.businessNames[businessIdOf(e)] : undefined}
+                      />
                     </td>
                     <td className="py-1.5 text-right font-semibold whitespace-nowrap">{formatMoney(e.amount)}</td>
                   </tr>

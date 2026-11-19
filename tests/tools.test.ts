@@ -38,6 +38,7 @@ describe("tool definitions", () => {
   it("has a JSON schema for every tool and no $schema key", () => {
     expect(toolDefinitions.map((t) => t.name)).toEqual([
       "save_profile",
+      "save_business",
       "record_entry",
       "correct_entry",
       "get_summary",

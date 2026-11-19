@@ -168,3 +168,99 @@ export function demoRunnerState(today: string): TraderState {
     messageCount: 0,
   };
 }
+
+// The demo trader with more than one business (added 19 November 2026): a
+// registered trader in Maseru with two spaza shops, one in town and one at
+// Ha Thetsane, and a hair salon. Each keeps its own records and files its own
+// return. Stock for both shops comes from the wholesaler on Mondays; the salon
+// buys products every other Saturday. Same "today", same records.
+
+const shopNotes = ["bread and milk", "airtime and sweets", "maize meal and oil", "paraffin and candles", "cold drinks"];
+const salonNotes = ["braids", "relaxer and set", "wash and blow", "cut and colour"];
+
+export function demoMultiState(today: string): TraderState {
+  const rand = random(Number(today.replaceAll("-", "")) + 2);
+  const entries: Entry[] = [];
+  const start = addDays(today, -(DAYS - 1));
+  const shops = [
+    { id: "main", tag: "town", base: 650 },
+    { id: "b-thetsane", tag: "thetsane", base: 380 },
+  ];
+
+  for (let i = 0; i < DAYS; i++) {
+    const date = addDays(start, i);
+    const day = weekdayName(date);
+    const stamp = (time: string) => `${date}T${time}:00.000Z`;
+
+    for (const shop of shops) {
+      const business = shop.id === "main" ? {} : { businessId: shop.id };
+      if (day === "Monday") {
+        entries.push({
+          id: `demo-${date}-${shop.tag}-p`,
+          kind: "purchase",
+          amount: tens(shop.base * 3 + rand() * 600),
+          date,
+          note: "stock from the wholesaler",
+          source: "text",
+          createdAt: stamp("05:30"),
+          ...business,
+        });
+      }
+      entries.push({
+        id: `demo-${date}-${shop.tag}-s`,
+        kind: "sale",
+        amount: tens((shop.base + rand() * 250) * dayFactor[day]),
+        date,
+        note: shopNotes[Math.floor(rand() * shopNotes.length)],
+        source: "text",
+        createdAt: stamp("15:00"),
+        ...business,
+      });
+    }
+
+    // The salon is closed on Sundays and busiest on Fridays and Saturdays.
+    if (day !== "Sunday") {
+      entries.push({
+        id: `demo-${date}-salon-s`,
+        kind: "sale",
+        amount: tens((180 + rand() * 220) * dayFactor[day]),
+        date,
+        note: salonNotes[Math.floor(rand() * salonNotes.length)],
+        source: "text",
+        createdAt: stamp("16:00"),
+        businessId: "b-salon",
+      });
+    }
+    if (day === "Saturday" && i % 14 >= 7) {
+      entries.push({
+        id: `demo-${date}-salon-p`,
+        kind: "purchase",
+        amount: tens(450 + rand() * 300),
+        date,
+        note: "hair products",
+        source: "text",
+        createdAt: stamp("07:00"),
+        businessId: "b-salon",
+      });
+    }
+  }
+
+  return {
+    version: 1,
+    onboardingDone: true,
+    profile: {
+      businessType: "Spaza / general dealer",
+      businessName: "Town shop",
+      district: "Maseru",
+      registered: "yes",
+      language: "en",
+    },
+    businesses: [
+      { id: "b-thetsane", name: "Ha Thetsane shop", type: "Spaza / general dealer", district: "Maseru" },
+      { id: "b-salon", name: "Salon", type: "Hair or beauty", district: "Maseru" },
+    ],
+    entries,
+    returns: [],
+    messageCount: 0,
+  };
+}

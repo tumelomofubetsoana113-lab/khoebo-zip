@@ -19,6 +19,9 @@ export const EntrySchema = z.object({
   currency: z.literal("rand").optional(),
   source: z.enum(["text", "voice", "button", "receipt"]),
   createdAt: z.iso.datetime(),
+  // Which of the trader's businesses this belongs to (added 19 Nov 2026).
+  // Left out for the first business, so records saved before then still fit.
+  businessId: z.string().min(1).max(32).optional(),
   // Only for entries saved from a receipt. The picture itself is never kept.
   receipt: z
     .object({
@@ -36,6 +39,17 @@ export const FiledReturnSchema = z.object({
   confirmedAt: z.iso.datetime(),
   reference: z.string().startsWith("MOCK-").max(32),
   paid: z.boolean(),
+  // Each business files its own return. Left out for the first business.
+  businessId: z.string().min(1).max(32).optional(),
+});
+
+// A second (third...) business or branch. The first business is the profile's
+// own business type and district, with the id "main".
+export const BusinessSchema = z.object({
+  id: z.string().min(1).max(32),
+  name: z.string().min(1).max(60),
+  type: z.string().max(60).optional(),
+  district: z.string().max(60).optional(),
 });
 
 export const TraderStateSchema = z.object({
@@ -49,7 +63,11 @@ export const TraderStateSchema = z.object({
     language: z.literal("en"),
     // Set up from an RSL officer's field-visit link (added 17 Nov 2026).
     setUpAt: z.literal("field_visit").optional(),
+    // The trader's own name for their first business, once they have more than one.
+    businessName: z.string().max(60).optional(),
   }),
+  // Further businesses or branches (added 19 Nov 2026). Missing for most traders.
+  businesses: z.array(BusinessSchema).max(10).optional(),
   entries: z.array(EntrySchema).max(5000),
   returns: z.array(FiledReturnSchema).max(100),
   messageCount: z.number().int().nonnegative(),
@@ -57,6 +75,7 @@ export const TraderStateSchema = z.object({
 
 export type Entry = z.infer<typeof EntrySchema>;
 export type FiledReturn = z.infer<typeof FiledReturnSchema>;
+export type Business = z.infer<typeof BusinessSchema>;
 export type TraderState = z.infer<typeof TraderStateSchema>;
 
 export const STORAGE_KEY = "khoebo.trader.v1";

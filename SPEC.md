@@ -66,7 +66,7 @@ app/
 components/
   landing/              one file per landing section, plus PhoneFrame (hero phone) and IconCircle
   chat/                 ChatShell, MessageBubble, SummaryCard, QuickReplies, cards, Composer, VoiceSheet, VoiceBubble,
-                        TypingIndicator, DemoMenu, ReceiptSheet
+                        TypingIndicator, DemoMenu, ReceiptSheet, BusinessRows (one line per business)
   statement/            StatementView (the printable statement page) and download (the CSV file)
   officer/              SummaryStrip, Filters, WorklistTable, EvidenceChart, OverridePanel,
                         Worklist (strip, filters and table, synced with the URL), DemoCases, OfficerHeader,
@@ -82,6 +82,7 @@ lib/
   chat.ts               chat messages in the browser: history for the API, quick replies, localStorage
   demo.ts               the demo trader's four weeks of records
   tools.ts              tool definitions and their handlers
+  businesses.ts         a trader's businesses and branches: list, find by id or name, records and returns per business
   statement.ts          monthly statements and all records: totals, months, returns, CSV (pure functions)
   receipts.ts           receipt files: checks, and shrinking a photo on the phone
   lekuka.ts             the simulated Lekuka invoice check, with made-up invoices
@@ -123,6 +124,7 @@ tests/
   chat-eval/            cases.json (sample messages and expected tool calls, section 12) and run.mts
   receipts.test.ts      the Lekuka check, read_receipt, save_receipt, receipt files
   statement.test.ts     statement periods, totals, returns, CSV and file names
+  businesses.test.ts    more than one business: saved state, tools, returns, receipts, statements, demo
   receipt-eval/         22 made-up receipts, cases.json and run.mts (section 12)
 ```
 
@@ -298,6 +300,7 @@ A full-height chat that feels like a messaging app, centred in a 420px column on
 **Demo menu** (bottom sheet)
 - "Load demo trader": replaces state with a fruit and vegetable seller in Maseru, registered, with four weeks of realistic daily sales and twice-weekly purchases. Use the profile of the ordinary case.
 - "Load demo runner" (added 17 November 2026): a registered runner in Maseru who buys goods in Bloemfontein for clients every Tuesday and Friday. Client money is kept apart and only the fees are turnover.
+- "Load demo trader with three businesses" (added 19 November 2026): a registered trader in Maseru with two spaza shops ("Town shop" and "Ha Thetsane shop") and a "Salon", four weeks of records for each. Each business files its own return.
 - "Show this week's summary": sends the message "how am I doing this week?"
 - "Simulate a reminder": the assistant posts the reminder message for the current filing period, as if it were 3 days before the due date.
 - "Open this month's statement" (added 19 November 2026): opens the statement page for this month, without calling the API.
@@ -312,6 +315,13 @@ A full-height chat that feels like a messaging app, centred in a 420px column on
 - The page shows one month (`period=2026-10`, or `this_month`, `last_month`) or every record (`period=all`), with a month picker. It has: the Khoebo mark and prototype pill, the trader's business, district, registration and the date made, totals (money in, money out, profit estimate, client money when there is some, entries, days with no entries), a month-by-month table for more than one month, any filed returns that overlap the period (with the mock reference and the placeholder note), every entry (date, kind, note, amount, rand, Lekuka result), and a footer saying it is made from the trader's own records, not checked by RSL and not an official RSL document.
 - "Save as PDF or print" opens the browser's print window, which prints only the statement. "Download spreadsheet" saves a CSV file (`khoebo-statement-2026-10.csv`, or `khoebo-records-<date>.csv` for all records).
 - Everything is worked out in the browser from localStorage by `lib/statement.ts`. Nothing is sent to the server.
+- A trader with more than one business also gets a business picker ("All businesses" or one of them, `&business=<id>`). All businesses shows a line for each and the business under each entry; one business shows its own name, type and district.
+
+**More than one business** (added 19 November 2026)
+- A trader can run branches of one shop or different businesses. They say so in the chat ("I also run a hair salon") and `save_business` adds it. Set-up is unchanged and asks about one business.
+- With one business nothing changes: no business is asked about or shown anywhere.
+- With more than one, every sale, purchase and return belongs to a business. The assistant uses the one the trader names and otherwise asks, with the business names as quick replies. A receipt card has a "Save to …" button for each business. Summaries and statements cover all businesses with a line each, or one.
+- Each business files its own return and pays its own tax: its own return card, mock reference and payment, its own lines in "What you need to do", and its own reminder card.
 
 ### 5.3 Officer worklist (`/officer`)
 
@@ -395,7 +405,9 @@ type TraderState = {
     district?: string;
     registered: "yes" | "no" | "not_sure" | null;
     language: "en";
+    businessName?: string;       // the first business's short name, once there are several
   };
+  businesses?: { id: string; name: string; type?: string; district?: string }[]; // further businesses, up to 10
   entries: Entry[];
   returns: FiledReturn[];
   messageCount: number;
@@ -410,6 +422,7 @@ type Entry = {
   note?: string;                 // e.g. "tomatoes"
   source: "text" | "voice" | "button" | "receipt";
   createdAt: string;             // ISO timestamp
+  businessId?: string;           // left out for the first business ("main")
   receipt?: {                    // only for entries saved from a receipt; the picture is never kept
     invoiceNumber?: string;
     deviceId?: string;
@@ -424,6 +437,7 @@ type FiledReturn = {
   confirmedAt: string;
   reference: string;             // "MOCK-" + random, clearly fake
   paid: boolean;
+  businessId?: string;           // each business files its own return; left out for the first
 };
 ```
 
@@ -434,6 +448,7 @@ All amounts in and out are maloti. Every handler is a pure function of `(state, 
 | Tool | Input | What the code does |
 | --- | --- | --- |
 | `save_profile` | `business_type?`, `district?`, `registered?`, `name?` | Updates the profile. Marks onboarding done when the first three are set. |
+| `save_business` | `name`, `business_type?`, `district?`, `business_id?` | Added 19 November 2026. Adds a further business or branch (district defaults to the profile's), or renames or changes one (`"main"` is the first business). Names must differ. At most 10 further businesses. |
 | `record_entry` | `kind` (`sale`, `purchase` or `client_money`), and either `amount` or `quantity` + `unit_price`, plus `currency?` (`maloti` or `rand`), `date?`, `note?` | Works out the amount (quantity × unit price is done here, never by the model). Rejects amounts of zero or less. Amounts over M20,000 come back as `needs_confirmation` so the assistant asks first. Date defaults to today, can't be in the future or more than 60 days back. Returns the entry plus the running totals for the Monday-to-Sunday week the entry falls in, with that week's dates (`week_of_entry`). |
 | `correct_entry` | `entry_id` or `"last"`, `new_amount?`, `delete?` | Changes or removes one entry. Returns what changed. |
 | `get_summary` | `period`: `this_week`, `last_week`, `this_month`, `filing_period` | Money in, money out, profit estimate (in minus out), number of entries, days with no entries. |
@@ -443,6 +458,7 @@ All amounts in and out are maloti. Every handler is a pure function of `(state, 
 | `start_payment` | `period` | Sends a `payment_card` UI block showing a mock mobile money payment. Marks the return paid only after the "Pay (demo)" button sends an action. |
 | `start_registration` | none | Sends a `registration_card` listing what the trader will need and where to go, with buttons for RSL's e-Registration site and the RSL app (added 17 November 2026; before that it said "RSL registration channel (to be confirmed)"). The model never types a web address. At a field visit, the card also says the officer can help now. |
 | `show_obligations` | none | Added 17 November 2026. Sends an `obligations_card`: register, keep records, file by the due date, pay, each with this trader's own status, worked out in code. |
+| (several tools) | `business?` | Added 19 November 2026 to `record_entry`, `get_summary`, `get_tax_estimate`, `prepare_return`, `confirm_return`, `start_payment`, `read_receipt` and `get_statement`. Ignored when the trader has one business. With several, tools that record or file return `status: "needs_business"` with the names and change nothing until one is given. `get_summary` and `get_statement` without one cover all businesses with a line each, and `get_tax_estimate` gives each business's estimate separately, never added up. |
 | `get_statement` | `period?`: `this_month` (default), `last_month`, a month like `2026-10`, or `all` | Added 19 November 2026. Totals from `lib/statement.ts` (money in, out, profit estimate, client money, entries, returns filed) and a `statement_card`. With no records in the period, it says so and shows no card. Future and malformed months are refused. |
 | `show_reminder` | none | Added in step 4. Sends a `reminder_card` for the current filing period, for the demo menu's "Simulate a reminder". |
 | `offer_quick_replies` | `options` (1 to 6, each under 24 characters, or the full district or business type list) | Added in step 4. Sends a `quick_replies` UI block. The model has no other way to show quick replies. |
@@ -459,6 +475,7 @@ The API can return these alongside the reply text:
 - `registration_card`: a checklist, the hand-off text, link buttons to RSL's e-Registration and app, and an officer note at a field visit
 - `obligations_card`: four items, each with its text and whether it is done, and the placeholder note
 - `reminder_card`: due date, estimated tax, "File now" button
+- With several businesses, `return_card`, `payment_card`, `reminder_card`, `receipt_card` and `statement_card` carry `businessId` (left out for the first business) and `businessName`, and their buttons carry the `businessId`. `summary_card` and `statement_card` for all businesses carry `byBusiness`, and a `receipt_card` with no business named carries `businesses`, one Save button each. (Added 19 November 2026.)
 - `statement_card`: month or "All records", dates, money in, money out, profit, client money when there is some, entries count, the "not an official RSL document" note, and "Open statement" and "Download spreadsheet" buttons (added 19 November 2026)
 - `receipt_card`: what was read from a receipt (supplier, date, total), the simulated Lekuka result, and Save and Change buttons
 - `placeholder_note`: the placeholder rate note, sent with `get_tax_estimate` and `confirm_return` so a tax amount in the reply text also shows the note (added in step 4)
@@ -512,6 +529,8 @@ How the estimate for one filing period is worked out (`workOutTax` in `lib/tax.t
    - `"whole"`: the band the turnover falls in sets the rate for all of it, plus that band's `fixed` amount. This suits a presumptive tax with a rate or fixed amount per turnover band.
    - `"marginal"`: each slice of turnover is taxed at its own band's rate, like income tax, plus the `fixed` amount of the band the turnover reaches. A first band with rate 0 gives "only the part above X is taxed".
 5. The result is rounded to cents.
+
+**More than one business (placeholder rule, added 19 November 2026).** Each of a trader's businesses or branches files its own return, with turnover from that business's sales only, as the owner chose. Whether RSL taxes a person's businesses together or separately (and so whether a threshold applies per business or per person) isn't confirmed; see section 13.
 
 Whatever form the real rules take (a flat rate, a threshold, bands of rates, or fixed amounts per band), only this file changes. `checkTaxConfig` refuses broken settings (bands out of order, a rate outside 0 to 1, a missing last band) with a message naming the problem. `tax.test.ts` covers period boundaries, due dates, rounding, thresholds, both band methods and yearly amounts.
 
@@ -689,6 +708,11 @@ A script, `npm run eval:chat`, sends each message to the running API with a know
 | "client gave me R2000 for school uniforms, my fee is R200" (a runner, after an earlier summary in the history) | two `record_entry` calls, and the reply never calls the earlier summary wrong |
 | "got 2000 today" (a runner) | asks whether it is their fee or the client's money; nothing recorded |
 | "can I get my statement for this month?" | `get_statement` and a `statement_card`; no web address in the reply |
+| "I also run a hair salon in Maseru" | `save_business`; one further business saved |
+| "sold 250 at the salon" (three businesses) | `record_entry` sale, 250, for the salon |
+| "sold 300 today" (three businesses) | asks which business, with the three names as quick replies; nothing recorded |
+| "file my return" (three businesses) | asks which business; no return card, nothing filed |
+| "file the return for the Ha Thetsane shop" (three businesses) | `prepare_return` and a return card for that business |
 | "I need all my records to show the bank" | `get_statement` with `all`; the reply says it isn't an official RSL document and never promises the bank will accept it |
 
 ### Receipt eval (`tests/receipt-eval/`)
@@ -729,6 +753,7 @@ From RSL's Participant Q&A document (3 November 2026) and the Q&A session slides
 
 - SBT rate, threshold, filing period and due dates: not in these documents, so the placeholders and the placeholder note stay.
 - Whether AI processing outside Lesotho is acceptable for a pilot: not answered directly. Declare it in the proposal as a regulatory point to agree.
+- Traders with more than one business or branch: does each business file its own Simplified Business Tax return, or does one return cover all of a person's businesses, and does the threshold apply per business or per person? Khoebo files one return per business for now (section 7).
 - IP: the slides say "Ideas and concepts generated during the event remain RSL's intellectual property". They don't say whether that covers code built before the event, so this needs asking.
 - Whether RSL wants Sesotho in the prototype: not answered directly, but the slides say to speak to users in the language they use, and 5 of the 10 test traders wanted Sesotho as well as English.
 - The baselines the slides say are shared at the briefing, and the briefing minutes the Q&A lists: not yet received.
@@ -1160,3 +1185,17 @@ At the owner's request, the trader side can now export monthly statements and bu
 - **Tests.** `tests/statement.test.ts` (15 tests: periods, ranges, month list, totals, client money, overlapping returns, all records, CSV quoting and formula guard, file names) and three new `get_statement` tests in `tests/tools.test.ts`. All 180 tests pass, as do `npm run lint` and `npm run build`.
 - **Chat eval.** Two new cases (section 12). The first run of the bank case failed 3 of 3 only because its check matched "I can't promise the bank will accept it", which is the reply we want; the check now looks only for a promise. Full eval on a local production build: 75 of 75 (25 cases, three runs each).
 - **Checked in headless Chrome on a local production build at 360px:** the card in the chat, both download buttons (the file is named `khoebo-statement-2026-11.csv`), the page for this month and for all records, the month picker updating the address, the demo-menu link, a phone with no records ("No records in this period yet."), and a future month in the address falling back to this month. No horizontal scroll on `/trader` or `/trader/statement`, and no console errors. A PDF printed from the page shows the header, totals, month table, records and footer on A4.
+
+### More than one business (19 November 2026)
+
+At the owner's request, a trader can run more than one business: branches of the same shop (two or three spaza shops) or different businesses (a spaza and a hair salon). Built as described in sections 5.2, 6 and 7. It was built on the `multi-business` branch so the live link stayed unchanged for the 20 November presentation.
+
+- **Returns per business.** The owner chose one return per business over one combined return. Each business has its own return card, mock reference, payment, "What you need to do" lines and reminder. This is a placeholder rule, listed in section 13 for RSL to confirm.
+- **Nothing changes for one business.** All new fields are optional: `businesses` on the state, `businessId` on entries and returns, `businessName` on the profile. The first business is the profile's own type and district, with the id `main`, and its records carry no `businessId`. Phones saved before this change load as they are and count as one business. With one business, every tool ignores a `business` it is given, results and cards have no business fields, and the context sent to the model is unchanged. Button keys for the first business are as before, so used buttons on saved chats stay used. All 180 earlier tests pass without changes, apart from the new tool in the tool list.
+- **Which business.** The model passes a business id from the context block, which lists each business only when there are several. `resolveBusiness()` also accepts a name, or a type that only one business has. When none is given and there are several, recording and filing tools change nothing and return `needs_business` with the names, so the assistant asks with quick replies. A return is filed only from that business's own Confirm button: a button for another business is refused like a typed "confirm".
+- **Receipts.** A receipt has to be saved from the card's button, and the picture can't be sent again, so the assistant can't ask which business after the card is shown. When the trader hasn't said, the card shows "Save to Town shop", "Save to Ha Thetsane shop" and "Save to Salon". Tapping one uses up all of them.
+- **Adding a business.** Through the chat only (`save_business`). Set-up still asks about one business, so first-time use is unchanged. If the trader gives no name, the assistant uses a short one from their own words and says it can be changed, then offers to name the first business. The first eval run asked for a name before saving; the prompt was changed to this.
+- **Not covered:** removing a business, and moving an entry from one business to another (the trader can undo the entry and record it again). The officer worklist and leads pages are unchanged: they score a taxpayer, not a branch.
+- **Tests.** `tests/businesses.test.ts`, 20 tests: old and new saved states, finding a business, adding and renaming, recording with and without a business, summaries, statements and CSV per business, estimates, returns and payments per business, obligations and reminders, receipts with a button per business, button keys, the context block, and the demo trader. 200 tests pass in total, as do `npm run lint` and `npm run build`.
+- **Chat eval.** Five new cases (section 12) and three new checks in `run.mts`: `entryBusiness`, `businessCount` and `uiExcludes`. Full eval on a local production build: 89 of 90 (30 cases, three runs each). The one failure was the "show the bank" statements case, whose check matched one reply's wording; that reply wasn't captured, and the case passed 5 of 5 when run again.
+- **Checked in headless Chrome on a local production build at 360px:** the new demo menu item and demo trader, the summary card's lines per business, a receipt card with three Save buttons, a return card naming its business, and the statement page with the business picker for all businesses and for the Salon, whose CSV is named `khoebo-statement-2026-11-b-salon.csv`. The single-business demo's statement still has no business picker. No horizontal scroll and no console errors.

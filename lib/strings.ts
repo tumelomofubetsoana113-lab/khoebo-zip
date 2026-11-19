@@ -29,6 +29,24 @@ export const strings = {
     cancel: "Cancel",
     confirm: "Confirm",
   },
+  // More than one business or branch (added 19 November 2026).
+  businesses: {
+    mainFallback: "My business",
+    business: "Business",
+    allBusinesses: "All businesses",
+    businessesLabel: "Businesses",
+    typeLabel: "Type of business",
+    byBusiness: "By business",
+    saveTo: (name: string) => `Save to ${name}`,
+    savedTo: (name: string) => `Saved to ${name}`,
+    // Obligations for a trader with several businesses: each files its own return.
+    file: (name: string, period: string, due: string) => `${name}: file the return for ${period} by ${due}`,
+    filed: (name: string, period: string, reference: string) =>
+      `${name}: return for ${period} filed (reference ${reference})`,
+    pay: (name: string, amount: string, due: string) => `${name}: pay the estimated ${amount} by ${due}`,
+    payAny: (name: string, due: string) => `${name}: pay any tax you owe by ${due}`,
+    paid: (name: string, period: string) => `${name}: tax for ${period} paid`,
+  },
   chat: {
     title: "Khoebo",
     subtitle: "Records and tax assistant",
@@ -163,6 +181,9 @@ export const strings = {
     },
     demoRunnerLoaded:
       "Demo runner loaded: a runner in Maseru who buys goods in Bloemfontein for clients twice a week, registered with RSL. The client's money is kept apart, and only the fees count as income. Try asking how the week is going, or log a new order.",
+    demoMultiLoaded:
+      "Demo trader loaded: a trader in Maseru with two spaza shops, one in town and one at Ha Thetsane, and a hair salon, registered with RSL. Each business keeps its own records and files its own return. Try asking how each business is doing, or log a sale at the salon.",
+    demoMultiQuickReplies: ["How are my businesses?", "Sold 250 at the salon", "File my return", "Get my statement"],
     demoRunnerQuickReplies: ["How am I doing?", "How much tax do I owe?", "Log a client order", "Get my statement"],
     receipt: {
       open: "Send a receipt",
@@ -215,6 +236,8 @@ export const strings = {
       reminderHint: "As if it were 3 days before the due date",
       statement: "Open this month's statement",
       statementHint: "Print it, save it as a PDF or download a spreadsheet",
+      loadMulti: "Load demo trader with three businesses",
+      loadMultiHint: "Two spaza shops and a hair salon, each with its own records and return",
       reset: "Reset everything",
       resetHint: "Clears this phone's records and starts again",
       resetTitle: "Reset everything?",

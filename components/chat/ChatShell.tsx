@@ -23,7 +23,7 @@ import {
   type ChatMessage,
 } from "@/lib/chat";
 import { todayISO } from "@/lib/dates";
-import { demoRunnerState, demoTraderState } from "@/lib/demo";
+import { demoMultiState, demoRunnerState, demoTraderState } from "@/lib/demo";
 import { attachmentKind, type ReceiptAttachment } from "@/lib/receipts";
 import { clearState, emptyState, loadState, saveState, type TraderState } from "@/lib/state";
 import { statementPath } from "@/lib/statement";
@@ -278,6 +278,9 @@ function ChatSession() {
     } else if (choice === "loadRunner") {
       setTrader(demoRunnerState(todayISO()));
       setMessages([demoWelcome(now, "runner")]);
+    } else if (choice === "loadMulti") {
+      setTrader(demoMultiState(todayISO()));
+      setMessages([demoWelcome(now, "multi")]);
     } else if (choice === "summary") {
       send({ text: t.demoMenu.weekSummaryMessage });
     } else if (choice === "reminder") {

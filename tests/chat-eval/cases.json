@@ -174,5 +174,58 @@
       "replyMatches": ["official"],
       "replyExcludes": ["(?<!(can.?t|cannot|not|no) (able to )?promise (that )?(the |your |a )?bank )will accept", "guarantee"]
     }
+  },
+  {
+    "message": "I also run a hair salon in Maseru",
+    "note": "a trader with one business adds a second one",
+    "expect": { "toolsInclude": ["save_business"], "businessCount": 1, "noNewEntry": true }
+  },
+  {
+    "message": "sold 250 at the salon",
+    "note": "three businesses: records against the one named",
+    "setup": {
+      "profile": { "businessType": "Spaza / general dealer", "businessName": "Town shop", "district": "Maseru", "registered": "yes", "language": "en" },
+      "businesses": [
+        { "id": "b2", "name": "Ha Thetsane shop", "type": "Spaza / general dealer", "district": "Maseru" },
+        { "id": "b3", "name": "Salon", "type": "Hair or beauty", "district": "Maseru" }
+      ]
+    },
+    "expect": { "newEntry": { "kind": "sale", "amount": 250, "date": "today" }, "entryBusiness": "b3" }
+  },
+  {
+    "message": "sold 300 today",
+    "note": "three businesses, none named: asks which and records nothing",
+    "setup": {
+      "profile": { "businessType": "Spaza / general dealer", "businessName": "Town shop", "district": "Maseru", "registered": "yes", "language": "en" },
+      "businesses": [
+        { "id": "b2", "name": "Ha Thetsane shop", "type": "Spaza / general dealer", "district": "Maseru" },
+        { "id": "b3", "name": "Salon", "type": "Hair or beauty", "district": "Maseru" }
+      ]
+    },
+    "expect": { "noNewEntry": true, "quickReplies": ["Town shop", "Ha Thetsane shop", "Salon"] }
+  },
+  {
+    "message": "file my return",
+    "note": "three businesses: asks which business before showing a return",
+    "setup": {
+      "profile": { "businessType": "Spaza / general dealer", "businessName": "Town shop", "district": "Maseru", "registered": "yes", "language": "en" },
+      "businesses": [
+        { "id": "b2", "name": "Ha Thetsane shop", "type": "Spaza / general dealer", "district": "Maseru" },
+        { "id": "b3", "name": "Salon", "type": "Hair or beauty", "district": "Maseru" }
+      ]
+    },
+    "expect": { "noNewReturn": true, "uiExcludes": ["return_card"] }
+  },
+  {
+    "message": "file the return for the Ha Thetsane shop",
+    "note": "three businesses: the return card for the one named",
+    "setup": {
+      "profile": { "businessType": "Spaza / general dealer", "businessName": "Town shop", "district": "Maseru", "registered": "yes", "language": "en" },
+      "businesses": [
+        { "id": "b2", "name": "Ha Thetsane shop", "type": "Spaza / general dealer", "district": "Maseru" },
+        { "id": "b3", "name": "Salon", "type": "Hair or beauty", "district": "Maseru" }
+      ]
+    },
+    "expect": { "toolsInclude": ["prepare_return"], "uiIncludes": { "return_card": "businessName" }, "noNewReturn": true }
   }
 ]

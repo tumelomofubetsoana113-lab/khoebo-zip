@@ -19,6 +19,6 @@ export function downloadStatement(st: Statement): void {
 }
 
 // From a chat card: the records as they are now, not as they were when the card was shown.
-export function downloadSavedStatement(key: StatementKey): void {
-  downloadStatement(buildStatement(loadState(), key, todayISO()));
+export function downloadSavedStatement(key: StatementKey, businessId?: string): void {
+  downloadStatement(buildStatement(loadState(), key, todayISO(), businessId));
 }

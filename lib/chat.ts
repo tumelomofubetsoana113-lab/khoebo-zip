@@ -98,19 +98,19 @@ export function fieldVisitStart(
   };
 }
 
-export function demoWelcome(now: string, who: "trader" | "runner" = "trader"): ChatMessage {
-  const runner = who === "runner";
+export function demoWelcome(now: string, who: "trader" | "runner" | "multi" = "trader"): ChatMessage {
+  const c = strings.chat;
+  const welcome = {
+    trader: { text: c.demoLoaded, options: c.demoQuickReplies },
+    runner: { text: c.demoRunnerLoaded, options: c.demoRunnerQuickReplies },
+    multi: { text: c.demoMultiLoaded, options: c.demoMultiQuickReplies },
+  }[who];
   return {
     id: messageId(),
     role: "assistant",
-    text: runner ? strings.chat.demoRunnerLoaded : strings.chat.demoLoaded,
+    text: welcome.text,
     at: now,
-    ui: [
-      {
-        type: "quick_replies",
-        options: [...(runner ? strings.chat.demoRunnerQuickReplies : strings.chat.demoQuickReplies)],
-      },
-    ],
+    ui: [{ type: "quick_replies", options: [...welcome.options] }],
   };
 }
 
@@ -142,11 +142,14 @@ export function buttonKey(action: ChatAction): string {
       return `undo:${action.entryId}`;
     case "simulate_reminder":
       return "reminder";
+    // One key for every Save button on a receipt card (one per business), so
+    // saving to one business uses up the others too.
     case "confirm_receipt":
     case "change_receipt":
       return `${action.type}:${action.receiptId}`;
     default:
-      return `${action.type}:${action.period}`;
+      // The first business keeps the key used before 19 Nov 2026.
+      return `${action.type}:${action.period}${action.businessId ? `:${action.businessId}` : ""}`;
   }
 }
 

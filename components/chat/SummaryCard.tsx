@@ -1,4 +1,6 @@
+import type { BusinessTotals } from "@/lib/blocks";
 import { strings } from "@/lib/strings";
+import { BusinessRows } from "./BusinessRows";
 
 const t = strings.chat.summary;
 
@@ -10,6 +12,7 @@ export function SummaryCard({
   clientMoney,
   profit,
   entries,
+  byBusiness,
 }: {
   period: string;
   moneyIn: string;
@@ -17,6 +20,7 @@ export function SummaryCard({
   clientMoney?: string; // a runner's client money, shown apart from income
   profit: string;
   entries?: number;
+  byBusiness?: BusinessTotals[]; // a trader with several businesses: one line each
 }) {
   const rows = [
     { label: t.moneyIn, value: moneyIn },
@@ -47,6 +51,7 @@ export function SummaryCard({
         </div>
       )}
       {entries !== undefined && <p className="mt-2 text-sm text-muted">{t.entries(entries)}</p>}
+      <BusinessRows rows={byBusiness} />
     </div>
   );
 }

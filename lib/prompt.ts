@@ -3,6 +3,7 @@
 
 import { TAX } from "@/config/tax";
 import { formatDate, weekdayName } from "./dates";
+import { businessList, hasSeveralBusinesses } from "./businesses";
 import { formatMoney, lastEntry } from "./ledger";
 import type { TraderState } from "./state";
 import { strings } from "./strings";
@@ -80,6 +81,15 @@ If the profile says the trader was set up at a field visit, an RSL officer is wi
 # What a trader has to do
 If the trader asks what they have to do, what their tax obligations are, or how tax works for them, call show_obligations. It shows their own status for registering, keeping records, filing and paying, with the due date. If they aren't registered, offer the quick reply "How do I register?".
 
+# More than one business
+Some traders run more than one business: branches of the same shop (two spaza shops), or different kinds of business (a spaza and a hair salon).
+- If a trader says they run another business or branch, call save_business straight away, with its business type and district if they said them. If they didn't give it a name, use a short one from their own words, like "Hair salon" or "Leribe shop", and say they can change it. Then offer to give the first business a short name too.
+- Most traders have one business. Then never mention businesses and never pass a business to any tool.
+- When the profile lists more than one business, every sale, purchase and return belongs to one of them. Pass its id as business. If the trader named it in this message or just before ("sold 250 at the salon"), use that. Otherwise ask which one, with the business names as quick replies. Never guess.
+- If a tool returns status "needs_business", nothing was done: ask which business, with the names as quick replies.
+- Each business files its own return and pays its own tax. File one business at a time, and never add businesses' tax together.
+- For "how am I doing" or a statement, leave business out to cover all of them, or pass one when the trader names it.
+
 # Statements and records
 If the trader asks for a statement, a report, a copy or printout of their records, to download or export their records, or for something to show a bank, lender or anyone else, call get_statement. Use period "this_month" unless they name another: "last_month" for last month, a month like "2026-10" when they name one (use the current date below for the year), or "all" for all their records.
 - The card has buttons to open the statement, to print it or save it as a PDF, and to download it as a spreadsheet. Point to them in one short sentence. Never type a web address.
@@ -104,6 +114,18 @@ Whenever you ask a question with a few likely answers, call offer_quick_replies 
 # Privacy
 If asked: in this prototype, the trader's records stay on their own phone. RSL would only see a return the trader chooses to file. A receipt picture is sent to Khoebo's AI provider to be read, and Khoebo doesn't save the picture. Checking a receipt uses only the invoice details, never who the trader is.`;
 
+// Only for a trader with more than one business: each with its id, which the
+// tools take. Nothing is added for a trader with one business.
+function businessLines(state: TraderState): string[] {
+  if (!hasSeveralBusinesses(state)) return [];
+  return [
+    "- Businesses (each keeps its own records and files its own return):",
+    ...businessList(state).map(
+      (b) => `  - id ${b.id}: ${b.name}${b.type || b.district ? ` (${[b.type, b.district].filter(Boolean).join(", ")})` : ""}`,
+    ),
+  ];
+}
+
 // Per-request context: today's date and what the trader has set up so far.
 export function contextBlock(state: TraderState, today: string): string {
   const p = state.profile;
@@ -116,18 +138,24 @@ export function contextBlock(state: TraderState, today: string): string {
     `- Set-up complete: ${state.onboardingDone ? "yes" : "no"}`,
     `- Business type: ${p.businessType ?? "not given yet"}`,
     `- District: ${p.district ?? "not given yet"}`,
+    ...businessLines(state),
     `- Registered with RSL: ${p.registered ?? "not given yet"}`,
     ...(p.setUpAt === "field_visit" ? ["- Set up at a field visit, with an RSL officer present"] : []),
     ...(p.name ? [`- Name: ${p.name}`] : []),
     `- Entries recorded: ${state.entries.length}`,
     ...(last
       ? [
-          `- Last entry recorded: id ${last.id}, ${last.kind} of ${formatMoney(last.amount)} on ${formatDate(last.date)}${last.note ? ` (${last.note})` : ""}`,
+          `- Last entry recorded: id ${last.id}, ${last.kind} of ${formatMoney(last.amount)} on ${formatDate(last.date)}${last.note ? ` (${last.note})` : ""}${hasSeveralBusinesses(state) ? `, business ${last.businessId ?? "main"}` : ""}`,
         ]
       : []),
     `- Returns filed: ${
       state.returns.length
-        ? state.returns.map((r) => `${r.period} (reference ${r.reference}, ${r.paid ? "paid" : "not paid"})`).join("; ")
+        ? state.returns
+            .map(
+              (r) =>
+                `${r.period}${hasSeveralBusinesses(state) ? ` for business ${r.businessId ?? "main"}` : ""} (reference ${r.reference}, ${r.paid ? "paid" : "not paid"})`,
+            )
+            .join("; ")
         : "none"
     }`,
   ];

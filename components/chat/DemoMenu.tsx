@@ -1,16 +1,17 @@
 "use client";
 
-import { BarChart3, BellRing, FileText, Package, RotateCcw, UserRound, type LucideIcon } from "lucide-react";
+import { BarChart3, BellRing, FileText, Package, RotateCcw, Store, UserRound, type LucideIcon } from "lucide-react";
 import { Sheet } from "@/components/ui/Sheet";
 import { strings } from "@/lib/strings";
 
 const t = strings.chat.demoMenu;
 
-export type DemoChoice = "load" | "loadRunner" | "summary" | "reminder" | "statement" | "reset";
+export type DemoChoice = "load" | "loadRunner" | "loadMulti" | "summary" | "reminder" | "statement" | "reset";
 
 const items: { id: DemoChoice; icon: LucideIcon; label: string; hint?: string; needsApi: boolean }[] = [
   { id: "load", icon: UserRound, label: t.loadTrader, hint: t.loadTraderHint, needsApi: false },
   { id: "loadRunner", icon: Package, label: t.loadRunner, hint: t.loadRunnerHint, needsApi: false },
+  { id: "loadMulti", icon: Store, label: t.loadMulti, hint: t.loadMultiHint, needsApi: false },
   { id: "summary", icon: BarChart3, label: t.weekSummary, needsApi: true },
   { id: "reminder", icon: BellRing, label: t.reminder, hint: t.reminderHint, needsApi: true },
   { id: "statement", icon: FileText, label: t.statement, hint: t.statementHint, needsApi: false },
