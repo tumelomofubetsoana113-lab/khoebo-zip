@@ -22,12 +22,12 @@ export function Header() {
     <SiteHeader
       nav={
         <nav aria-label={t.label}>
-          <ul className="flex items-center gap-1 rounded-xl border border-surface/15 bg-surface/5 p-1">
+          <ul className="flex items-center gap-1 rounded-full border border-surface/15 bg-surface/5 p-1">
             {links.map((link) => (
               <li key={link.href}>
                 <a
                   href={link.href}
-                  className="inline-flex min-h-9 items-center rounded-lg px-3 text-sm font-medium text-surface/85 hover:bg-surface/10 hover:text-surface"
+                  className="inline-flex min-h-9 items-center rounded-full px-3 text-sm font-medium text-surface/85 hover:bg-surface/10 hover:text-surface"
                 >
                   {link.label}
                 </a>
@@ -39,12 +39,12 @@ export function Header() {
     >
       <Link
         href="/officer"
-        className="hidden min-h-11 items-center gap-1.5 rounded-lg px-2 text-sm font-semibold text-surface/85 hover:text-surface xl:inline-flex"
+        className="hidden min-h-11 items-center gap-1.5 rounded-full px-2 text-sm font-semibold text-surface/85 hover:text-surface xl:inline-flex"
       >
         <LayoutList size={16} aria-hidden="true" />
         {t.officerView}
       </Link>
-      <ButtonLink href="/trader" size="sm">
+      <ButtonLink href="/trader" size="sm" pill>
         {t.tryChat}
         <ArrowRight size={16} aria-hidden="true" />
       </ButtonLink>

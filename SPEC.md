@@ -193,9 +193,10 @@ This is the first thing judges see. It should look finished and calm, with plent
 
 The design follows the owner's mockup of 19 November 2026 (see section 14), with the pipeline, officer, Lesotho and results sections kept and restyled to match. Sections use a small orange caps eyebrow over a bold heading (`SectionHeading`).
 
-**1. Header** (sticky, a full-width `charcoal` bar, shared with the officer pages)
+**1. Header** (sticky and floating: a rounded `charcoal` bar inset from the page edges, shared with the officer pages)
 - Left: the Khoebo mark, "Khoebo" in white and "Records and tax assistant" (from 640px), and the prototype pill.
 - Middle from 1024px: the anchor links "How it works", "The pipeline", "For officers" and "Results" in a rounded group.
+- The bar, the link group and the "Try the chat" button are fully rounded (`pill` on the button), as the white floating header was before 19 November 2026. Below 640px the bar has 24px corners, since it is two rows high.
 - Right: "Officer view" (from 1280px) and the primary button "Try the chat →".
 - Below 1024px: the button and a three-line menu button. The menu opens a rounded white panel with the four anchor links and "Officer view", and closes on a link tap, Escape, or a tap outside it. Below 640px the prototype pill sits on its own row under the wordmark, inside the header.
 
@@ -1215,4 +1216,5 @@ At the owner's request, three changes, built on the `rsl-look` branch so the liv
 - **Removed:** the hero's phone illustration (`PhoneFrame.tsx`) and its mountain photo (`public/landing/maloti.jpg`), which the example chat card replaces.
 - **Watermark.** The printable statement carries the Khoebo mark at 7% opacity behind the content. Printed, it repeats in the middle of every page.
 - **Header on phones.** The wordmark's subline is hidden below 640px, so the button and menu fit beside the wordmark at 360px.
+- **Floating header kept** (the same day, at the owner's request). The mockup's full-width bar was changed back to the earlier floating rounded header, inset from the page edges, now in `charcoal`. Buttons gained a `pill` option for full rounding inside it.
 - **Checked in headless Chrome on a local production build:** the landing page at 360, 768, 1024 and 1280px, `/officer` at 360 and 1280px, and `/trader` at 360px, all with no horizontal scroll and no console errors. Also the phone menu, and a statement printed to an A4 PDF with the watermark on both pages. 200 tests pass, as do `npm run lint` and `npm run build`.

@@ -5,7 +5,7 @@ type Variant = "primary" | "secondary" | "outline" | "ghost" | "inverse" | "inve
 type Size = "sm" | "md";
 
 const base =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50";
+  "inline-flex min-h-11 items-center justify-center gap-2 font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50";
 
 const variants: Record<Variant, string> = {
   primary: "bg-brand text-surface hover:bg-brand/90",
@@ -24,27 +24,31 @@ const sizes: Record<Size, string> = {
   md: "px-6 text-base",
 };
 
-export function buttonClasses(variant: Variant = "primary", size: Size = "md", className = "") {
-  return `${base} ${variants[variant]} ${sizes[size]} ${className}`;
+// Buttons have 12px corners. `pill` gives full rounding, for buttons inside
+// the floating rounded header.
+export function buttonClasses(variant: Variant = "primary", size: Size = "md", className = "", pill = false) {
+  return `${base} ${pill ? "rounded-full" : "rounded-xl"} ${variants[variant]} ${sizes[size]} ${className}`;
 }
 
-type StyleProps = { variant?: Variant; size?: Size };
+type StyleProps = { variant?: Variant; size?: Size; pill?: boolean };
 
 export function Button({
   variant,
   size,
+  pill,
   className,
   type = "button",
   ...props
 }: StyleProps & ButtonHTMLAttributes<HTMLButtonElement>) {
-  return <button type={type} className={buttonClasses(variant, size, className)} {...props} />;
+  return <button type={type} className={buttonClasses(variant, size, className, pill)} {...props} />;
 }
 
 export function ButtonLink({
   variant,
   size,
+  pill,
   className,
   ...props
 }: StyleProps & ComponentProps<typeof Link>) {
-  return <Link className={buttonClasses(variant, size, className)} {...props} />;
+  return <Link className={buttonClasses(variant, size, className, pill)} {...props} />;
 }
